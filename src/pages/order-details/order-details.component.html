@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{order.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list>
+    <ion-item *ngFor="let item of order.items">
+      <h1>{{item.name}}</h1>
+      <button ion-button default item-right (click)="increaseAmount($event)" outline>
+        {{item.amount}}
+      </button>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab right bottom margin>
+    <button ion-fab (click)="addProduct()" color="primary">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

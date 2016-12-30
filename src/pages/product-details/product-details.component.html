@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{product.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="product.ingredients.length">
+    <ion-item *ngFor="let ingredient of product.ingredients">
+      <h1>{{ingredient.name}}</h1>
+      <button ion-button (click)="deleteIngredient($event)" clear item-right default icon-only>
+        <ion-icon name="remove-circle" color="danger"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+
+  <div padding style="text-align: center;" *ngIf="!product.ingredients.length">
+    <em>No hay ingredientes</em>
+  </div>
+
+  <div padding>
+    <button ion-button (click)="saveProduct()" color="primary" block>Guardar cambios</button>
+  </div>
+
+  <ion-fab right bottom margin>
+    <button ion-fab (click)="addIngredient()" color="primary">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

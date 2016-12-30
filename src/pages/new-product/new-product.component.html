@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Nuevo producto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+    <ion-item>
+      <ion-label floating>Nombre del producto</ion-label>
+      <ion-input type="text" [(ngModel)]="productName" name="name" #name="ngModel" required></ion-input>
+      <div [hidden]="name.valid || name.pristine">Name is required</div>  
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Precio del producto</ion-label>
+      <ion-input type="number" [(ngModel)]="productPrice" name="price" #price="ngModel" required></ion-input>€
+      <div [hidden]="name.valid || name.pristine">Price is required</div>
+    </ion-item>
+    <div padding>
+    	<button ion-button type="submit" [disabled]="!productForm.form.valid" block>Añadir producto</button>
+    </div>
+  </form>
+</ion-content>

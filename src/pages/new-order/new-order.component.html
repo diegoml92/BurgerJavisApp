@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Nuevo pedido</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #orderForm="ngForm">
+    <ion-item>
+      <ion-label floating>Nombre del pedido</ion-label>
+      <ion-input type="text" [(ngModel)]="orderName" name="name" #name="ngModel" required></ion-input> 
+      <div [hidden]="name.valid || name.pristine">Name is required</div>
+    </ion-item>
+    <div padding>
+      <button ion-button tpye="submit" [disabled]="!orderForm.form.valid" block>Añadir pedido</button>
+    </div>
+  </form>
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Menú</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <button block ion-item *ngFor="let product of menu" (click)="productTapped($event, product)">
+      <h1>{{product.name}}</h1>
+      <p *ngFor="let ingredient of product.ingredients">
+        - {{ingredient.name}}
+      </p>
+      <b item-right item-bottom>{{product.price | currency:'EUR':true}}</b>
+    </button>
+  </ion-list>
+
+  <ion-fab right bottom margin>
+    <button ion-fab (click)="addProduct($event)" color="primary">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

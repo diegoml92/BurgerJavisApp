@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Pedidos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list>
+    <button block ion-item *ngFor="let order of orders" (click)="orderTapped($event, order)">
+      <h1>{{order.name}}</h1>
+      <p *ngFor="let item of order.items">
+        - {{item.name}} x{{item.amount}}
+      </p>
+      <b item-right>{{order.price | currency:'EUR':true}}</b>
+    </button>
+  </ion-list>
+
+  <ion-fab right bottom margin>
+    <button ion-fab (click)="addOrder($event)" color="primary">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

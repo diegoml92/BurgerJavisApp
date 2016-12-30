@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Resumen</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-icon name="cash" item-left></ion-icon>
+      <h1>Beneficios</h1>
+      <ion-note item-right>{{income | currency:'EUR':true}}</ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="checkmark-circle-outline" item-left></ion-icon>
+      <h1>Pedidos completados</h1>
+      <ion-note item-right>{{completedOrders}}</ion-note>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-icon name="podium" item-left></ion-icon>
+      <h1>Mejores productos:</h1>
+      <ion-list  *ngFor="let category of categories">
+        <ion-list-header>{{category.name}}</ion-list-header>
+        <ion-item *ngFor="let product of category.products">
+          {{product.name}}
+          <ion-note item-right>{{product.amount}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+</ion-content>
