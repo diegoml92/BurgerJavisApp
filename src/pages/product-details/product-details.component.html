@@ -9,7 +9,7 @@
 
 <ion-content>
 
-  <ion-list *ngIf="product.ingredients.length">
+  <ion-list *ngIf="product.ingredients && product.ingredients.length">
     <ion-item *ngFor="let ingredient of product.ingredients">
       <h1>{{ingredient.name}}</h1>
       <button ion-button (click)="deleteIngredient($event)" clear item-right default icon-only>
@@ -18,7 +18,7 @@
     </ion-item>
   </ion-list>
 
-  <div padding style="text-align: center;" *ngIf="!product.ingredients.length">
+  <div padding style="text-align: center;" *ngIf="product.ingredients && !product.ingredients.length">
     <em>No hay ingredientes</em>
   </div>
 

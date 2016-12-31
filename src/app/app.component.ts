@@ -16,6 +16,7 @@ export class AppComponent {
   nav: Nav;
 
   rootPage = OrdersComponent;
+  currentPage = OrdersComponent;
   pages: Array<{title: string, component: any}>;
 
   constructor(
@@ -44,8 +45,12 @@ export class AppComponent {
   openPage(page) {
     // close the menu when clicking a link from the menu
     this.menu.close();
-    // navigate to the new page if it is not the current page
-    this.nav.setRoot(page.component);
+
+    if (page.component !== this.currentPage) {
+      // navigate to the new page if it is not the current page
+      this.nav.setRoot(page.component);
+      this.currentPage = page.component;
+    }
   }
 
 
