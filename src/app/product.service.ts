@@ -15,13 +15,20 @@ export class ProductService {
 
   getProductList(): Promise<Product[]> {
     return new Promise(resolve => {
-      // Simulate serve latency (1.5s)
+      // Simulate server latency (1.5s)
       setTimeout(() => resolve(this.productList), 1500);
     });
   }
 
   addProduct(product: Product) {
     this.productList.push(product);
+  }
+
+  removeProduct(product: Product) {
+    let index = this.productList.indexOf(product);
+    if(index => 0) {
+      this.productList.splice(index, 1);
+    }
   }
 
 }

@@ -24,4 +24,11 @@ export class OrderService {
     this.orderList.push(order);
   }
 
+  removeOrder(order: Order) {
+    let index = this.orderList.indexOf(order);
+    if(index => 0) {
+      this.orderList.splice(index, 1);
+    }
+  }
+
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, 
+import { NavController, NavParams, AlertController,
 	PopoverController, ViewController } from 'ionic-angular';
 
 import { Order } from '../../app/order'
-
+import { OrderService } from '../../app/order.service'
 
 @Component ({
 	template: `
@@ -36,9 +36,11 @@ export class OrderDetailsComponent {
   order: Order;
 
   constructor(
-  	public navCtrl: NavController,
-  	public navParams: NavParams,
-  	public popoverCtrl: PopoverController) {
+  	private navCtrl: NavController,
+  	private navParams: NavParams,
+  	private popoverCtrl: PopoverController,
+    private alertCtrl: AlertController,
+    private orderService: OrderService) {
 
   	this.order = navParams.get('order');
 
@@ -54,6 +56,34 @@ export class OrderDetailsComponent {
     //       Update order adding selected product.
   	let popover = this.popoverCtrl.create(PopoverList2);
   	popover.present();
+  }
+
+  deleteOrder() {
+    let confirm = this.alertCtrl.create({
+      title: '¿Borrar ' + this.order.name + '?',
+      message: '¿Estás seguro de que quieres eliminar este pedido? ' +
+        'Se perderá toda la información relacionada con este pedido...',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            // No further action
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.removeOrder();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  removeOrder() {
+    this.orderService.removeOrder(this.order);
+    this.navCtrl.popToRoot();
   }
 
 }

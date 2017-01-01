@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,
+import { NavController, NavParams, AlertController, 
 	PopoverController, ViewController } from 'ionic-angular';
 
-import { Product } from '../../app/product'
-
+import { Product } from '../../app/product';
+import { ProductService } from '../../app/product.service'
 
 @Component ({
 	template: `
@@ -37,9 +37,11 @@ export class ProductDetailsComponent {
   modified: boolean;
 
   constructor(
-  	public navCtrl: NavController,
-  	public navParams: NavParams,
-  	public popoverCtrl: PopoverController) {
+  	private navCtrl: NavController,
+  	private navParams: NavParams,
+    private alertCtrl: AlertController,
+  	private popoverCtrl: PopoverController,
+    private productService: ProductService) {
 
   	this.product = navParams.get('product');
 
@@ -60,6 +62,34 @@ export class ProductDetailsComponent {
   	//       Update product adding selected ingredient.
   	let popover = this.popoverCtrl.create(PopoverList);
   	popover.present();
+  }
+
+  deleteProduct() {
+    let confirm = this.alertCtrl.create({
+      title: '¿Borrar ' + this.product.name + '?',
+      message: '¿Estás seguro de que quieres eliminar este producto? ' +
+        'Se perderá toda la información relacionada él...',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            // No further action
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.removeProduct();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  removeProduct() {
+    this.productService.removeProduct(this.product);
+    this.navCtrl.popToRoot();
   }
 
 }
