@@ -1,5 +1,7 @@
 import { Order } from './order';
-import { ORDER_ITEMS } from './mock-data'
+import { OrderItem } from './order-item';
+import { Product } from './product';
+import { ORDER_ITEMS } from './mock-data';
 
 export class OrderService {
 
@@ -28,6 +30,23 @@ export class OrderService {
     let index = this.orderList.indexOf(order);
     if(index => 0) {
       this.orderList.splice(index, 1);
+    }
+  }
+
+  addProductToOrder(order: Order, product: Product) {
+    let index = this.orderList.indexOf(order);
+    if(index => 0) {
+      this.orderList[index].items.push({product: product, amount: 1});
+    }
+  }
+
+  increaseItemAmount(order: Order, item: OrderItem) {
+    let oIndex = this.orderList.indexOf(order);
+    if(oIndex => 0) {
+      let iIndex = this.orderList[oIndex].items.indexOf(item);
+      if(iIndex => 0) {
+        this.orderList[oIndex].items[iIndex].amount += 1;
+      }
     }
   }
 

@@ -18,7 +18,7 @@
   <ion-list>
     <ion-item *ngFor="let item of order.items">
       <h1>{{item.product.name}}</h1>
-      <button ion-button default item-right (click)="increaseAmount($event)" outline>
+      <button ion-button default item-right (click)="increaseAmount(item)" outline>
         {{item.amount}}
       </button>
     </ion-item>

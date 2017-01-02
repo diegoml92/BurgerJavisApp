@@ -1,30 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, 
-	PopoverController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { Product } from '../../app/product';
-import { ProductService } from '../../app/product.service'
-
-@Component ({
-	template: `
-      <ion-row scroll="false">
-        <ion-title margin>Seleccionar ingredientes</ion-title>
-      </ion-row>
-    	<ion-list>
-    		<button ion-item (click)="close()">Pepinillo</button>
-    		<button ion-item (click)="close()">Cebolla</button>
-    		<button ion-item (click)="close()">Huevo</button>
-    	</ion-list>
-    	`
-})
-export class PopoverList {
-
-	constructor(public viewCtrl: ViewController) {}
-
-	close() {
-		this.viewCtrl.dismiss();
-	}
-}
+import { Ingredient } from '../../app/ingredient';
+import { ProductService } from '../../app/product.service';
 
 @Component({
   templateUrl: 'product-details.component.html'
@@ -32,36 +11,50 @@ export class PopoverList {
 export class ProductDetailsComponent {
 
   product: Product;
-  //TO-DO: Include *ngIf="modified" to show save button 
-  //       only when chages has been made to this product.
   modified: boolean;
 
   constructor(
   	private navCtrl: NavController,
   	private navParams: NavParams,
     private alertCtrl: AlertController,
-  	private popoverCtrl: PopoverController,
-    private productService: ProductService) {
+    private productService: ProductService
+  ) {
 
   	this.product = navParams.get('product');
 
   }
 
-  saveProduct() {
-  	//TO-DO: Update product information.
-  	console.log("Store modifications made.");
-  }
-
-  deleteIngredient(event) {
-  	//TO-DO: Update product by deleting selected ingredients.
-  	console.log("Delete ingredient.");
+  deleteIngredient(ingredient: Ingredient) {
+    this.productService.removeIngredientFromProduct(this.product, ingredient);
   }
 
   addIngredient() {
-  	//TO-DO: Generate list using ingredients left;
-  	//       Update product adding selected ingredient.
-  	let popover = this.popoverCtrl.create(PopoverList);
-  	popover.present();
+    let prompt = this.alertCtrl.create({
+      title: 'Nuevo ingrediente',
+      inputs: [
+        {
+          //TO-DO: Validation
+          name: 'name',
+          placeholder: 'Nombre'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {}
+        },
+        {
+          text: 'Añadir',
+          handler: data => {
+            console.log(JSON.stringify(data));
+            this.productService.addIngredientToProduct(
+              this.product,{name: data.name, extraPrice: 0.0}
+            );
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   deleteProduct() {

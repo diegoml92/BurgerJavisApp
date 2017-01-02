@@ -1,0 +1,8 @@
+<ion-row scroll="false">
+<ion-title margin>Seleccionar producto</ion-title>
+</ion-row>
+<ion-list>
+  <button *ngFor="let product of localList" ion-item (click)="addProduct(product)">
+    {{product.name}}
+  </button>
+</ion-list>

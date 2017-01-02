@@ -1,31 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController,
-	PopoverController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, 
+  AlertController, PopoverController } from 'ionic-angular';
 
-import { Order } from '../../app/order'
-import { OrderService } from '../../app/order.service'
-
-@Component ({
-	template: `
-      <ion-row scroll="false">
-        <ion-title margin>Seleccionar producto</ion-title>
-      </ion-row>
-    	<ion-list>
-    		<button ion-item (click)="close()">Ensalada</button>
-    		<button ion-item (click)="close()">Filete Pollo</button>
-    		<button ion-item (click)="close()">Trina Naranja</button>
-    		<button ion-item (click)="close()">Café</button>
-    	</ion-list>
-    	`
-})
-export class PopoverList2 {
-
-	constructor(public viewCtrl: ViewController) {}
-
-	close() {
-		this.viewCtrl.dismiss();
-	}
-}
+import { Order } from '../../app/order';
+import { OrderItem } from '../../app/order-item';
+import { OrderService } from '../../app/order.service';
+import { PopoverListComponent } from './popover-list.component';
 
 
 @Component({
@@ -46,15 +26,13 @@ export class OrderDetailsComponent {
 
   }
 
-  increaseAmount(event) {
-    //TO-DO: Increase product amount when button is tapped.
-    console.log("Increment 'amount' value.");
+  increaseAmount(item: OrderItem) {
+    this.orderService.increaseItemAmount(this.order, item);
   }
 
   addProduct() {
-    //TO-DO: Generate list using products left;
-    //       Update order adding selected product.
-  	let popover = this.popoverCtrl.create(PopoverList2);
+  	let popover = this.popoverCtrl.create(
+      PopoverListComponent, {order: this.order});
   	popover.present();
   }
 
