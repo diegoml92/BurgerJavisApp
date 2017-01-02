@@ -14,7 +14,7 @@
     <button block ion-item *ngFor="let order of orders" (click)="orderTapped($event, order)">
       <h1>{{order.name}}</h1>
       <p *ngFor="let item of order.items">
-        - {{item.name}} x{{item.amount}}
+        - {{item.product.name}} x{{item.amount}}
       </p>
       <b item-right>{{order.price | currency:'EUR':true}}</b>
     </button>

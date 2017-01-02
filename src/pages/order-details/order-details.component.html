@@ -4,6 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{order.name}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteOrder()">
+        <ion-icon name="close" color="danger"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -12,8 +17,8 @@
 
   <ion-list>
     <ion-item *ngFor="let item of order.items">
-      <h1>{{item.name}}</h1>
-      <button ion-button default item-right (click)="increaseAmount($event)" outline>
+      <h1>{{item.product.name}}</h1>
+      <button ion-button default item-right (click)="increaseAmount(item)" outline>
         {{item.amount}}
       </button>
     </ion-item>

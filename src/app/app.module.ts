@@ -2,13 +2,17 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { AppComponent } from './app.component';
-import { OrdersComponent } from '../pages/orders/orders.component'
-import { OrderDetailsComponent, PopoverList2 } from '../pages/order-details/order-details.component';
+import { OrdersComponent } from '../pages/orders/orders.component';
+import { OrderDetailsComponent } from '../pages/order-details/order-details.component';
+import { PopoverListComponent } from '../pages/order-details/popover-list.component';
 import { NewOrderComponent } from '../pages/new-order/new-order.component';
 import { MenuComponent } from '../pages/menu/menu.component';
 import { NewProductComponent } from '../pages/new-product/new-product.component';
-import { ProductDetailsComponent, PopoverList } from '../pages/product-details/product-details.component'
-import { SummaryComponent } from '../pages/summary/summary.component'
+import { ProductDetailsComponent } from '../pages/product-details/product-details.component';
+import { SummaryComponent } from '../pages/summary/summary.component';
+
+import { OrderService } from './order.service';
+import { ProductService } from './product.service';
 
 @NgModule({
   declarations: [
@@ -20,8 +24,7 @@ import { SummaryComponent } from '../pages/summary/summary.component'
     NewProductComponent,
     ProductDetailsComponent,
     SummaryComponent,
-    PopoverList,
-    PopoverList2
+    PopoverListComponent
   ],
   imports: [
     IonicModule.forRoot(AppComponent)
@@ -36,9 +39,12 @@ import { SummaryComponent } from '../pages/summary/summary.component'
     NewProductComponent,
     ProductDetailsComponent,
     SummaryComponent,
-    PopoverList,
-    PopoverList2
+    PopoverListComponent
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    OrderService,
+    ProductService
+  ]
 })
 export class AppModule {}
