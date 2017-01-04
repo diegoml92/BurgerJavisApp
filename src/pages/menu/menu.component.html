@@ -9,7 +9,7 @@
 
 <ion-content>
 
-  <ion-list>
+  <ion-list *ngIf="menu && menu.length">
     <button block ion-item *ngFor="let product of menu" (click)="productTapped($event, product)">
       <h1>{{product.name}}</h1>
       <p *ngFor="let ingredient of product.ingredients">
@@ -18,6 +18,10 @@
       <b item-right item-bottom>{{product.price | currency:'EUR':true}}</b>
     </button>
   </ion-list>
+
+  <div padding *ngIf="(!menu || !menu.length)" style="text-align: center;">
+    <em>Aún no hay ningún producto en el menú</em>
+  </div>
 
   <ion-fab right bottom margin>
     <button ion-fab (click)="addProduct($event)" color="primary">

@@ -29,16 +29,20 @@ export class PopoverListComponent {
     this.localList = [];
     this.productService.getProductList()
       .then(products => {
-        for (let i=0; i<products.length; i++) {
-          let found = false;
-          let j=0;
-          while(!found && j<this.order.items.length) {
-            found = products[i]===this.order.items[j].product;
-            j++;
+        if(this.order.items.length) {
+          for (let i=0; i<products.length; i++) {
+            let found = false;
+            let j=0;
+            while(!found && j<this.order.items.length) {
+              found = products[i]===this.order.items[j].product;
+              j++;
+            }
+            if(!found) {
+              this.localList.push(products[i]);
+            }
           }
-          if(!found) {
-            this.localList.push(products[i]);
-          }
+        } else {
+          this.localList = products;
         }
       });
   }

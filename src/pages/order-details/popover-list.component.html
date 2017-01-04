@@ -1,8 +1,13 @@
 <ion-row scroll="false">
-<ion-title margin>Seleccionar producto</ion-title>
+  <ion-title margin>Seleccionar producto</ion-title>
 </ion-row>
-<ion-list>
+
+<ion-list *ngIf="localList && localList.length">
   <button *ngFor="let product of localList" ion-item (click)="addProduct(product)">
     {{product.name}}
   </button>
 </ion-list>
+
+<div padding *ngIf="!localList || !localList.length" style="text-align: center;">
+  <em>No hay nuevos productos para añadir</em>
+</div>

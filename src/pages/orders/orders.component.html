@@ -10,7 +10,7 @@
 
 <ion-content>
 
-  <ion-list>
+  <ion-list *ngIf="orders && orders.length">
     <button block ion-item *ngFor="let order of orders" (click)="orderTapped($event, order)">
       <h1>{{order.name}}</h1>
       <p *ngFor="let item of order.items">
@@ -19,6 +19,10 @@
       <b item-right>{{order.price | currency:'EUR':true}}</b>
     </button>
   </ion-list>
+
+  <div padding *ngIf="(!orders || !orders.length)" style="text-align: center;">
+    <em>Aún no hay ningún pedido</em>
+  </div>
 
   <ion-fab right bottom margin>
     <button ion-fab (click)="addOrder($event)" color="primary">
