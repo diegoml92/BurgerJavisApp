@@ -12,7 +12,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
 
   <ion-list>
@@ -23,6 +22,10 @@
       </button>
     </ion-item>
   </ion-list>
+
+  <div padding *ngIf="!order.items || !order.items.length" style="text-align: center;">
+    <em>El pedido está vacío</em>
+  </div>
 
   <ion-fab right bottom margin>
     <button ion-fab (click)="addProduct()" color="primary">
