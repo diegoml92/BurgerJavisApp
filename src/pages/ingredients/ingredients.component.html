@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Ingredientes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="ingredients && ingredients.length">
+    <button block ion-item *ngFor="let ingredient of ingredients" (click)="ingredientTapped(ingredient)">
+      <h1>{{ingredient.name}}</h1>
+    </button>
+  </ion-list>
+
+  <div padding *ngIf="(!ingredients || !ingredients.length)" style="text-align: center;">
+    <em>Aún no hay ningún ingrediente</em>
+  </div>
+</ion-content>
