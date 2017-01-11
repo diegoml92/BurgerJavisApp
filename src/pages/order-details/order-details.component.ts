@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, 
+import { NavController, NavParams, LoadingController,
   AlertController, PopoverController } from 'ionic-angular';
 
 import { Order } from '../../app/order';
 import { OrderItem } from '../../app/order-item';
 import { OrderService } from '../../app/order.service';
+import { ProductService } from '../../app/product.service';
 import { PopoverListComponent } from './popover-list.component';
 
 
@@ -20,7 +21,9 @@ export class OrderDetailsComponent {
   	private navParams: NavParams,
   	private popoverCtrl: PopoverController,
     private alertCtrl: AlertController,
-    private orderService: OrderService) {
+    private loadingCtrl: LoadingController,
+    private orderService: OrderService,
+    private productService: ProductService) {
 
   	this.order = navParams.get('order');
 
@@ -31,9 +34,35 @@ export class OrderDetailsComponent {
   }
 
   addProduct() {
-  	let popover = this.popoverCtrl.create(
-      PopoverListComponent, {order: this.order});
-  	popover.present();
+    let localList = [];
+
+    let loading = this.loadingCtrl.create({
+      content: "Cargando productos..."
+    });
+    loading.present();
+
+    this.productService.getProductList()
+      .then(products => {
+        loading.dismiss();
+        if(this.order.items.length) {
+          for (let i=0; i<products.length; i++) {
+            let found = false;
+            let j=0;
+            while(!found && j<this.order.items.length) {
+              found = products[i]===this.order.items[j].product;
+              j++;
+            }
+            if(!found) {
+              localList.push(products[i]);
+            }
+          }
+        } else {
+          localList = products;
+        }
+        let popover = this.popoverCtrl.create(
+          PopoverListComponent, {products: localList, order: this.order});
+        popover.present();
+      });
   }
 
   deleteOrder() {

@@ -1,31 +1,40 @@
 import { OrderItem } from './order-item';
 import { Product } from './product';
+import { Ingredient } from './ingredient';
 
-const productIngredients = [
+export const INGREDIENTS: Ingredient[] =
   [
     {name:"Pan",extraPrice:0.0},
     {name:"Carne",extraPrice:0.0},
     {name:"Lechuga",extraPrice:0.0},
     {name:"Queso",extraPrice:0.0},
-    {name:"Tomate",extraPrice:0.0}
-  ],
-  [
-    {name:"Pan",extraPrice:0.0},
+    {name:"Tomate",extraPrice:0.0},
     {name:"Jamón",extraPrice:0.0},
-    {name:"Queso",extraPrice:0.0}
-  ]];
+    {name:"Jamón Serrano",extraPrice:0.0},
+    {name:"Aceitunas",extraPrice:0.0},
+    {name:"Cebolla",extraPrice:0.0},
+    {name:"Pepinillo",extraPrice:0.0},
+    {name:"Atún",extraPrice:0.0}
+  ];
 
 export const PRODUCTS: Product[] =
   [
     {
       name: "Hamburguesa",
       price: 4.50,
-      ingredients: productIngredients[0]
+      ingredients:
+      [
+        INGREDIENTS [0], INGREDIENTS[1], INGREDIENTS[2],
+        INGREDIENTS [3], INGREDIENTS[4]
+      ]
     },
     {
       name: "Sandwich",
       price: 3.50,
-      ingredients: productIngredients[1]
+      ingredients:
+      [
+        INGREDIENTS[0], INGREDIENTS[5], INGREDIENTS[3]
+      ]
     },
     {
       name: "CocaCola",
@@ -42,6 +51,11 @@ export const PRODUCTS: Product[] =
     {
       name: "Ensalada",
       price: 3.5,
+      ingredients:
+      [
+        INGREDIENTS[2], INGREDIENTS[4], INGREDIENTS[7],
+        INGREDIENTS[9], INGREDIENTS[10]
+      ]
     },
     {
       name: "Filete Pollo",
@@ -57,7 +71,7 @@ export const PRODUCTS: Product[] =
     }
   ];
 
-  export const ORDER_ITEMS: OrderItem[][] =
+export const ORDER_ITEMS: OrderItem[][] =
   [[
     {product: PRODUCTS[0], amount: 2},
     {product: PRODUCTS[1], amount: 3},

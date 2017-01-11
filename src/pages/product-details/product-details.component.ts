@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, 
+  AlertController, LoadingController } from 'ionic-angular';
 
 import { Product } from '../../app/product';
 import { Ingredient } from '../../app/ingredient';
 import { ProductService } from '../../app/product.service';
+import { IngredientService } from '../../app/ingredient.service';
 
 @Component({
   templateUrl: 'product-details.component.html'
@@ -17,7 +19,9 @@ export class ProductDetailsComponent {
   	private navCtrl: NavController,
   	private navParams: NavParams,
     private alertCtrl: AlertController,
-    private productService: ProductService
+    private loadingCtrl: LoadingController,
+    private productService: ProductService,
+    private ingredientService: IngredientService
   ) {
 
   	this.product = navParams.get('product');
@@ -29,32 +33,50 @@ export class ProductDetailsComponent {
   }
 
   addIngredient() {
-    let prompt = this.alertCtrl.create({
-      title: 'Nuevo ingrediente',
-      inputs: [
-        {
-          //TO-DO: Validation
-          name: 'name',
-          placeholder: 'Nombre'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => {}
-        },
-        {
-          text: 'Añadir',
-          handler: data => {
-            console.log(JSON.stringify(data));
-            this.productService.addIngredientToProduct(
-              this.product,{name: data.name, extraPrice: 0.0}
-            );
-          }
-        }
-      ]
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Nuevo ingrediente');
+
+    let loading = this.loadingCtrl.create({
+      content: "Cargando ingredientes..."
     });
-    prompt.present();
+    loading.present();
+
+    let ingredientList: Ingredient[];
+    this.ingredientService.getIngredientList()
+      .then(ingredients => {
+        loading.dismiss();
+
+        ingredientList = ingredients;
+
+        for(let i=0; i<ingredientList.length; i++) {
+          let index = -1;
+          if(this.product.ingredients) {
+            index = this.product.ingredients.indexOf(ingredientList[i]);
+          }
+          alert.addInput({
+            type: 'checkbox',
+            label: ingredientList[i].name,
+            value: i.toString(),
+            checked: index >= 0
+          });
+        }
+
+        alert.addButton('Cancelar');
+        alert.addButton({
+          text: 'Aceptar',
+          handler: data => {
+            for(let i=0; i<data.length; i++) {
+              let ing = ingredientList[data[i]];
+              if(this.product.ingredients &&
+                  this.product.ingredients.indexOf(ing) < 0) {
+                this.productService.addIngredientToProduct(this.product, ing);
+              }
+            }
+          }
+        });
+        alert.present();
+
+      });
   }
 
   deleteProduct() {

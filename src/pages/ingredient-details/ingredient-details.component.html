@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ingredient.name}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteIngredient()">
+        <ion-icon name="close" color="danger"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <button block ion-item (click)="showInputDialog()">
+    <h1>Precio extra</h1>
+    <div item-right style="color: green;">+{{ingredient.extraPrice | currency:'EUR':true}}</div>
+  </button>
+</ion-content>
