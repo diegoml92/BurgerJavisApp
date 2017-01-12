@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { Product } from '../../app/product';
 import { ProductService } from '../../app/product.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   templateUrl: 'new-product.component.html'
@@ -28,7 +28,8 @@ export class NewProductComponent {
           Validators.maxLength(50), 
           Validators.pattern('[a-zA-ZñÑ][a-zA-ZñÑ ]*'),
           Validators.required
-        ])
+        ]),
+        this.productValidation.bind(this)
       ],
       price: [
         '',
@@ -40,11 +41,14 @@ export class NewProductComponent {
     });
   }
 
+  productValidation(formControl: FormControl): Promise<any> {
+    return this.productService.checkProductName(formControl.value);
+  }
+
   onSubmit () {
-      //TO-DO: Asynchronous validation.
-      let product = new Product(this.productName, this.productPrice);
-      this.productService.addProduct(product);
-      this.navCtrl.popToRoot();
+    let product = new Product(this.productName, this.productPrice);
+    this.productService.addProduct(product);
+    this.navCtrl.popToRoot();
   }
 
 }
