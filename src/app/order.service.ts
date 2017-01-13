@@ -50,4 +50,22 @@ export class OrderService {
     }
   }
 
+  checkOrderName(newOrderName: string): Promise<any> {
+    return new Promise(resolve => {
+      let found = false;
+      let i = 0;
+      while(!found && i < this.orderList.length) {
+        found = this.orderList[i].name.toLowerCase() === 
+          newOrderName.toLowerCase().trim();
+        i++;
+      }
+      if(found) {
+        resolve("Order name is taken");
+      } else {
+        //TO-DO: Server side validation to be done
+        setTimeout(() => resolve(null), 1500);
+      }
+    });
+  }
+
 }

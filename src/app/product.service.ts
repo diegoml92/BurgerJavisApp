@@ -49,4 +49,22 @@ export class ProductService {
     }
   }
 
+  checkProductName(newProductName: string): Promise<any> {
+    return new Promise(resolve => {
+      let found = false;
+      let i = 0;
+      while(!found && i < this.productList.length) {
+        found = this.productList[i].name.toLowerCase() ===
+          newProductName.toLowerCase().trim();
+        i++;
+      }
+      if(found) {
+        resolve("Procuct name is taken");
+      } else {
+        //TO-DO: Server side validation to be done
+        setTimeout(() => resolve(null), 1500);
+      }
+    });
+  }
+
 }

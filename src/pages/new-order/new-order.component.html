@@ -8,14 +8,14 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="onSubmit()" #orderForm="ngForm">
+  <form [formGroup]="newOrderForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label floating>Nombre del pedido</ion-label>
-      <ion-input type="text" [(ngModel)]="orderName" name="name" #name="ngModel" required></ion-input> 
-      <div [hidden]="name.valid || name.pristine">Name is required</div>
+      <ion-input formControlName="name" type="text" [(ngModel)]="orderName" name="name" required></ion-input> 
     </ion-item>
+    <div *ngIf="!newOrderForm.controls.name.valid && newOrderForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido</div>
     <div padding>
-      <button ion-button tpye="submit" [disabled]="!orderForm.form.valid" block>Añadir pedido</button>
+      <button ion-button tpye="submit" [disabled]="!newOrderForm.valid" block>Añadir pedido</button>
     </div>
   </form>
 </ion-content>

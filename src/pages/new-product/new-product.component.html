@@ -8,19 +8,19 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+  <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label floating>Nombre del producto</ion-label>
-      <ion-input type="text" [(ngModel)]="productName" name="name" #name="ngModel" required></ion-input>
-      <div [hidden]="name.valid || name.pristine">Name is required</div>  
+      <ion-input formControlName="name" type="text" [(ngModel)]="productName" name="name" required></ion-input>     
     </ion-item>
+    <div *ngIf="!newProductForm.controls.name.valid && newProductForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido</div>
     <ion-item>
       <ion-label floating>Precio del producto</ion-label>
-      <ion-input type="number" [(ngModel)]="productPrice" name="price" #price="ngModel" required></ion-input>€
-      <div [hidden]="name.valid || name.pristine">Price is required</div>
+      <ion-input formControlName="price" type="number" [(ngModel)]="productPrice" name="price" required></ion-input>€
     </ion-item>
+    <div *ngIf="!newProductForm.controls.price.valid && newProductForm.controls.price.touched" style="text-align: center; color: red;">El precio introducido no es válido</div>
     <div padding>
-    	<button ion-button type="submit" [disabled]="!productForm.form.valid" block>Añadir producto</button>
+    	<button ion-button type="submit" [disabled]="!newProductForm.valid" block>Añadir producto</button>
     </div>
   </form>
 </ion-content>
