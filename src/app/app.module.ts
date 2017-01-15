@@ -12,10 +12,14 @@ import { ProductDetailsComponent } from '../pages/product-details/product-detail
 import { SummaryComponent } from '../pages/summary/summary.component';
 import { IngredientsComponent } from '../pages/ingredients/ingredients.component';
 import { IngredientDetailsComponent } from '../pages/ingredient-details/ingredient-details.component';
+import { CategoriesComponent } from '../pages/categories/categories.component';
+import { NewCategoryComponent } from '../pages/new-category/new-category.component';
+import { CategoryDetailsComponent } from '../pages/category-details/category-details.component';
 
 import { OrderService } from './order.service';
 import { ProductService } from './product.service';
 import { IngredientService } from './ingredient.service';
+import { CategoryService } from './category.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,10 @@ import { IngredientService } from './ingredient.service';
     PopoverListComponent,
     IngredientsComponent,
     PopoverPage,
-    IngredientDetailsComponent
+    IngredientDetailsComponent,
+    CategoriesComponent,
+    NewCategoryComponent,
+    CategoryDetailsComponent
   ],
   imports: [
     IonicModule.forRoot(AppComponent)
@@ -48,13 +55,17 @@ import { IngredientService } from './ingredient.service';
     PopoverListComponent,
     IngredientsComponent,
     PopoverPage,
-    IngredientDetailsComponent
+    IngredientDetailsComponent,
+    CategoriesComponent,
+    NewCategoryComponent,
+    CategoryDetailsComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     OrderService,
     ProductService,
-    IngredientService
+    IngredientService,
+    CategoryService
   ]
 })
 export class AppModule {}

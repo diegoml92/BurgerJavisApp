@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{category.name}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="deleteCategory()">
+        <ion-icon name="close" color="danger"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="categoryForm">
+    <ion-item>
+      <ion-label floating>Icono de la categoría</ion-label>
+      <ion-select formControlName="icon" [(ngModel)]="categoryIcon" (ngModelChange)="updateCategoryIcon()">
+        <ion-option [value]="defaultCategory.name" [selected]="categoryForm.controls.icon.value === defaultCategory.name">{{defaultCategory.text}}</ion-option>
+        <ion-option *ngFor="let category of categories" [value]="category.name" [selected]="categoryForm.controls.icon.value === category.name">{{category.text}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </form>
+
+</ion-content>

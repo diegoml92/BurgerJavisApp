@@ -5,29 +5,35 @@ import { NavController, NavParams, ViewController,
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { NewProductComponent } from '../new-product/new-product.component';
 import { IngredientsComponent } from '../ingredients/ingredients.component';
+import { CategoriesComponent } from '../categories/categories.component';
 
 import { Product } from '../../app/product';
 import { ProductService } from '../../app/product.service';
 
 @Component({
   template: `
-    <button ion-item (click)="onClick()">
-      Ingredientes
-    </button>
+    <ion-list>
+      <button ion-item (click)="goToCategories()">
+        Categorías
+      </button>
+      <button ion-item (click)="goToIngredients()">
+        Ingredientes
+      </button>
+    </ion-list>
   `
 })
 export class PopoverPage {
 
   constructor(
     private viewCtrl: ViewController,
-    private navCtrl: NavController) {}
+    private navParams: NavParams) {}
 
-  onClick() {
-    this.close();
+  goToCategories() {
+    this.viewCtrl.dismiss(CategoriesComponent);
   }
 
-  close() {
-    this.viewCtrl.dismiss();
+  goToIngredients() {
+    this.viewCtrl.dismiss(IngredientsComponent)
   }
 
 }
@@ -74,7 +80,11 @@ export class MenuComponent {
     popover.present({
       ev: event
     });
-    popover.onDidDismiss(() => this.navCtrl.push(IngredientsComponent));
+    popover.onDidDismiss(data => {
+      if(data) {
+        this.navCtrl.push(data);
+      }
+    });
   }
 
 }
