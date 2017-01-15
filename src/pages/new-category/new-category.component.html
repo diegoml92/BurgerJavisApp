@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Nueva categoría</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="newCategoryForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label floating>Nombre de la categoría</ion-label>
+      <ion-input formControlName="name" type="text" [(ngModel)]="categoryName" name="name" required></ion-input> 
+    </ion-item>
+    <div *ngIf="!newCategoryForm.controls.name.valid && newCategoryForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido</div>
+    <ion-item>
+      <ion-label floating>Icono de la categoría</ion-label>
+      <ion-select formControlName="icon" [(ngModel)]="categoryIcon">
+        <ion-option [value]="defaultCategory.name" selected="true">{{defaultCategory.text}}</ion-option>
+        <ion-option *ngFor="let category of categories" [value]="category.name">{{category.text}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <div padding>
+      <button ion-button tpye="submit" [disabled]="!newCategoryForm.valid" block>Añadir categoría</button>
+    </div>
+  </form>
+</ion-content>
