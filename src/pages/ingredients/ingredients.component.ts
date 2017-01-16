@@ -6,6 +6,8 @@ import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../app/ingredient.service';
 import { IngredientDetailsComponent } from 
   '../ingredient-details/ingredient-details.component';
+import { NewIngredientComponent } from 
+  '../new-ingredient/new-ingredient.component';
 
 @Component({
   templateUrl: 'ingredients.component.html'
@@ -30,6 +32,10 @@ export class IngredientsComponent {
         this.ingredients = ingredients;
         loading.dismiss();
       });
+  }
+
+  addIngredient () {
+    this.navCtrl.push(NewIngredientComponent);
   }
 
   ingredientTapped(ingredient: Ingredient) {

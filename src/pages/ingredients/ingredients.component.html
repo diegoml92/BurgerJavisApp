@@ -11,6 +11,12 @@
     </button>
   </ion-list>
 
+  <ion-fab right bottom margin>
+    <button ion-fab (click)="addIngredient()" color="primary">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-fab>
+
   <div padding *ngIf="(!ingredients || !ingredients.length)" style="text-align: center;">
     <em>Aún no hay ningún ingrediente</em>
   </div>
