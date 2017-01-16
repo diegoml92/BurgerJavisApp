@@ -15,6 +15,7 @@ import { IngredientDetailsComponent } from '../pages/ingredient-details/ingredie
 import { CategoriesComponent } from '../pages/categories/categories.component';
 import { NewCategoryComponent } from '../pages/new-category/new-category.component';
 import { CategoryDetailsComponent } from '../pages/category-details/category-details.component';
+import { NewIngredientComponent } from '../pages/new-ingredient/new-ingredient.component';
 
 import { OrderService } from './order.service';
 import { ProductService } from './product.service';
@@ -37,7 +38,8 @@ import { CategoryService } from './category.service';
     IngredientDetailsComponent,
     CategoriesComponent,
     NewCategoryComponent,
-    CategoryDetailsComponent
+    CategoryDetailsComponent,
+    NewIngredientComponent
   ],
   imports: [
     IonicModule.forRoot(AppComponent)
@@ -58,7 +60,8 @@ import { CategoryService } from './category.service';
     IngredientDetailsComponent,
     CategoriesComponent,
     NewCategoryComponent,
-    CategoryDetailsComponent
+    CategoryDetailsComponent,
+    NewIngredientComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
