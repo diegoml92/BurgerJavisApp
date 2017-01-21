@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
+
+import { Category } from '../../app/category';
+import { Summary } from '../../app/summary';
+import { SummaryService } from '../../app/summary.service';
 
 
 @Component({
@@ -7,26 +11,28 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class SummaryComponent {
 
-  income : number;
-  completedOrders: number;
-  categories : Array<{name:string, products:Array<{name:string,amount:number}>}>;
+  summaryData : Summary;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private summaryService: SummaryService) {}
 
-    this.income = 321.55;
-    this.completedOrders = 28;
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando datos..."
+    });
+    loading.present();
+    this.summaryService.getSummaryData()
+      .then(data => {
+        this.summaryData = data;
+        loading.dismiss();
+      });
+  }
 
-    this.categories = [
-        { name: "Bebida",
-          products: [
-            {name:"Agua", amount: 8},
-            {name:"CocaCola", amount: 12},
-            {name:"Cerveza", amount: 7}]},
-        { name: "Comida",
-          products: [
-            {name:"Hamburgesa", amount: 9},
-            {name:"Sandwich", amount: 9}]}];
-
+  getCategoryIndex(category: Category): number {
+    return this.summaryData.topCategories.indexOf(category);
   }
 
 }

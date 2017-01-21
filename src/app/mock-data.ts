@@ -2,6 +2,7 @@ import { OrderItem } from './order-item';
 import { Product } from './product';
 import { Ingredient } from './ingredient';
 import { Category } from './category';
+import { Summary } from './summary';
 
 export const INGREDIENTS: Ingredient[] =
   [
@@ -154,3 +155,23 @@ export const ORDER_ITEMS: OrderItem[][] =
     {product: PRODUCTS[1], amount: 1},
     {product: PRODUCTS[2], amount: 3}
   ]];
+
+export const SUMMARY_DATA: Summary =
+  {
+    profits: 321.55,
+    completed: 28,
+    topCategories:
+      [
+        CATEGORIES[0],
+        CATEGORIES[1]
+      ],
+    topProducts:
+      [[
+        { name: PRODUCTS[4].name, amount: 12 },
+        { name: PRODUCTS[2].name, amount: 9 },
+        { name: PRODUCTS[3].name, amount: 7}
+      ],
+      [
+        { name: PRODUCTS[0].name, amount: 9}
+      ]]
+  };
