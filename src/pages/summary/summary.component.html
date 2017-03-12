@@ -22,7 +22,7 @@
     <ion-item>
       <ion-icon name="checkmark-circle-outline" item-left></ion-icon>
       <h1>Pedidos completados</h1>
-      <ion-note item-right>{{summaryData.completed}}</ion-note>
+      <ion-note item-right>{{summaryData.completedOrders}}</ion-note>
     </ion-item>
     <ion-item *ngIf="summaryData.topCategories" no-lines>
       <ion-item no-padding no-margin>
@@ -32,7 +32,7 @@
       <ion-list *ngFor="let category of summaryData.topCategories">
         <ion-list-header>{{category.name}}</ion-list-header>
         <ion-item *ngFor="let product of summaryData.topProducts[getCategoryIndex(category)]">
-          {{product.name}}
+          {{product.productName}}
           <ion-note item-right>{{product.amount}}</ion-note>
         </ion-item>
       </ion-list>

@@ -5,7 +5,7 @@ export class Summary {
 
   constructor(
     public profits: number,
-    public completed: number,
+    public completedOrders: number,
     public topCategories: Category[],
     public topProducts: TopProduct[][]) {}
 

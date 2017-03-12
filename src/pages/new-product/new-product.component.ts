@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,
+  ToastController, LoadingController } from 'ionic-angular';
 
 import { Product } from '../../app/product';
 import { ProductService } from '../../app/product.service';
@@ -18,6 +19,8 @@ export class NewProductComponent {
   constructor(
   	private navCtrl: NavController,
   	private navParams: NavParams,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
   	private productService: ProductService,
     private formBuilder: FormBuilder
   ) {
@@ -47,8 +50,25 @@ export class NewProductComponent {
 
   onSubmit () {
     let product = new Product(this.productName, this.productPrice);
-    this.productService.addProduct(product);
-    this.navCtrl.popToRoot();
+    let loading = this.loadingCtrl.create({
+      content: "Creando producto..."
+    });
+    loading.present(); 
+    this.productService.addProduct(product)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.popToRoot();
+      })
+      .catch(err => {
+        console.error(JSON.stringify(err));
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al crear el producto',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
   }
 
 }

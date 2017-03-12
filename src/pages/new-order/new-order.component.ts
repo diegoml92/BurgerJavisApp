@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, 
+  LoadingController, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Order } from '../../app/order';
@@ -17,6 +18,8 @@ export class NewOrderComponent {
   constructor(
   	private navCtrl: NavController,
   	private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     private orderService: OrderService,
     private formBuilder: FormBuilder
   ) {
@@ -39,8 +42,24 @@ export class NewOrderComponent {
   
   onSubmit () {
     let order = new Order(this.orderName);
-    this.orderService.addOrder(order);
-    this.navCtrl.popToRoot();
+    let loading = this.loadingCtrl.create({
+      content: "Creando pedido..."
+    });
+    loading.present();
+    this.orderService.addOrder(order)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.popToRoot();
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al crear el pedido',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
   }
 
 }

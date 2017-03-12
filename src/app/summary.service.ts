@@ -1,19 +1,24 @@
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Util } from './util';
+import { Operations } from './commons';
 import { Summary } from './summary';
-import { SUMMARY_DATA } from './mock-data';
 
+@Injectable()
 export class SummaryService {
 
   summaryData: Summary;
 
-  constructor() {
-    this.summaryData = SUMMARY_DATA
+  constructor(private http: Http) {
   }
 
   getSummaryData(): Promise<Summary> {
-    // TO-DO: Calculate stats from finished orders in server-side
-    return new Promise(resolve => {
-      setTimeout(() => resolve(this.summaryData), 1500);
-    })
+    var request : string = Util.getUrlForAction(Operations.SUMMARY);
+    return this.http.get(request).toPromise()
+      .then(response => {
+        this.summaryData = response.json() as Summary;
+        return this.summaryData;
+      });
   }
 
 }

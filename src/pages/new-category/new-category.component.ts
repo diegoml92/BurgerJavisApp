@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, 
   Validators, FormControl } from '@angular/forms';
 
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
 import { CategoryService } from '../../app/category.service';
@@ -23,6 +23,8 @@ export class NewCategoryComponent {
 
   constructor(
     private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     private categoryService: CategoryService,
     private formBuilder: FormBuilder
   ) {
@@ -46,8 +48,24 @@ export class NewCategoryComponent {
 
   onSubmit() {
     let category = new Category(this.categoryName, this.categoryIcon, false);
-    this.categoryService.addCategory(category);
-    this.navCtrl.pop();
+    let loading = this.loadingCtrl.create({
+      content: "Creando categoría..."
+    });
+    loading.present();
+    this.categoryService.addCategory(category)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.pop();
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al crear la categoría',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
   }
 
 }
