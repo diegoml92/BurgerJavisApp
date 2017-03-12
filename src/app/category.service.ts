@@ -1,76 +1,72 @@
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Util } from './util';
+import { Operations, JSON_HEADER } from './commons';
 import { Category } from './category';
-import { CATEGORIES } from './mock-data';
+import 'rxjs/add/operator/toPromise';
 
-const MAX_FAVS = 3;
-
+@Injectable()
 export class CategoryService {
 
   categoryList: Category[];
 
-  constructor() {
-    this.categoryList = [];
+  constructor(private http: Http) {}
 
-    for(let i = 0; i < CATEGORIES.length; i++) {
-      this.categoryList.push(CATEGORIES [i]);
-    }
-  }
-
+  /** Return category list */
   getCategoryList(): Promise<Category[]> {
-    return new Promise(resolve => {
-      // Simulate server latency (1.5s)
-      setTimeout(() => resolve(this.categoryList), 1500);
-    });
+    var request : string = Util.getUrlForAction(Operations.CATEGORIES);
+    return this.http.get(request).toPromise()
+      .then(response => {
+        this.categoryList = response.json() as Category[];
+        return this.categoryList;
+      });
   }
 
+  /** Create new category */
   addCategory(category: Category) {
-    this.categoryList.push(category);
+    var request : string = Util.getUrlForAction(Operations.CATEGORIES);
+    return this.http.post(request, JSON.stringify(category), 
+                            {headers: JSON_HEADER})
+      .toPromise()
+      .then(response => {
+        let newCategory = response.json() as Category;
+        this.categoryList.push(newCategory);
+        return newCategory;
+      });
   }
 
-  removeCategory(category: Category) {
-    let index = this.categoryList.indexOf(category);
-    if(index => 0) {
-      this.categoryList.splice(index, 1);
-    }
-  }
-
-  updateCategoryIcon(category: Category, icon: string) {
-    let index = this.categoryList.indexOf(category);
-    if(index => 0) {
-      setTimeout(() => this.categoryList[index].icon = icon, 1500);
-      return Promise.resolve();
-    }
-    return Promise.reject({error: "Categoría no existente"});
-  }
-
-  getNumberOfFavorites(): number {
-    let favs = 0;
-    for(let i=0; i<this.categoryList.length; i++) {
-      if(this.categoryList[i].favorite) {
-        favs++;
-      }
-    }
-    return favs;
-  }
-
-  setFavorite(category: Category, value: boolean): Promise<any> {
-    let index = this.categoryList.indexOf(category);
-    if(index => 0) {
-      if(value) {
-        if(this.getNumberOfFavorites() < MAX_FAVS) {
-          this.categoryList[index].favorite = value;
-          return Promise.resolve(this.categoryList);
+  /** Update category */
+  updateCategory(category: Category): Promise<Category> {
+    var request: string =
+        Util.getUrlForAction(Operations.CATEGORIES, category._id);
+    return this.http.put(request, JSON.stringify(category),
+                            {headers: JSON_HEADER})
+      .toPromise()
+      .then(response => {
+        let newCategory = response.json() as Category;
+        let index = this.categoryList.indexOf(category);
+        if(index >= 0) {
+          this.categoryList[index] = newCategory;
         }
-        return Promise.reject({
-          error: "Sólo se permiten " + MAX_FAVS + " categorías favoritas"
-        });
-      } else {
-        this.categoryList[index].favorite = value;
-        return Promise.resolve(this.categoryList);
-      }
-    }
-    return Promise.reject({error: "Categoría no existente"});
+        return response.json();
+      });
   }
 
+  /** Delete category */
+  removeCategory(category: Category) {
+    var request : string = 
+        Util.getUrlForAction(Operations.CATEGORIES, category._id);
+    return this.http.delete(request).toPromise()
+      .then(response => {
+        let index = this.categoryList.indexOf(category);
+        if(index >= 0) {
+          this.categoryList.splice(index, 1);
+        }
+        return response.json();
+      });
+  }
+
+  /** Category name validation */
   checkCategoryName(newCategoryName: string): Promise<any> {
     return new Promise(resolve => {
       let found = false;
@@ -84,7 +80,7 @@ export class CategoryService {
         resolve("Category name is taken");
       } else {
         //TO-DO: Server side validation to be done
-        setTimeout(() => resolve(null), 1500);
+        setTimeout(() => resolve(null), 500);
       }
     });
   }

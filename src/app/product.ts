@@ -3,6 +3,8 @@ import { Category } from './category';
 
 export class Product {
 
+  _id?: string;
+
   constructor (
     public name: string,
     public price: number,

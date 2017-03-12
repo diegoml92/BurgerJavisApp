@@ -28,6 +28,10 @@ export class SummaryComponent {
       .then(data => {
         this.summaryData = data;
         loading.dismiss();
+      })
+      .catch(error => {
+        loading.dismiss();
+        console.error(JSON.stringify(error));
       });
   }
 

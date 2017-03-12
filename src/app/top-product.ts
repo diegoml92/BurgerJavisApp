@@ -1,5 +1,5 @@
 export class TopProduct {
   
-  constructor(public name: string, public amount: number) {}
+  constructor(public productName: string, public amount: number) {}
   
 }

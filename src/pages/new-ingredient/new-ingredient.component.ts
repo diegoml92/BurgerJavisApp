@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, 
   Validators, FormControl } from '@angular/forms';
 
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../app/ingredient.service';
@@ -18,6 +18,8 @@ export class NewIngredientComponent {
 
   constructor(
     private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     private ingredientService: IngredientService,
     private formBuilder: FormBuilder
   ) {
@@ -47,8 +49,24 @@ export class NewIngredientComponent {
 
   onSubmit() {
     let ingredient = new Ingredient(this.ingredientName, this.ingredientPrice);
-    this.ingredientService.addIngredient(ingredient);
-    this.navCtrl.pop();
+    let loading = this.loadingCtrl.create({
+      content: "Creando ingrediente..."
+    });
+    loading.present();   
+    this.ingredientService.addIngredient(ingredient)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.pop()
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al crear el ingrediente',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
   }
 
 }

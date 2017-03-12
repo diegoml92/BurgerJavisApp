@@ -20,5 +20,8 @@
       </ion-select>
     </ion-item>
   </form>
+  <div padding>
+    <button ion-button type="submit" *ngIf="modified" (click)="updateCategory()" block>Actualizar categoría</button>
+  </div>
 
 </ion-content>

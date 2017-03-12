@@ -1,42 +1,74 @@
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Ingredient } from './ingredient';
-import { INGREDIENTS } from './mock-data';
+import { Util } from './util';
+import { Operations, JSON_HEADER } from './commons';
+import 'rxjs/add/operator/toPromise';
 
+@Injectable()
 export class IngredientService {
 
   ingredientList: Ingredient[];
 
-  constructor() {
+  constructor(private http: Http) {
     this.ingredientList = [];
-
-    for(let i=0; i<INGREDIENTS.length; i++) {
-      this.ingredientList.push(INGREDIENTS [i]);
-    }
   }
 
+  /** Return ingredient list */
   getIngredientList(): Promise<Ingredient[]> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(this.ingredientList);
-      }, 1500);
-    });
-  }
-
-  addIngredient(ingredient: Ingredient): Promise<any> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        this.ingredientList.push(ingredient);
-        resolve();
+    var request : string = Util.getUrlForAction(Operations.INGREDIENTS);
+    return this.http.get(request).toPromise()
+      .then(response => {
+        this.ingredientList = response.json() as Ingredient[];
+        return this.ingredientList;
       });
-    });
   }
 
-  removeIngredient(ingredient: Ingredient) {
-    let index = this.ingredientList.indexOf(ingredient);
-    if(index => 0) {
-      this.ingredientList.splice(index, 1);
-    }
+  /** Create new ingredient */
+  addIngredient(ingredient: Ingredient): Promise<Ingredient> {
+    var request : string = Util.getUrlForAction(Operations.INGREDIENTS);
+    return this.http.post(request, JSON.stringify(ingredient), 
+                            {headers: JSON_HEADER})
+      .toPromise()
+      .then(response => {
+        let newIngredient = response.json() as Ingredient;
+        this.ingredientList.push(newIngredient);
+        return newIngredient;
+      });
   }
 
+  /** Modify ingredient */
+  updateIngredient(ingredient: Ingredient): Promise<Ingredient> {
+    var request: string =
+        Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
+    return this.http.put(request, JSON.stringify(ingredient),
+                            {headers: JSON_HEADER})
+      .toPromise()
+      .then(response => {
+        let newIngredient = response.json() as Ingredient;
+        let index = this.ingredientList.indexOf(ingredient);
+        if(index >= 0) {
+          this.ingredientList[index] = newIngredient;
+        }
+        return response.json();
+      });
+  }
+
+  /** Delete ingredient */
+  removeIngredient(ingredient: Ingredient): Promise<any> {
+    var request : string = 
+        Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
+    return this.http.delete(request).toPromise()
+      .then(response => {
+        let index = this.ingredientList.indexOf(ingredient);
+        if(index >= 0) {
+          this.ingredientList.splice(index, 1);
+        }
+        return response.json();
+      });
+  }
+
+  /** Ingredient name validation */
   checkIngredientName(newIngredientName: string): Promise<any> {
     return new Promise(resolve => {
       let found = false;
@@ -50,7 +82,7 @@ export class IngredientService {
         resolve("Ingredient name is taken");
       } else {
         //TO-DO: Server side validation to be done
-        setTimeout(() => resolve(null), 1500);
+        setTimeout(() => resolve(null), 500);
       }
     });
   }

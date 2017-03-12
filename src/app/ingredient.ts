@@ -1,5 +1,7 @@
 export class Ingredient {
 
-	constructor(public name: string, public extraPrice: number) {}
-	
+  _id?: string;
+
+  constructor(public name: string, public extraPrice: number) {}
+  
 }

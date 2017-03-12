@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams,
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../app/ingredient.service';
@@ -18,6 +19,7 @@ export class IngredientsComponent {
 
   constructor(
     private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     private ingredientService: IngredientService,
     private navCtrl: NavController,
     private navParams: NavParams) {}
@@ -30,6 +32,15 @@ export class IngredientsComponent {
     this.ingredientService.getIngredientList()
       .then(ingredients => {
         this.ingredients = ingredients;
+        loading.dismiss();
+      })
+      .catch(() => {
+        let toast = this.toastCtrl.create({
+          message: 'Error al solicitar los ingredientes',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
         loading.dismiss();
       });
   }

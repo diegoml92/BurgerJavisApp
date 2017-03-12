@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, 
+import { NavController, NavParams, ViewController, ToastController,
   LoadingController, PopoverController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details.component';
@@ -50,6 +50,7 @@ export class MenuComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private productService: ProductService,
+    private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private popoverCtrl: PopoverController) {}
 
@@ -62,7 +63,16 @@ export class MenuComponent {
       .then(menu => {
         this.menu = menu;
         loading.dismiss();
-      });
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al solicitar los productos de la carta',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });;
   }
 
   productTapped(product: Product) {

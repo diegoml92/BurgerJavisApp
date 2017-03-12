@@ -1,4 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { AppComponent } from './app.component';
@@ -43,6 +44,7 @@ import { SummaryService } from './summary.service';
     NewIngredientComponent
   ],
   imports: [
+    HttpModule,
     IonicModule.forRoot(AppComponent)
   ],
   bootstrap: [IonicApp],
