@@ -36,6 +36,17 @@ export class OrderDetailsComponent {
     item.amount += 1;
   }
 
+  decreaseAmount(item: OrderItem) {
+    this.modified = true;
+    item.amount -= 1;
+    if(item.amount === 0) {
+      let index = this.order.items.indexOf(item);
+      if (index => 0) {
+        this.order.items.splice(index , 1);
+      }
+    }
+  }
+
   addProduct() {
     let localList = [];
 

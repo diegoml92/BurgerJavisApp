@@ -14,7 +14,10 @@
   <ion-list>
     <ion-item *ngFor="let item of order.items">
       <h1>{{item.product.name}}</h1>
-      <button ion-button default item-right (click)="increaseAmount(item)" outline>
+      <button ion-button (click)="decreaseAmount(item)" clear item-right small icon-only>
+        <ion-icon name="remove-circle"></ion-icon>
+      </button>
+      <button style="width: 10%;" ion-button default item-right (click)="increaseAmount(item)" outline>
         {{item.amount}}
       </button>
     </ion-item>
