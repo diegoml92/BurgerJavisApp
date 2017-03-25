@@ -25,6 +25,7 @@
 
   <div padding>
     <button ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>
+    <button ion-button type="submit" color="danger" *ngIf="order.items && !order.finished && order.items.length" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
   </div>
 
   <div padding *ngIf="!order.items || !order.items.length" style="text-align: center;">

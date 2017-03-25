@@ -112,8 +112,32 @@ export class OrderDetailsComponent {
     confirm.present();
   }
 
+  finishOrderConfirmation () {
+    let confirm = this.alertCtrl.create({
+      title: '¿Finalizar este pedido?',
+      message: '¿Estás seguro de que quieres finalizar este pedido? ' +
+        'Una vez hecho, no se podrán hacer modificaciones sobre el mismo',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            // No further action
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.order.finished = true;
+            this.updateOrder(true);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   /** Update order */
-  updateOrder() {
+  updateOrder(closeOrder: boolean = false) {
     let loading = this.loadingCtrl.create({
       content: "Actualizando pedido..."
     });
@@ -122,6 +146,9 @@ export class OrderDetailsComponent {
       .then(() => {
         loading.dismiss();
         this.modified = false;
+        if(closeOrder) {
+          this.navCtrl.popToRoot();
+        }
       })
       .catch(err => {
         let toast = this.toastCtrl.create({
