@@ -10,7 +10,7 @@
       <ion-label floating>Nombre de la categoría</ion-label>
       <ion-input formControlName="name" type="text" [(ngModel)]="categoryName" name="name" required></ion-input> 
     </ion-item>
-    <div *ngIf="!newCategoryForm.controls.name.valid && newCategoryForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido</div>
+    <div *ngIf="!newCategoryForm.controls.name.valid && newCategoryForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido o está siendo utilizado</div>
     <ion-item>
       <ion-label floating>Icono de la categoría</ion-label>
       <ion-select formControlName="icon" [(ngModel)]="categoryIcon">

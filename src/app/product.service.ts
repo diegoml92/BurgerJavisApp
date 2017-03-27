@@ -79,8 +79,7 @@ export class ProductService {
       if(found) {
         resolve("Product name is taken");
       } else {
-        //TO-DO: Server side validation to be done
-        setTimeout(() => resolve(null), 500);
+        resolve(null);
       }
     });
   }

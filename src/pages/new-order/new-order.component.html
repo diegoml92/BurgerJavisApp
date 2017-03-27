@@ -13,7 +13,7 @@
       <ion-label floating>Nombre del pedido</ion-label>
       <ion-input formControlName="name" type="text" [(ngModel)]="orderName" name="name" required></ion-input> 
     </ion-item>
-    <div *ngIf="!newOrderForm.controls.name.valid && newOrderForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido</div>
+    <div *ngIf="!newOrderForm.controls.name.valid && newOrderForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido o está siendo utilizado</div>
     <div padding>
       <button ion-button tpye="submit" [disabled]="!newOrderForm.valid" block>Añadir pedido</button>
     </div>
