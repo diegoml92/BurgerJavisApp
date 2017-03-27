@@ -79,8 +79,7 @@ export class CategoryService {
       if(found) {
         resolve("Category name is taken");
       } else {
-        //TO-DO: Server side validation to be done
-        setTimeout(() => resolve(null), 500);
+        resolve(null);
       }
     });
   }

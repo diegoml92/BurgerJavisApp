@@ -13,7 +13,7 @@
       <ion-label floating>Nombre del ingrediente</ion-label>
       <ion-input formControlName="name" type="text" [(ngModel)]="ingredientName" name="name" required></ion-input>     
     </ion-item>
-    <div *ngIf="!newIngredientForm.controls.name.valid && newIngredientForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido</div>
+    <div *ngIf="!newIngredientForm.controls.name.valid && newIngredientForm.controls.name.touched" style="text-align: center; color: red;">El nombre introducido no es válido o está siendo utilizado</div>
     <ion-item>
       <ion-label floating>Precio del ingrediente extra</ion-label>
       <ion-input formControlName="extraPrice" type="number" [(ngModel)]="ingredientPrice" name="extraPrice" required></ion-input>€
