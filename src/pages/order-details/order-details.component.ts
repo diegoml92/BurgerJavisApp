@@ -156,7 +156,6 @@ export class OrderDetailsComponent {
           duration: 3000,
           position: 'bottom'
         });
-        console.error(JSON.stringify(err));
         loading.dismiss();
         toast.present();
       });

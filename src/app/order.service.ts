@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Util } from './util';
-import { Operations, JSON_HEADER } from './commons';
+import { Operations } from './commons';
 import { Order } from './order';
+import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -15,7 +16,9 @@ export class OrderService {
   /** Return order list */
   getOrderList(): Promise<Order[]> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
-    return this.http.get(request).toPromise()
+    return this.http.get(request, 
+        {headers: AuthenticationManager.generateAuthHeader()})
+      .toPromise()
       .then(response => {
         this.orderList = response.json() as Order[];
         return this.orderList;
@@ -26,7 +29,7 @@ export class OrderService {
   addOrder(order: Order): Promise<Order> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
     return this.http.post(request, JSON.stringify(order), 
-                            {headers: JSON_HEADER})
+        {headers: AuthenticationManager.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newOrder = response.json() as Order;
@@ -39,9 +42,8 @@ export class OrderService {
   updateOrder(order: Order): Promise<Order> {
     var request: string =
         Util.getUrlForAction(Operations.ORDERS, order._id);
-    console.log(JSON.stringify(order));
     return this.http.put(request, JSON.stringify(order),
-                            {headers: JSON_HEADER})
+        {headers: AuthenticationManager.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newOrder = response.json() as Order;
@@ -57,7 +59,9 @@ export class OrderService {
   removeOrder(order: Order) {
     var request : string = 
         Util.getUrlForAction(Operations.ORDERS, order._id);
-    return this.http.delete(request).toPromise()
+    return this.http.delete(request,
+        {headers: AuthenticationManager.generateAuthHeader()})
+      .toPromise()
       .then(response => {
         let index = this.orderList.indexOf(order);
         if(index >= 0) {

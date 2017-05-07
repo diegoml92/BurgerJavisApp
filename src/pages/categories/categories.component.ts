@@ -71,7 +71,6 @@ export class CategoriesComponent {
         loading.dismiss();
         let index = this.categories.indexOf(result);
         if(index >= 0) {
-          console.log(JSON.stringify(result));
           this.categories[index] = result;
         }
       })

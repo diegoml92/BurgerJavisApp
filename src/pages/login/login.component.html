@@ -1,0 +1,19 @@
+<ion-content padding>
+  <div>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <ion-list inset>
+        <ion-item>
+          <ion-label floating>Usuario</ion-label>
+          <ion-input type="text" formControlName="username" name="username" [(ngModel)]="username" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Contraseña</ion-label>
+          <ion-input type="password" formControlName="password" name="password" [(ngModel)]="password" required></ion-input>
+        </ion-item>
+      </ion-list>
+      <div padding>
+        <button ion-button tpye="submit" [disabled]="!loginForm.valid" block>Iniciar sesión</button>
+      </div>
+    </form>
+  </div>
+</ion-content>

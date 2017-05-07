@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Util } from './util';
-import { Operations, JSON_HEADER } from './commons';
+import { Operations } from './commons';
 import { Category } from './category';
+import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -15,7 +16,9 @@ export class CategoryService {
   /** Return category list */
   getCategoryList(): Promise<Category[]> {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
-    return this.http.get(request).toPromise()
+    return this.http.get(request,
+        {headers: AuthenticationManager.generateAuthHeader()})
+      .toPromise()
       .then(response => {
         this.categoryList = response.json() as Category[];
         return this.categoryList;
@@ -26,7 +29,7 @@ export class CategoryService {
   addCategory(category: Category) {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
     return this.http.post(request, JSON.stringify(category), 
-                            {headers: JSON_HEADER})
+        {headers: AuthenticationManager.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newCategory = response.json() as Category;
@@ -40,7 +43,7 @@ export class CategoryService {
     var request: string =
         Util.getUrlForAction(Operations.CATEGORIES, category._id);
     return this.http.put(request, JSON.stringify(category),
-                            {headers: JSON_HEADER})
+        {headers: AuthenticationManager.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newCategory = response.json() as Category;
@@ -56,7 +59,9 @@ export class CategoryService {
   removeCategory(category: Category) {
     var request : string = 
         Util.getUrlForAction(Operations.CATEGORIES, category._id);
-    return this.http.delete(request).toPromise()
+    return this.http.delete(request,
+        {headers: AuthenticationManager.generateAuthHeader()})
+      .toPromise()
       .then(response => {
         let index = this.categoryList.indexOf(category);
         if(index >= 0) {
