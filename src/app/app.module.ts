@@ -3,6 +3,7 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from '../pages/login/login.component';
 import { OrdersComponent } from '../pages/orders/orders.component';
 import { OrderDetailsComponent } from '../pages/order-details/order-details.component';
 import { PopoverListComponent } from '../pages/order-details/popover-list.component';
@@ -23,10 +24,12 @@ import { ProductService } from './product.service';
 import { IngredientService } from './ingredient.service';
 import { CategoryService } from './category.service';
 import { SummaryService } from './summary.service';
+import { LoginService } from './login.service';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     OrdersComponent,
     OrderDetailsComponent,
     NewOrderComponent,
@@ -50,6 +53,7 @@ import { SummaryService } from './summary.service';
   bootstrap: [IonicApp],
   entryComponents: [
     AppComponent,
+    LoginComponent,
     OrdersComponent,
     OrderDetailsComponent,
     NewOrderComponent,
@@ -72,7 +76,8 @@ import { SummaryService } from './summary.service';
     ProductService,
     IngredientService,
     CategoryService,
-    SummaryService
+    SummaryService,
+    LoginService
   ]
 })
 export class AppModule {}

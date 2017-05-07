@@ -1,7 +1,8 @@
-import { Headers } from '@angular/http';
 
 export const HTTP_PREFIX : string = "http://";
-export const JSON_HEADER = new Headers({'Content-Type': 'application/json'});
+export const BASIC_PREFIX : string = "Basic ";
+export const JSON_HEADER_NAME : string = "Content-Type";
+export const JSON_HEADER_VALUE : string = "application/json";
 
 export const CATEGORY_ICONS_URL = "assets/category-icons/"
 export const PNG_EXTENSION = ".png"
@@ -33,4 +34,5 @@ export class Operations {
   static INGREDIENTS = "/ingredients";
   static CATEGORIES = "/categories";
   static SUMMARY = "/summary";
+  static USERS = "/users";
 }

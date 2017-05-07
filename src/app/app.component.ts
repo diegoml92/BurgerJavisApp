@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Platform, Nav, MenuController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
+import { LoginComponent } from '../pages/login/login.component';
 import { OrdersComponent } from '../pages/orders/orders.component';
 import { MenuComponent } from '../pages/menu/menu.component';
 import { SummaryComponent } from '../pages/summary/summary.component';
-
 
 @Component({
   templateUrl: 'app.html'
@@ -15,8 +15,9 @@ export class AppComponent {
   @ViewChild(Nav)
   nav: Nav;
 
-  rootPage = OrdersComponent;
-  currentPage = OrdersComponent;
+  rootPage = LoginComponent;
+  currentPage = LoginComponent;
+
   pages: Array<{title: string, component: any}>;
 
   constructor(
@@ -52,6 +53,4 @@ export class AppComponent {
       this.currentPage = page.component;
     }
   }
-
-
 }

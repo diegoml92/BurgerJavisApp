@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Product } from './product';
 import { Util } from './util';
-import { Operations, JSON_HEADER } from './commons';
+import { Operations } from './commons';
+import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -15,7 +16,9 @@ export class ProductService {
   /** Return product list */
   getProductList(): Promise<Product[]> {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);
-    return this.http.get(request).toPromise()
+    return this.http.get(request,
+        {headers: AuthenticationManager.generateAuthHeader()})
+      .toPromise()
       .then(response => {
         this.productList = response.json() as Product[];
         return this.productList;
@@ -26,7 +29,7 @@ export class ProductService {
   addProduct(product: Product) {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);
     return this.http.post(request, JSON.stringify(product), 
-                            {headers: JSON_HEADER})
+        {headers: AuthenticationManager.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newProduct = response.json() as Product;
@@ -40,7 +43,7 @@ export class ProductService {
     var request: string =
         Util.getUrlForAction(Operations.PRODUCTS, product._id);
     return this.http.put(request, JSON.stringify(product),
-                            {headers: JSON_HEADER})
+        {headers: AuthenticationManager.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newProduct = response.json() as Product;
@@ -56,7 +59,9 @@ export class ProductService {
   removeProduct(product: Product) {
     var request : string = 
         Util.getUrlForAction(Operations.PRODUCTS, product._id);
-    return this.http.delete(request).toPromise()
+    return this.http.delete(request,
+        {headers: AuthenticationManager.generateAuthHeader()})
+      .toPromise()
       .then(response => {
         let index = this.productList.indexOf(product);
         if(index >= 0) {

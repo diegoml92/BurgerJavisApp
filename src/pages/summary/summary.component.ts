@@ -31,7 +31,6 @@ export class SummaryComponent {
       })
       .catch(error => {
         loading.dismiss();
-        console.error(JSON.stringify(error));
       });
   }
 

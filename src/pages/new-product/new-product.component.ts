@@ -60,7 +60,6 @@ export class NewProductComponent {
         this.navCtrl.popToRoot();
       })
       .catch(err => {
-        console.error(JSON.stringify(err));
         loading.dismiss();
         let toast = this.toastCtrl.create({
           message: 'Error al crear el producto',
