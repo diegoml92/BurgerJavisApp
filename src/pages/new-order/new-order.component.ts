@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 
 import { Order } from '../../app/order';
 import { OrderService } from '../../app/order.service';
+import { AuthenticationManager } from '../../app/authentication-manager';
 
 @Component({
   templateUrl: 'new-order.component.html'
@@ -21,7 +22,8 @@ export class NewOrderComponent {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private orderService: OrderService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private auth: AuthenticationManager
   ) {
     this.newOrderForm = this.formBuilder.group({
       name : [
@@ -41,7 +43,7 @@ export class NewOrderComponent {
   }
   
   onSubmit () {
-    let order = new Order(this.orderName);
+    let order = new Order(this.orderName, this.auth.getCredentials().username);
     let loading = this.loadingCtrl.create({
       content: "Creando pedido..."
     });

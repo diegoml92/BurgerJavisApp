@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu id="adminMenu" [content]="content">
 
   <ion-header>
     <ion-toolbar>
@@ -13,7 +13,30 @@
 
   <ion-content>
     <ion-list>
-      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <button ion-item *ngFor="let p of adminPages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-menu id="waiterMenu" [content]="content">
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-item style="background: transparent;">
+        <ion-avatar item-left>
+          <img src="assets/img/burgerjavis.png"/>
+        </ion-avatar>
+        <ion-title>Burger Javi's</ion-title>
+      </ion-item>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button ion-item *ngFor="let p of waiterPages" (click)="openPage(p)">
         {{p.title}}
       </button>
     </ion-list>

@@ -10,13 +10,13 @@ export class SummaryService {
 
   summaryData: Summary;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private auth: AuthenticationManager) {
   }
 
   getSummaryData(): Promise<Summary> {
     var request : string = Util.getUrlForAction(Operations.SUMMARY);
     return this.http.get(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         this.summaryData = response.json() as Summary;

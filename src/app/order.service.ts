@@ -11,13 +11,13 @@ export class OrderService {
 
   orderList: Order[];
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private auth: AuthenticationManager) {}
 
   /** Return order list */
   getOrderList(): Promise<Order[]> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
     return this.http.get(request, 
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         this.orderList = response.json() as Order[];
@@ -29,7 +29,7 @@ export class OrderService {
   addOrder(order: Order): Promise<Order> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
     return this.http.post(request, JSON.stringify(order), 
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newOrder = response.json() as Order;
@@ -43,7 +43,7 @@ export class OrderService {
     var request: string =
         Util.getUrlForAction(Operations.ORDERS, order._id);
     return this.http.put(request, JSON.stringify(order),
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newOrder = response.json() as Order;
@@ -60,7 +60,7 @@ export class OrderService {
     var request : string = 
         Util.getUrlForAction(Operations.ORDERS, order._id);
     return this.http.delete(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         let index = this.orderList.indexOf(order);

@@ -11,13 +11,13 @@ export class ProductService {
 
   productList: Product[];
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private auth: AuthenticationManager) {}
 
   /** Return product list */
   getProductList(): Promise<Product[]> {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);
     return this.http.get(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         this.productList = response.json() as Product[];
@@ -29,7 +29,7 @@ export class ProductService {
   addProduct(product: Product) {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);
     return this.http.post(request, JSON.stringify(product), 
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newProduct = response.json() as Product;
@@ -43,7 +43,7 @@ export class ProductService {
     var request: string =
         Util.getUrlForAction(Operations.PRODUCTS, product._id);
     return this.http.put(request, JSON.stringify(product),
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newProduct = response.json() as Product;
@@ -60,7 +60,7 @@ export class ProductService {
     var request : string = 
         Util.getUrlForAction(Operations.PRODUCTS, product._id);
     return this.http.delete(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         let index = this.productList.indexOf(product);

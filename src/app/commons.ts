@@ -22,6 +22,9 @@ export const CATEGORY_ICONS : CategoryIcon [] =
   {name: "seafood", text: "Marisco"}
 ];
 
+export const ROLE_ADMIN = "ROLE_ADMIN";
+export const ROLE_WAITER = "ROLE_WAITER";
+
 export class CategoryIcon {
 
   constructor(public name: string, public text: string) {}

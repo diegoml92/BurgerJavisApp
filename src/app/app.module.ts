@@ -25,6 +25,7 @@ import { IngredientService } from './ingredient.service';
 import { CategoryService } from './category.service';
 import { SummaryService } from './summary.service';
 import { LoginService } from './login.service';
+import { AuthenticationManager } from './authentication-manager';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { LoginService } from './login.service';
     IngredientService,
     CategoryService,
     SummaryService,
-    LoginService
+    LoginService,
+    AuthenticationManager
   ]
 })
 export class AppModule {}
