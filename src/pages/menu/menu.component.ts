@@ -9,6 +9,7 @@ import { CategoriesComponent } from '../categories/categories.component';
 
 import { Product } from '../../app/product';
 import { ProductService } from '../../app/product.service';
+import { AuthenticationManager } from '../../app/authentication-manager';
 
 @Component({
   template: `
@@ -52,7 +53,8 @@ export class MenuComponent {
     private productService: ProductService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private popoverCtrl: PopoverController) {}
+    private popoverCtrl: PopoverController,
+    private auth: AuthenticationManager) {}
 
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
@@ -95,6 +97,10 @@ export class MenuComponent {
         this.navCtrl.push(data);
       }
     });
+  }
+
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
   }
 
 }

@@ -11,7 +11,7 @@ export class IngredientService {
 
   ingredientList: Ingredient[];
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private auth: AuthenticationManager) {
     this.ingredientList = [];
   }
 
@@ -19,7 +19,7 @@ export class IngredientService {
   getIngredientList(): Promise<Ingredient[]> {
     var request : string = Util.getUrlForAction(Operations.INGREDIENTS);
     return this.http.get(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         this.ingredientList = response.json() as Ingredient[];
@@ -31,7 +31,7 @@ export class IngredientService {
   addIngredient(ingredient: Ingredient): Promise<Ingredient> {
     var request : string = Util.getUrlForAction(Operations.INGREDIENTS);
     return this.http.post(request, JSON.stringify(ingredient), 
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newIngredient = response.json() as Ingredient;
@@ -45,7 +45,7 @@ export class IngredientService {
     var request: string =
         Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
     return this.http.put(request, JSON.stringify(ingredient),
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newIngredient = response.json() as Ingredient;
@@ -62,7 +62,7 @@ export class IngredientService {
     var request : string = 
         Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
     return this.http.delete(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         let index = this.ingredientList.indexOf(ingredient);

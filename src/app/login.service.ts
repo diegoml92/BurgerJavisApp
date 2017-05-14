@@ -9,23 +9,25 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class LoginService {
 
-	constructor(private http: Http) {}
+  constructor(private http: Http) {}
 
   /* Log in to the application */
-	login(credentials: Credentials): Promise<string> {
-		var request : string = 
+  login(credentials: Credentials): Promise<any> {
+    var request : string = 
         Util.getUrlForAction(Operations.USERS, credentials.username);
-	    return this.http.get(request)
-		    .toPromise()
-	      .then(response => {
-	        var session = response.json() as Credentials;
-          if (credentials.username.toUpperCase() === 
-                session.username.toUpperCase() &&
-              compareSync (credentials.password, session.password)) {
-            return null;
-          }
-	        return "Invalid username or password";
-	      });
-	}
+    return this.http.get(request)
+              .toPromise()
+              .then(response => {
+                var session = response.json() as Credentials;
+                if (credentials.username.toUpperCase() === 
+                      session.username.toUpperCase() &&
+                    compareSync (credentials.password, session.password)) {
+                  return new Credentials (credentials.username,
+                                          credentials.password,
+                                          session.roles);
+                }
+                return null;
+              });
+  }
 
 }

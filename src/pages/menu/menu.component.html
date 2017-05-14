@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Menú</ion-title>
-    <ion-buttons end>
+    <ion-buttons *ngIf="isAdmin()" end>
       <button ion-button icon-only (click)="presentPopover($event)">
         <ion-icon name="more"></ion-icon>
       </button>
@@ -15,7 +15,7 @@
 <ion-content>
 
   <ion-list *ngIf="menu && menu.length">
-    <button block ion-item *ngFor="let product of menu" (click)="productTapped(product)">
+    <button [disabled]="!isAdmin()" block ion-item *ngFor="let product of menu" (click)="productTapped(product)">
       <h1>{{product.name}}</h1>
       <p *ngFor="let ingredient of product.ingredients">
         - {{ingredient.name}}
@@ -28,7 +28,7 @@
     <em>Aún no hay ningún producto en el menú</em>
   </div>
 
-  <ion-fab right bottom margin>
+  <ion-fab *ngIf="isAdmin()" right bottom margin>
     <button ion-fab (click)="addProduct()" color="primary">
       <ion-icon name="create"></ion-icon>
     </button>

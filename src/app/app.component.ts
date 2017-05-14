@@ -18,7 +18,8 @@ export class AppComponent {
   rootPage = LoginComponent;
   currentPage = LoginComponent;
 
-  pages: Array<{title: string, component: any}>;
+  adminPages: Array<{title: string, component: any}>;
+  waiterPages: Array<{title: string, component: any}>;
 
   constructor(
     public platform: Platform,
@@ -26,11 +27,15 @@ export class AppComponent {
   ) {
     this.initializeApp();
 
-    // set app's pages
-    this.pages = [
+    // set app's pages depending on the role
+    this.adminPages = [
       { title: 'Pedidos', component: OrdersComponent},
       { title: 'Menú', component: MenuComponent},
       { title: 'Resumen', component: SummaryComponent}
+    ];
+    this.waiterPages = [
+      { title: 'Pedidos', component: OrdersComponent},
+      { title: 'Menú', component: MenuComponent}
     ];
   }
 

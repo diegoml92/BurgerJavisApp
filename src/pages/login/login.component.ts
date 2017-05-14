@@ -21,7 +21,8 @@ export class LoginComponent {
     public navCtrl: NavController,
 		public navParams: NavParams,
     public formBuilder: FormBuilder,
-    public loginService: LoginService)
+    public loginService: LoginService,
+    public auth: AuthenticationManager)
   {
     this.loginForm = this.formBuilder.group({
       username: [
@@ -46,9 +47,12 @@ export class LoginComponent {
     loading.present();
     var credentials = new Credentials(this.username, this.password)
     this.loginService.login(credentials)
-      .then(error => {
+      .then(result => {
         loading.dismiss();
-        if(error != null) {
+        if(result != null) {
+          this.auth.setCredentials (result);
+          this.navCtrl.setRoot(OrdersComponent);
+        } else {
           // User credentials are not correct
           let toast = this.toastCtrl.create({
             message: 'Los datos introducidos no son válidos',
@@ -56,9 +60,7 @@ export class LoginComponent {
             position: 'bottom'
           });
           toast.present();
-        } else {
-          AuthenticationManager.setCredentials (credentials);
-          this.navCtrl.setRoot(OrdersComponent);
+          this.auth.resetCredentials ();
         }
       })
       .catch(error => {
@@ -68,7 +70,7 @@ export class LoginComponent {
           duration: 3000,
           position: 'bottom'
         });
-        AuthenticationManager.resetCredentials ();
+        this.auth.resetCredentials ();
         toast.present();
       });
   }

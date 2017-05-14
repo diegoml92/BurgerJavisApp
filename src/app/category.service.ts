@@ -11,13 +11,13 @@ export class CategoryService {
 
   categoryList: Category[];
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private auth: AuthenticationManager) {}
 
   /** Return category list */
   getCategoryList(): Promise<Category[]> {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
     return this.http.get(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         this.categoryList = response.json() as Category[];
@@ -29,7 +29,7 @@ export class CategoryService {
   addCategory(category: Category) {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
     return this.http.post(request, JSON.stringify(category), 
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newCategory = response.json() as Category;
@@ -43,7 +43,7 @@ export class CategoryService {
     var request: string =
         Util.getUrlForAction(Operations.CATEGORIES, category._id);
     return this.http.put(request, JSON.stringify(category),
-        {headers: AuthenticationManager.generateJsonAuthHeader()})
+        {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
         let newCategory = response.json() as Category;
@@ -60,7 +60,7 @@ export class CategoryService {
     var request : string = 
         Util.getUrlForAction(Operations.CATEGORIES, category._id);
     return this.http.delete(request,
-        {headers: AuthenticationManager.generateAuthHeader()})
+        {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
         let index = this.categoryList.indexOf(category);
