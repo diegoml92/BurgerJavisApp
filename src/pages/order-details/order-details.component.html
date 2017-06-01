@@ -23,9 +23,11 @@
     </ion-item>
   </ion-list>
 
-  <div padding>
+  <div padding style="text-align: center;">
     <button ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>
-    <button ion-button type="submit" color="danger" *ngIf="order.items && !order.finished && order.items.length" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
+    <button ion-button type="submit" *ngIf="order.items && order.items.length && isInitial(order)" (click)="sendToKitchenConfirmation()" block>Enviar a cocina</button>
+    <button ion-button type="submit" color="danger" *ngIf="isServed(order)" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
+    <em *ngIf="isKitchen(order)">El pedido está siendo preparado</em>
   </div>
 
   <div padding *ngIf="!order.items || !order.items.length" style="text-align: center;">

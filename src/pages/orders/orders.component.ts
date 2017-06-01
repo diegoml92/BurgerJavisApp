@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams,
   ToastController, LoadingController } from 'ionic-angular';
 
-import { OrderDetailsComponent } from '../order-details/order-details.component'
-import { NewOrderComponent } from '../new-order/new-order.component'
+import { OrderDetailsComponent } from '../order-details/order-details.component';
+import { NewOrderComponent } from '../new-order/new-order.component';
 
-import { Order } from '../../app/order'
-import { OrderService } from '../../app/order.service'
+import { Order } from '../../app/order';
+import { OrderService } from '../../app/order.service';
 
 
 @Component({

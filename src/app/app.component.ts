@@ -6,6 +6,7 @@ import { LoginComponent } from '../pages/login/login.component';
 import { OrdersComponent } from '../pages/orders/orders.component';
 import { MenuComponent } from '../pages/menu/menu.component';
 import { SummaryComponent } from '../pages/summary/summary.component';
+import { KitchenComponent } from '../pages/kitchen/kitchen.component';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,6 +21,7 @@ export class AppComponent {
 
   adminPages: Array<{title: string, component: any}>;
   waiterPages: Array<{title: string, component: any}>;
+  kitchenPages: Array<{title: string, component: any}>;
 
   constructor(
     public platform: Platform,
@@ -29,13 +31,18 @@ export class AppComponent {
 
     // set app's pages depending on the role
     this.adminPages = [
-      { title: 'Pedidos', component: OrdersComponent},
-      { title: 'Menú', component: MenuComponent},
-      { title: 'Resumen', component: SummaryComponent}
+      { title: 'Pedidos', component: OrdersComponent },
+      { title: 'Cocina', component: KitchenComponent },
+      { title: 'Menú', component: MenuComponent },
+      { title: 'Resumen', component: SummaryComponent }
     ];
     this.waiterPages = [
-      { title: 'Pedidos', component: OrdersComponent},
-      { title: 'Menú', component: MenuComponent}
+      { title: 'Pedidos', component: OrdersComponent },
+      { title: 'Menú', component: MenuComponent }
+    ];
+    this.kitchenPages = [
+      { title: 'Cocina', component: KitchenComponent },
+      { title: 'Menú', component: MenuComponent }
     ];
   }
 

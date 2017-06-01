@@ -22,8 +22,13 @@ export const CATEGORY_ICONS : CategoryIcon [] =
   {name: "seafood", text: "Marisco"}
 ];
 
+export const N_COLS = 3;
+
 export const ROLE_ADMIN = "ROLE_ADMIN";
 export const ROLE_WAITER = "ROLE_WAITER";
+export const ROLE_KITCHEN = "ROLE_KITCHEN";
+
+export enum OrderState { INITIAL, KITCHEN, SERVED, FINISHED };
 
 export class CategoryIcon {
 
@@ -38,4 +43,5 @@ export class Operations {
   static CATEGORIES = "/categories";
   static SUMMARY = "/summary";
   static USERS = "/users";
+  static KITCHEN = "/kitchen";
 }

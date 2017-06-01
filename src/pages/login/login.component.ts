@@ -2,10 +2,15 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastController, LoadingController,
   NavParams, NavController } from 'ionic-angular';
+
+import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from '../../app/commons';
 import { Credentials } from '../../app/credentials';
 import { LoginService } from '../../app/login.service';
-import { OrdersComponent } from '../orders/orders.component';
 import { AuthenticationManager } from '../../app/authentication-manager';
+
+import { OrdersComponent } from '../../pages/orders/orders.component';
+import { SummaryComponent } from '../../pages/summary/summary.component';
+import { KitchenComponent } from '../../pages/kitchen/kitchen.component';
 
 @Component({
   templateUrl: './login.component.html'
@@ -51,7 +56,17 @@ export class LoginComponent {
         loading.dismiss();
         if(result != null) {
           this.auth.setCredentials (result);
-          this.navCtrl.setRoot(OrdersComponent);
+          switch (this.auth.getRole()) {
+            case ROLE_ADMIN:
+              this.navCtrl.setRoot(SummaryComponent);
+              break;
+            case ROLE_WAITER:
+              this.navCtrl.setRoot(OrdersComponent);
+              break;
+            case ROLE_KITCHEN:
+              this.navCtrl.setRoot(KitchenComponent);
+              break;
+          }         
         } else {
           // User credentials are not correct
           let toast = this.toastCtrl.create({

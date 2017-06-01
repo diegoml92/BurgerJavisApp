@@ -18,8 +18,11 @@ import { CategoriesComponent } from '../pages/categories/categories.component';
 import { NewCategoryComponent } from '../pages/new-category/new-category.component';
 import { CategoryDetailsComponent } from '../pages/category-details/category-details.component';
 import { NewIngredientComponent } from '../pages/new-ingredient/new-ingredient.component';
+import { KitchenComponent } from '../pages/kitchen/kitchen.component';
+import { KitchenDetailsComponent } from '../pages/kitchen-details/kitchen-details.component';
 
 import { OrderService } from './order.service';
+import { KitchenService } from './kitchen.service';
 import { ProductService } from './product.service';
 import { IngredientService } from './ingredient.service';
 import { CategoryService } from './category.service';
@@ -45,7 +48,9 @@ import { AuthenticationManager } from './authentication-manager';
     CategoriesComponent,
     NewCategoryComponent,
     CategoryDetailsComponent,
-    NewIngredientComponent
+    NewIngredientComponent,
+    KitchenComponent,
+    KitchenDetailsComponent
   ],
   imports: [
     HttpModule,
@@ -69,17 +74,20 @@ import { AuthenticationManager } from './authentication-manager';
     CategoriesComponent,
     NewCategoryComponent,
     CategoryDetailsComponent,
-    NewIngredientComponent
+    NewIngredientComponent,
+    KitchenComponent,
+    KitchenDetailsComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthenticationManager,
     OrderService,
+    KitchenService,
     ProductService,
     IngredientService,
     CategoryService,
     SummaryService,
     LoginService,
-    AuthenticationManager
   ]
 })
 export class AppModule {}
