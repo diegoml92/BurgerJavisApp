@@ -14,10 +14,10 @@
   <ion-list>
     <ion-item *ngFor="let item of order.items">
       <h1>{{item.product.name}}</h1>
-      <button ion-button (click)="decreaseAmount(item)" clear item-right small icon-only>
+      <button *ngIf="isInitial(order)" ion-button (click)="decreaseAmount(item)" clear item-right small icon-only>
         <ion-icon name="remove-circle"></ion-icon>
       </button>
-      <button style="width: 10%;" ion-button default item-right (click)="increaseAmount(item)" outline>
+      <button [disabled]="!isInitial(order)" style="width: 10%;" ion-button default item-right (click)="increaseAmount(item)" outline>
         {{item.amount}}
       </button>
     </ion-item>
@@ -34,7 +34,7 @@
     <em>El pedido está vacío</em>
   </div>
 
-  <ion-fab right bottom margin>
+  <ion-fab *ngIf="isInitial(order)" right bottom margin>
     <button ion-fab (click)="addProduct()" color="primary">
       <ion-icon name="add"></ion-icon>
     </button>
