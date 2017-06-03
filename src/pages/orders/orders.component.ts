@@ -6,6 +6,7 @@ import { OrderDetailsComponent } from '../order-details/order-details.component'
 import { NewOrderComponent } from '../new-order/new-order.component';
 
 import { Order } from '../../app/order';
+import { OrderState } from '../../app/commons';
 import { OrderService } from '../../app/order.service';
 
 
@@ -60,6 +61,16 @@ export class OrdersComponent {
 
   addOrder(event) {
     this.navCtrl.push(NewOrderComponent);
+  }
+
+  isServed(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.SERVED.toString();
+  }
+
+  isKitchen(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.KITCHEN.toString();
   }
 
 }
