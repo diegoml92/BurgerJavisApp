@@ -4,7 +4,7 @@ import { MenuController } from 'ionic-angular';
 
 import { BASIC_PREFIX, JSON_HEADER_NAME, JSON_HEADER_VALUE } from './commons';
 import { Credentials } from './credentials';
-import { ROLE_ADMIN, ROLE_WAITER } from './commons';
+import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from './commons';
 
 @Injectable()
 export class AuthenticationManager {
@@ -13,19 +13,32 @@ export class AuthenticationManager {
 
   constructor(private menuCtrl: MenuController) {}
 
-  private enableSideMenu(roles: string []) {
-    if(roles.indexOf(ROLE_ADMIN) >= 0) {
-      this.menuCtrl.enable(true, "adminMenu");
-    } else if(roles.indexOf(ROLE_WAITER) >= 0) {
-      this.menuCtrl.enable(true, "waiterMenu")
+  private enableSideMenu() {
+    if(this.credentials.roles.length == 1) {
+      switch (this.credentials.roles[0]) {
+        case ROLE_ADMIN:
+          this.menuCtrl.enable(true, "adminMenu");
+          break;
+
+        case ROLE_WAITER:
+          this.menuCtrl.enable(true, "waiterMenu");
+          break;
+
+        case ROLE_KITCHEN:
+          this.menuCtrl.enable(true, "kitchenMenu");
+          break;
+        
+        default:
+          throw "Invalid user role: " + this.credentials.roles[0];
+      }
     } else {
-      this.menuCtrl.enable(true, "");
+      throw "Invalid user with multiple roles";      
     }
   }
 
   setCredentials(credentials: Credentials) {
     this.credentials = credentials;
-    this.enableSideMenu(credentials.roles);
+    this.enableSideMenu();
   }
 
   resetCredentials() {
@@ -35,6 +48,14 @@ export class AuthenticationManager {
   getCredentials(): Credentials {
     return this.credentials;
   }
+
+  getRole(): string {
+    if(this.credentials.roles.length == 1) {
+      return this.credentials.roles[0];
+    } else {
+      throw "Invalid user with multiple roles";      
+    }
+  } 
 
   generateAuthHeader(): Headers {
     var ascii = this.credentials.username + ":" + this.credentials.password;

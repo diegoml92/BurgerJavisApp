@@ -1,6 +1,10 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{order.name}}</ion-title>
+    <ion-title>
+      {{order.name}}
+      <ion-icon *ngIf="isKitchen(order)" name="log-in" style="color: orange;"></ion-icon>
+      <ion-icon *ngIf="isServed(order)" name="log-out" style="color: green;"></ion-icon>
+    </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="deleteOrder()">
         <ion-icon name="close" color="danger"></ion-icon>
@@ -14,25 +18,27 @@
   <ion-list>
     <ion-item *ngFor="let item of order.items">
       <h1>{{item.product.name}}</h1>
-      <button ion-button (click)="decreaseAmount(item)" clear item-right small icon-only>
+      <button *ngIf="isInitial(order)" ion-button (click)="decreaseAmount(item)" clear item-right small icon-only>
         <ion-icon name="remove-circle"></ion-icon>
       </button>
-      <button style="width: 10%;" ion-button default item-right (click)="increaseAmount(item)" outline>
+      <button [disabled]="!isInitial(order)" style="width: 10%;" ion-button default item-right (click)="increaseAmount(item)" outline>
         {{item.amount}}
       </button>
     </ion-item>
   </ion-list>
 
-  <div padding>
+  <div padding style="text-align: center;">
     <button ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>
-    <button ion-button type="submit" color="danger" *ngIf="order.items && !order.finished && order.items.length" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
+    <button ion-button type="submit" *ngIf="order.items && order.items.length && isInitial(order)" (click)="sendToKitchenConfirmation()" block>Enviar a cocina</button>
+    <button ion-button type="submit" color="danger" *ngIf="isServed(order)" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
+    <em *ngIf="isKitchen(order)">El pedido está siendo preparado</em>
   </div>
 
   <div padding *ngIf="!order.items || !order.items.length" style="text-align: center;">
     <em>El pedido está vacío</em>
   </div>
 
-  <ion-fab right bottom margin>
+  <ion-fab *ngIf="isInitial(order)" right bottom margin>
     <button ion-fab (click)="addProduct()" color="primary">
       <ion-icon name="add"></ion-icon>
     </button>

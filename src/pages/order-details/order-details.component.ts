@@ -4,6 +4,7 @@ import { NavController, NavParams, LoadingController, ToastController,
 
 import { Order } from '../../app/order';
 import { OrderItem } from '../../app/order-item';
+import { OrderState } from '../../app/commons';
 import { OrderService } from '../../app/order.service';
 import { ProductService } from '../../app/product.service';
 import { PopoverListComponent } from './popover-list.component';
@@ -127,7 +128,30 @@ export class OrderDetailsComponent {
         {
           text: 'Aceptar',
           handler: () => {
-            this.order.finished = true;
+            this.order.state = OrderState.FINISHED;
+            this.updateOrder(true);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  sendToKitchenConfirmation () {
+    let confirm = this.alertCtrl.create({
+      title: '¿Enviar a cocina?',
+      message: 'Una vez hecho, no se podrán hacer modificaciones sobre el mismo',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            // No further action
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.order.state = OrderState.KITCHEN;
             this.updateOrder(true);
           }
         }
@@ -180,6 +204,26 @@ export class OrderDetailsComponent {
         });
         toast.present();
       });
+  }
+
+  isFinished(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.FINISHED.toString();
+  }
+
+  isInitial(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.INITIAL.toString();
+  }
+
+  isServed(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.SERVED.toString();
+  }
+
+  isKitchen(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.KITCHEN.toString();
   }
 
 }

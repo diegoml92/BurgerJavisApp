@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Comandas</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="orders && orders.length">
+    <ion-row *ngFor="let order_row of rows">
+      <ion-col *ngFor="let order of order_row">
+        <button block ion-item *ngIf="order" (click)="orderTapped(order)">
+          <h1>{{order.name}}</h1>
+          <p *ngFor="let item of order.items">
+            - {{item.product.name}} x{{item.amount}}
+          </p>
+        </button>
+        <button block ion-button (click)="serveOrder(order)">
+        Servir
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div padding *ngIf="(!orders || !orders.length)" style="text-align: center;">
+    <em>Aún no hay ninguna comanda</em>
+  </div>
+</ion-content>

@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{order.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div padding>
+    <h2 *ngFor="let item of order.items">
+      - {{item.product.name}} x{{item.amount}}
+    </h2>
+    <button block ion-button (click)="serveOrder(order)">
+      Servir
+    </button>
+  </div>
+</ion-content>
