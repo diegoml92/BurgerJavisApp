@@ -20,6 +20,7 @@ import { CategoryDetailsComponent } from '../pages/category-details/category-det
 import { NewIngredientComponent } from '../pages/new-ingredient/new-ingredient.component';
 import { KitchenComponent } from '../pages/kitchen/kitchen.component';
 import { KitchenDetailsComponent } from '../pages/kitchen-details/kitchen-details.component';
+import { UserComponent } from '../pages/user/user.component';
 
 import { OrderService } from './order.service';
 import { KitchenService } from './kitchen.service';
@@ -50,7 +51,8 @@ import { AuthenticationManager } from './authentication-manager';
     CategoryDetailsComponent,
     NewIngredientComponent,
     KitchenComponent,
-    KitchenDetailsComponent
+    KitchenDetailsComponent,
+    UserComponent
   ],
   imports: [
     HttpModule,
@@ -76,7 +78,8 @@ import { AuthenticationManager } from './authentication-manager';
     CategoryDetailsComponent,
     NewIngredientComponent,
     KitchenComponent,
-    KitchenDetailsComponent
+    KitchenDetailsComponent,
+    UserComponent
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

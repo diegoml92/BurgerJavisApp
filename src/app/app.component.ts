@@ -7,9 +7,10 @@ import { OrdersComponent } from '../pages/orders/orders.component';
 import { MenuComponent } from '../pages/menu/menu.component';
 import { SummaryComponent } from '../pages/summary/summary.component';
 import { KitchenComponent } from '../pages/kitchen/kitchen.component';
+import { UserComponent } from '../pages/user/user.component';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.component.html'
 })
 export class AppComponent {
 
@@ -64,5 +65,12 @@ export class AppComponent {
       this.nav.setRoot(page.component);
       this.currentPage = page.component;
     }
+  }
+
+  showUser() {
+    // close the menu when clicking a link from the menu
+    this.menu.close();
+    
+    this.nav.push(UserComponent);
   }
 }
