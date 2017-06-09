@@ -24,7 +24,7 @@ export class PopoverListComponent {
   }
 
   addProduct(product: Product) {
-    this.orderService.addProductToOrder(this.order, product);
+    this.order.items.push({product: product, amount: 1});
     this.close();
   }
 

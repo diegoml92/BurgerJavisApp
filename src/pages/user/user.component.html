@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Información del usuario</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <div text-center padding>
+    <img style="border-radius: 100px; width: 60%;" src="assets/img/burgerjavis.png"/>
+    <h2>Usuario: {{getUsername()}}</h2>
+    <h2>Rol: {{getRole()}}</h2>
+    <button ion-button (click)="logOut()" block>Cerrar sesión</button>
+  </div>
+
+</ion-content>

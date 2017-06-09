@@ -8,24 +8,31 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+
+  <div padding *ngIf="!summaryData" style="text-align: center;">
+    <em>No hay datos disponibles</em>
+  </div>
+
+  <ion-list *ngIf="summaryData">
     <ion-item>
       <ion-icon name="cash" item-left></ion-icon>
       <h1>Beneficios</h1>
-      <ion-note item-right>{{income | currency:'EUR':true}}</ion-note>
+      <ion-note item-right>{{summaryData.profits | currency:'EUR':true}}</ion-note>
     </ion-item>
     <ion-item>
       <ion-icon name="checkmark-circle-outline" item-left></ion-icon>
       <h1>Pedidos completados</h1>
-      <ion-note item-right>{{completedOrders}}</ion-note>
+      <ion-note item-right>{{summaryData.completedOrders}}</ion-note>
     </ion-item>
-    <ion-item no-lines>
-      <ion-icon name="podium" item-left></ion-icon>
-      <h1>Mejores productos:</h1>
-      <ion-list  *ngFor="let category of categories">
+    <ion-item *ngIf="summaryData.topCategories" no-lines>
+      <ion-item no-padding no-margin>
+        <ion-icon name="podium" item-left></ion-icon>
+        <h1>Mejores productos:</h1>
+      </ion-item>
+      <ion-list *ngFor="let category of summaryData.topCategories">
         <ion-list-header>{{category.name}}</ion-list-header>
-        <ion-item *ngFor="let product of category.products">
-          {{product.name}}
+        <ion-item *ngFor="let product of summaryData.topProducts[getCategoryIndex(category)]">
+          {{product.productName}}
           <ion-note item-right>{{product.amount}}</ion-note>
         </ion-item>
       </ion-list>

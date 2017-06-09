@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, 
+import { NavController, NavParams, ViewController, ToastController,
   LoadingController, PopoverController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details.component';
@@ -9,6 +9,7 @@ import { CategoriesComponent } from '../categories/categories.component';
 
 import { Product } from '../../app/product';
 import { ProductService } from '../../app/product.service';
+import { AuthenticationManager } from '../../app/authentication-manager';
 
 @Component({
   template: `
@@ -50,8 +51,10 @@ export class MenuComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private productService: ProductService,
+    private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private popoverCtrl: PopoverController) {}
+    private popoverCtrl: PopoverController,
+    private auth: AuthenticationManager) {}
 
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
@@ -62,7 +65,16 @@ export class MenuComponent {
       .then(menu => {
         this.menu = menu;
         loading.dismiss();
-      });
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al solicitar los productos de la carta',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });;
   }
 
   productTapped(product: Product) {
@@ -85,6 +97,10 @@ export class MenuComponent {
         this.navCtrl.push(data);
       }
     });
+  }
+
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
   }
 
 }

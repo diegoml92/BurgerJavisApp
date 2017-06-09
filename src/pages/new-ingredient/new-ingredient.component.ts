@@ -1,0 +1,72 @@
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, 
+  Validators, FormControl } from '@angular/forms';
+
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
+
+import { Ingredient } from '../../app/ingredient';
+import { IngredientService } from '../../app/ingredient.service';
+
+@Component({
+  templateUrl: 'new-ingredient.component.html'
+})
+export class NewIngredientComponent {
+
+  newIngredientForm: FormGroup;
+  ingredientName: string;
+  ingredientPrice: number;
+
+  constructor(
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private ingredientService: IngredientService,
+    private formBuilder: FormBuilder
+  ) {
+    this.newIngredientForm = this.formBuilder.group({
+      name: [
+        '',
+        Validators.compose([
+          Validators.maxLength(50), 
+          Validators.pattern('[a-zA-ZñÑ][a-zA-ZñÑ ]*'),
+          Validators.required
+        ]),
+        this.ingredientValidation.bind(this)
+      ],
+      extraPrice: [
+        '',
+        Validators.compose([
+          Validators.pattern('[0-9]+([.,][0-9]+)?'),
+          Validators.required
+        ])
+      ]
+    });
+  }
+
+  ingredientValidation(formControl: FormControl): Promise<any> {
+    return this.ingredientService.checkIngredientName(formControl.value);
+  }
+
+  onSubmit() {
+    let ingredient = new Ingredient(this.ingredientName, this.ingredientPrice);
+    let loading = this.loadingCtrl.create({
+      content: "Creando ingrediente..."
+    });
+    loading.present();   
+    this.ingredientService.addIngredient(ingredient)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.pop()
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al crear el ingrediente',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
+  }
+
+}

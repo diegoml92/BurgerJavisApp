@@ -31,6 +31,15 @@ export class CategoriesComponent {
       .then(categories => {
         this.categories = categories;
         loading.dismiss();
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al solicitar las categorías',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
       });
   }
 
@@ -53,12 +62,23 @@ export class CategoriesComponent {
   setFavorite(event, category: Category, value: boolean) {
     event.stopPropagation();
     category.favorite = value;
-    this.categoryService.setFavorite(category, value)
-      .then(categories => this.categories = categories)
+    let loading = this.loadingCtrl.create({
+      content: "Actualizando favoritos..."
+    });
+    loading.present();
+    this.categoryService.updateCategory(category)
+      .then(result => {
+        loading.dismiss();
+        let index = this.categories.indexOf(result);
+        if(index >= 0) {
+          this.categories[index] = result;
+        }
+      })
       .catch(error => {
-        category.favorite = false;
+        loading.dismiss();
+        category.favorite = !value;
         let toast = this.toastCtrl.create({
-          message: error.error,
+          message: 'Se ha alcanzado el número máximo de favoritos',
           duration: 3000,
           position: 'bottom'
         });

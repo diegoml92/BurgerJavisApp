@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams,
+  ToastController, LoadingController } from 'ionic-angular';
 
-import { OrderDetailsComponent } from '../order-details/order-details.component'
-import { NewOrderComponent } from '../new-order/new-order.component'
+import { OrderDetailsComponent } from '../order-details/order-details.component';
+import { NewOrderComponent } from '../new-order/new-order.component';
 
-import { Order } from '../../app/order'
-import { OrderService } from '../../app/order.service'
+import { Order } from '../../app/order';
+import { OrderState } from '../../app/commons';
+import { OrderService } from '../../app/order.service';
 
 
 @Component({
@@ -19,6 +21,7 @@ export class OrdersComponent {
     private navCtrl: NavController,
     private navParams: NavParams,
     private orderService: OrderService,
+    private toastCtrl: ToastController,
     private loadingCtrl: LoadingController) {}
 
   ionViewWillEnter() {
@@ -30,7 +33,24 @@ export class OrdersComponent {
       .then(orders => {
         this.orders = orders;
         loading.dismiss();
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al solicitar los pedidos',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
       });
+  }
+
+  calculateOrderPrice(order: Order): number {
+    var price: number = 0;
+    for(let i=0; i<order.items.length; i++) {
+      price += order.items[i].product.price * order.items[i].amount;
+    }
+    return price;
   }
 
   orderTapped(event, order) {
@@ -41,6 +61,16 @@ export class OrdersComponent {
 
   addOrder(event) {
     this.navCtrl.push(NewOrderComponent);
+  }
+
+  isServed(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.SERVED.toString();
+  }
+
+  isKitchen(order: Order): boolean {
+    let value = OrderState[order.state];
+    return value == OrderState.KITCHEN.toString();
   }
 
 }

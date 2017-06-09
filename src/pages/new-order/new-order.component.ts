@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, 
+  LoadingController, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Order } from '../../app/order';
 import { OrderService } from '../../app/order.service';
+import { AuthenticationManager } from '../../app/authentication-manager';
 
 @Component({
   templateUrl: 'new-order.component.html'
@@ -17,8 +19,11 @@ export class NewOrderComponent {
   constructor(
   	private navCtrl: NavController,
   	private navParams: NavParams,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     private orderService: OrderService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private auth: AuthenticationManager
   ) {
     this.newOrderForm = this.formBuilder.group({
       name : [
@@ -38,9 +43,25 @@ export class NewOrderComponent {
   }
   
   onSubmit () {
-    let order = new Order(this.orderName);
-    this.orderService.addOrder(order);
-    this.navCtrl.popToRoot();
+    let order = new Order(this.orderName, this.auth.getCredentials().username);
+    let loading = this.loadingCtrl.create({
+      content: "Creando pedido..."
+    });
+    loading.present();
+    this.orderService.addOrder(order)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.popToRoot();
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al crear el pedido',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
   }
 
 }

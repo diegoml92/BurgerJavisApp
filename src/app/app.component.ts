@@ -1,23 +1,28 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Platform, Nav, MenuController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
+import { LoginComponent } from '../pages/login/login.component';
 import { OrdersComponent } from '../pages/orders/orders.component';
 import { MenuComponent } from '../pages/menu/menu.component';
 import { SummaryComponent } from '../pages/summary/summary.component';
-
+import { KitchenComponent } from '../pages/kitchen/kitchen.component';
+import { UserComponent } from '../pages/user/user.component';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.component.html'
 })
 export class AppComponent {
 
   @ViewChild(Nav)
   nav: Nav;
 
-  rootPage = OrdersComponent;
-  currentPage = OrdersComponent;
-  pages: Array<{title: string, component: any}>;
+  rootPage = LoginComponent;
+  currentPage = LoginComponent;
+
+  adminPages: Array<{title: string, component: any}>;
+  waiterPages: Array<{title: string, component: any}>;
+  kitchenPages: Array<{title: string, component: any}>;
 
   constructor(
     public platform: Platform,
@@ -25,11 +30,20 @@ export class AppComponent {
   ) {
     this.initializeApp();
 
-    // set app's pages
-    this.pages = [
-      { title: 'Pedidos', component: OrdersComponent},
-      { title: 'Menú', component: MenuComponent},
-      { title: 'Resumen', component: SummaryComponent}
+    // set app's pages depending on the role
+    this.adminPages = [
+      { title: 'Pedidos', component: OrdersComponent },
+      { title: 'Cocina', component: KitchenComponent },
+      { title: 'Menú', component: MenuComponent },
+      { title: 'Resumen', component: SummaryComponent }
+    ];
+    this.waiterPages = [
+      { title: 'Pedidos', component: OrdersComponent },
+      { title: 'Menú', component: MenuComponent }
+    ];
+    this.kitchenPages = [
+      { title: 'Cocina', component: KitchenComponent },
+      { title: 'Menú', component: MenuComponent }
     ];
   }
 
@@ -53,5 +67,10 @@ export class AppComponent {
     }
   }
 
-
+  showUser() {
+    // close the menu when clicking a link from the menu
+    this.menu.close();
+    
+    this.nav.push(UserComponent);
+  }
 }

@@ -1,54 +1,77 @@
-import { Ingredient } from './ingredient';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Product } from './product';
-import { PRODUCTS } from './mock-data';
+import { Util } from './util';
+import { Operations } from './commons';
+import { AuthenticationManager } from './authentication-manager';
+import 'rxjs/add/operator/toPromise';
 
+@Injectable()
 export class ProductService {
 
   productList: Product[];
 
-  constructor() {
-    this.productList = [];
+  constructor(private http: Http, private auth: AuthenticationManager) {}
 
-    for(let i = 0; i < PRODUCTS.length; i++) {
-      this.productList.push(PRODUCTS [i]);
-    }
-  }
-
+  /** Return product list */
   getProductList(): Promise<Product[]> {
-    return new Promise(resolve => {
-      // Simulate server latency (1.5s)
-      setTimeout(() => resolve(this.productList), 1500);
-    });
+    var request : string = Util.getUrlForAction(Operations.PRODUCTS);
+    return this.http.get(request,
+        {headers: this.auth.generateAuthHeader()})
+      .toPromise()
+      .then(response => {
+        this.productList = response.json() as Product[];
+        return this.productList;
+      });
   }
 
+  /** Create new product */
   addProduct(product: Product) {
-    this.productList.push(product);
+    var request : string = Util.getUrlForAction(Operations.PRODUCTS);
+    return this.http.post(request, JSON.stringify(product), 
+        {headers: this.auth.generateJsonAuthHeader()})
+      .toPromise()
+      .then(response => {
+        let newProduct = response.json() as Product;
+        this.productList.push(newProduct);
+        return newProduct;
+      });
   }
 
+  /** Update product */
+  updateProduct(product: Product): Promise<Product> {
+    var request: string =
+        Util.getUrlForAction(Operations.PRODUCTS, product._id);
+    return this.http.put(request, JSON.stringify(product),
+        {headers: this.auth.generateJsonAuthHeader()})
+      .toPromise()
+      .then(response => {
+        let newProduct = response.json() as Product;
+        let index = this.productList.indexOf(product);
+        if(index >= 0) {
+          this.productList[index] = newProduct;
+        }
+        return response.json();
+      });
+  }
+
+  /** Delete product */
   removeProduct(product: Product) {
-    let index = this.productList.indexOf(product);
-    if(index => 0) {
-      this.productList.splice(index, 1);
-    }
+    var request : string = 
+        Util.getUrlForAction(Operations.PRODUCTS, product._id);
+    return this.http.delete(request,
+        {headers: this.auth.generateAuthHeader()})
+      .toPromise()
+      .then(response => {
+        let index = this.productList.indexOf(product);
+        if(index >= 0) {
+          this.productList.splice(index, 1);
+        }
+        return response.json();
+      });
   }
 
-  addIngredientToProduct(product: Product, ingredient: Ingredient) {
-    let index = this.productList.indexOf(product);
-    if(index => 0) {
-      this.productList[index].ingredients.push(ingredient);
-    }
-  }
-
-  removeIngredientFromProduct(product: Product, ingredient: Ingredient) {
-    let pIndex = this.productList.indexOf(product);
-    if (pIndex => 0) {
-      let iIndex = this.productList[pIndex].ingredients.indexOf(ingredient);
-      if(iIndex => 0) {
-        this.productList[pIndex].ingredients.splice(iIndex,1);
-      }
-    }
-  }
-
+  /** Product name validation */
   checkProductName(newProductName: string): Promise<any> {
     return new Promise(resolve => {
       let found = false;
@@ -59,10 +82,9 @@ export class ProductService {
         i++;
       }
       if(found) {
-        resolve("Procuct name is taken");
+        resolve("Product name is taken");
       } else {
-        //TO-DO: Server side validation to be done
-        setTimeout(() => resolve(null), 1500);
+        resolve(null);
       }
     });
   }

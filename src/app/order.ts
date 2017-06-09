@@ -1,19 +1,18 @@
 import { OrderItem } from './order-item';
+import { OrderState } from './commons';
 
 export class Order {
 
-  price: number = 0.0;
+  _id?: string;
+  state: OrderState = OrderState.INITIAL;
 
-  constructor (public name: string, public items?: OrderItem[]) {
-    if(!this.items) {
-      this.items = [];
-    }
-    this.calculateOrderPrice();
+  constructor (
+      public name: string,
+      public username: string,
+      public items: OrderItem[] = []) {}
+
+  isFinished(): boolean {
+  	return this.state === OrderState.FINISHED;
   }
 
-  calculateOrderPrice () {
-    for(let i=0; i<this.items.length; i++) {
-      this.price += this.items[i].product.price * this.items[i].amount;
-    }
-  }
 }

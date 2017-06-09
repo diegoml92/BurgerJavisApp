@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, 
+import { NavController, NavParams, ToastController,
   AlertController, LoadingController } from 'ionic-angular';
 
 import { Product } from '../../app/product';
@@ -13,12 +13,13 @@ import { IngredientService } from '../../app/ingredient.service';
 export class ProductDetailsComponent {
 
   product: Product;
-  modified: boolean;
+  modified: boolean = false;
 
   constructor(
   	private navCtrl: NavController,
   	private navParams: NavParams,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private productService: ProductService,
     private ingredientService: IngredientService
@@ -29,7 +30,11 @@ export class ProductDetailsComponent {
   }
 
   deleteIngredient(ingredient: Ingredient) {
-    this.productService.removeIngredientFromProduct(this.product, ingredient);
+    let iIndex = this.product.ingredients.indexOf(ingredient);
+    if(iIndex => 0) {
+      this.product.ingredients.splice(iIndex,1);
+      this.modified = true;
+    }
   }
 
   addIngredient() {
@@ -69,13 +74,45 @@ export class ProductDetailsComponent {
               let ing = ingredientList[data[i]];
               if(this.product.ingredients &&
                   this.product.ingredients.indexOf(ing) < 0) {
-                this.productService.addIngredientToProduct(this.product, ing);
+                this.product.ingredients.push(ing);
+                this.modified = true;
               }
             }
           }
         });
         alert.present();
 
+      })
+      .catch(() => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener la lista de ingredientes',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
+  }
+
+  /** Update product */
+  updateProduct() {
+    let loading = this.loadingCtrl.create({
+      content: "Actualizando producto..."
+    });
+    loading.present();
+    this.productService.updateProduct(this.product)
+      .then(() => {
+        loading.dismiss();
+        this.modified = false;
+      })
+      .catch(err => {
+        let toast = this.toastCtrl.create({
+          message: 'Error al actualiar el producto',
+          duration: 3000,
+          position: 'bottom'
+        });
+        loading.dismiss();
+        toast.present();
       });
   }
 
@@ -103,8 +140,24 @@ export class ProductDetailsComponent {
   }
 
   removeProduct() {
-    this.productService.removeProduct(this.product);
-    this.navCtrl.popToRoot();
+    let loading = this.loadingCtrl.create({
+      content: "Borrando producto..."
+    });
+    loading.present();
+    this.productService.removeProduct(this.product)
+      .then(() => {
+        loading.dismiss();
+        this.navCtrl.popToRoot();
+      })
+      .catch(err => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al borrar el producto',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      });
   }
 
 }
