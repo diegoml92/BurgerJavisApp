@@ -6,7 +6,7 @@ import { CategoryService } from '../../app/category.service';
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
 
-import { CATEGORY_ICONS_URL, PNG_EXTENSION } from '../../app/commons';
+import { CATEGORY_ICONS_URL, DEFAULT_CATEGORY, PNG_EXTENSION } from '../../app/commons';
 
 
 @Component({
@@ -53,6 +53,10 @@ export class CategoriesComponent {
 
   getIconUrl(category: Category): string {
     return CATEGORY_ICONS_URL + category.icon + PNG_EXTENSION;
+  }
+
+  getDefaultIcon(event) {
+    event.target.src = CATEGORY_ICONS_URL + DEFAULT_CATEGORY.name+ PNG_EXTENSION;
   }
 
   isFavorite(category: Category): boolean {
