@@ -1,5 +1,6 @@
 
 export const HTTP_PREFIX : string = "http://";
+export const API_PREFIX : string = "/appclient";
 export const BASIC_PREFIX : string = "Basic ";
 export const JSON_HEADER_NAME : string = "Content-Type";
 export const JSON_HEADER_VALUE : string = "application/json";

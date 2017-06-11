@@ -1,5 +1,5 @@
 import { AppConfig } from './app.config';
-import { HTTP_PREFIX } from './commons';
+import { HTTP_PREFIX, API_PREFIX } from './commons';
 
 export class Util {
 
@@ -9,7 +9,7 @@ export class Util {
   }
 
   static getUrlForAction(action: string, param: string = ""): string {
-    return this.getServerUrl() + action + "/" + param;
+    return this.getServerUrl() + API_PREFIX + action + "/" + param;
   }
 
 }
