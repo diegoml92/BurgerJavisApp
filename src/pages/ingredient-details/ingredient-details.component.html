@@ -10,11 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <button block ion-item (click)="showInputDialog()">
-    <h1>Precio extra</h1>
-    <div item-right style="color: green;">+{{ingredient.extraPrice | currency:'EUR':true}}</div>
-  </button>
-  <div padding>
-    <button ion-button type="submit" *ngIf="modified" (click)="updateIngredient()" block>Actualizar ingrediente</button>
+  <div padding style="text-align: center;">
+    <em>No hay más datos</em>
   </div>
 </ion-content>
