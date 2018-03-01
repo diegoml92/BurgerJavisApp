@@ -25,29 +25,6 @@ export class IngredientDetailsComponent {
     this.ingredient = this.navParams.get('ingredient');
   }
 
-  /** Update ingredient */
-  updateIngredient() {
-    let loading = this.loadingCtrl.create({
-      content: "Actualizando ingrediente..."
-    });
-    loading.present();
-    this.ingredientService.updateIngredient(this.ingredient)
-      .then(() => {
-        loading.dismiss();
-        this.modified = false;
-        this.navCtrl.pop();
-      })
-      .catch(err => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualiar el ingrediente',
-          duration: 3000,
-          position: 'bottom'
-        })
-        loading.dismiss();
-        toast.present();
-      });
-  }
-
   /** Remove ingredient */
   removeIngredient() {
     let loading = this.loadingCtrl.create({
@@ -92,46 +69,6 @@ export class IngredientDetailsComponent {
       ]
     });
     confirm.present();
-  }
-
-  /** Popup dialog for extraPrice field update */
-  showInputDialog() {
-    let alert = this.alertCtrl.create({
-      title: 'Modificar precio',
-      inputs: [
-        {
-          name: 'extraPrice',
-          placeholder: this.ingredient.extraPrice.toString(),
-          type: 'number'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: data => {
-            // No further action
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: data => {
-            if(data.extraPrice > 0) {
-              this.ingredient.extraPrice = data.extraPrice;
-              this.modified = true;
-            } else {
-              let toast = this.toastCtrl.create({
-                message: 'El valor introducido no es válido',
-                duration: 3000,
-                position: 'bottom'
-              });
-
-              toast.present();
-            }
-          }
-        }
-      ]
-    });
-    alert.present();
   }
 
 }

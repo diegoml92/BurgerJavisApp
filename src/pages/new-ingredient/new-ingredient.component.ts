@@ -32,13 +32,6 @@ export class NewIngredientComponent {
           Validators.required
         ]),
         this.ingredientValidation.bind(this)
-      ],
-      extraPrice: [
-        '',
-        Validators.compose([
-          Validators.pattern('[0-9]+([.,][0-9]+)?'),
-          Validators.required
-        ])
       ]
     });
   }
@@ -48,7 +41,7 @@ export class NewIngredientComponent {
   }
 
   onSubmit() {
-    let ingredient = new Ingredient(this.ingredientName, this.ingredientPrice);
+    let ingredient = new Ingredient(this.ingredientName);
     let loading = this.loadingCtrl.create({
       content: "Creando ingrediente..."
     });

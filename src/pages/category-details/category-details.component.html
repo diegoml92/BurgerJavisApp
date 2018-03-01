@@ -10,18 +10,7 @@
 </ion-header>
 
 <ion-content>
-
-  <form [formGroup]="categoryForm">
-    <ion-item>
-      <ion-label floating>Icono de la categoría</ion-label>
-      <ion-select formControlName="icon" [(ngModel)]="categoryIcon" (ngModelChange)="updateCategoryIcon()">
-        <ion-option [value]="defaultCategory.name" [selected]="categoryForm.controls.icon.value === defaultCategory.name">{{defaultCategory.text}}</ion-option>
-        <ion-option *ngFor="let category of categories" [value]="category.name" [selected]="categoryForm.controls.icon.value === category.name">{{category.text}}</ion-option>
-      </ion-select>
-    </ion-item>
-  </form>
-  <div padding>
-    <button ion-button type="submit" *ngIf="modified" (click)="updateCategory()" block>Actualizar categoría</button>
+  <div padding style="text-align: center;">
+    <em>No hay más datos</em>
   </div>
-
 </ion-content>

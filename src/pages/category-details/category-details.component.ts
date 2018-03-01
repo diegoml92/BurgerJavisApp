@@ -6,7 +6,6 @@ import { NavController, NavParams, AlertController,
 
 import { Category } from '../../app/category';
 import { CategoryService } from '../../app/category.service';
-import { DEFAULT_CATEGORY, CATEGORY_ICONS, CategoryIcon } from '../../app/commons';
 
 @Component({
   templateUrl: 'category-details.component.html'
@@ -15,10 +14,6 @@ export class CategoryDetailsComponent {
 
   category: Category;
   categoryForm: FormGroup;
-  categoryIcon: string;
-
-  defaultCategory: CategoryIcon = DEFAULT_CATEGORY;
-  categories: CategoryIcon[] = CATEGORY_ICONS;
 
   modified: boolean = false;
 
@@ -32,40 +27,9 @@ export class CategoryDetailsComponent {
     private categoryService: CategoryService
   ) {
     this.category = this.navParams.get('category');
-    this.categoryIcon = this.category.icon;
     this.categoryForm = this.formBuilder.group({
       icon: ['']
     });
-  }
-
-  updateCategoryIcon() {
-    if(!(this.category.icon === this.categoryIcon)) {
-      this.category.icon = this.categoryIcon;
-      this.modified = true;
-     }
-  }
-
-  /** Update category */
-  updateCategory() {
-    let loading = this.loadingCtrl.create({
-      content: "Actualizando categoría..."
-    });
-    loading.present();
-    this.categoryService.updateCategory(this.category)
-      .then(() => {
-        loading.dismiss();
-        this.modified = false;
-        this.navCtrl.pop();
-      })
-      .catch(err => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualiar el ingrediente',
-          duration: 3000,
-          position: 'bottom'
-        })
-        loading.dismiss();
-        toast.present();
-      });
   }
 
   removeCategory() {

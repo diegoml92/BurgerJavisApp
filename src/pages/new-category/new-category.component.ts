@@ -6,7 +6,6 @@ import { NavController, LoadingController, ToastController } from 'ionic-angular
 
 import { Category } from '../../app/category';
 import { CategoryService } from '../../app/category.service';
-import { DEFAULT_CATEGORY, CATEGORY_ICONS, CategoryIcon } from '../../app/commons';
 
 
 @Component({
@@ -16,10 +15,6 @@ export class NewCategoryComponent {
 
   newCategoryForm: FormGroup;
   categoryName: string;
-  categoryIcon: string = DEFAULT_CATEGORY.name;
-
-  defaultCategory: CategoryIcon = DEFAULT_CATEGORY;
-  categories: CategoryIcon[] = CATEGORY_ICONS;
 
   constructor(
     private navCtrl: NavController,
@@ -37,8 +32,7 @@ export class NewCategoryComponent {
           Validators.required
         ]),
         this.categoryValidation.bind(this)
-      ],
-      icon: ['']
+      ]
     });
   }
 
@@ -47,7 +41,7 @@ export class NewCategoryComponent {
   }
 
   onSubmit() {
-    let category = new Category(this.categoryName, this.categoryIcon, false);
+    let category = new Category(this.categoryName, false);
     let loading = this.loadingCtrl.create({
       content: "Creando categoría..."
     });
