@@ -16,6 +16,7 @@ import { IngredientsComponent } from '../pages/ingredients/ingredients.component
 import { IngredientDetailsComponent } from '../pages/ingredient-details/ingredient-details.component';
 import { CategoriesComponent } from '../pages/categories/categories.component';
 import { NewCategoryComponent } from '../pages/new-category/new-category.component';
+import { CategoryDetailsComponent } from '../pages/category-details/category-details.component';
 import { NewIngredientComponent } from '../pages/new-ingredient/new-ingredient.component';
 import { KitchenComponent } from '../pages/kitchen/kitchen.component';
 import { KitchenDetailsComponent } from '../pages/kitchen-details/kitchen-details.component';
@@ -47,6 +48,7 @@ import { AuthenticationManager } from './authentication-manager';
     IngredientDetailsComponent,
     CategoriesComponent,
     NewCategoryComponent,
+    CategoryDetailsComponent,
     NewIngredientComponent,
     KitchenComponent,
     KitchenDetailsComponent,
@@ -73,6 +75,7 @@ import { AuthenticationManager } from './authentication-manager';
     IngredientDetailsComponent,
     CategoriesComponent,
     NewCategoryComponent,
+    CategoryDetailsComponent,
     NewIngredientComponent,
     KitchenComponent,
     KitchenDetailsComponent,

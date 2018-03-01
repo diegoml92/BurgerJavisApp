@@ -7,7 +7,7 @@
 <ion-content>
 
   <ion-list *ngIf="categories && categories.length">
-    <button block ion-item *ngFor="let category of categories">
+    <button block ion-item *ngFor="let category of categories" (click)="categoryTapped(category)">
       <h1>{{category.name}}</h1>
       <button ion-button (click)="setFavorite($event, category, !category.favorite)" clear item-right default icon-only>
         <ion-icon *ngIf="isFavorite(category)" name="star"></ion-icon>

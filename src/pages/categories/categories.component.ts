@@ -4,6 +4,7 @@ import { NavController, LoadingController, ToastController } from 'ionic-angular
 import { Category } from '../../app/category';
 import { CategoryService } from '../../app/category.service';
 import { NewCategoryComponent } from '../new-category/new-category.component';
+import { CategoryDetailsComponent } from '../category-details/category-details.component';
 
 @Component({
   templateUrl: 'categories.component.html'
@@ -37,6 +38,10 @@ export class CategoriesComponent {
         });
         toast.present();
       });
+  }
+
+  categoryTapped(category: Category) {
+    this.navCtrl.push(CategoryDetailsComponent, { category: category});
   }
 
   addCategory () {
