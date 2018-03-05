@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController,
+import { NavController, AlertController,
   ToastController, LoadingController } from 'ionic-angular';
 
 import { Order } from '../../app/order';
@@ -17,7 +17,6 @@ export class KitchenComponent {
 
   constructor(
       private navCtrl: NavController,
-      private navParams: NavParams,
       private kitchenService: KitchenService,
       private toastCtrl: ToastController,
       private alertCtrl: AlertController,

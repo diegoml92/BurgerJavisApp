@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
 import { Summary } from '../../app/summary';
@@ -14,8 +14,6 @@ export class SummaryComponent {
   summaryData : Summary;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private summaryService: SummaryService) {}
 

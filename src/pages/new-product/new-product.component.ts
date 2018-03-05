@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,
-  ToastController, LoadingController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { Product } from '../../app/product';
 import { ProductService } from '../../app/product.service';
@@ -18,7 +17,6 @@ export class NewProductComponent {
 
   constructor(
   	private navCtrl: NavController,
-  	private navParams: NavParams,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
   	private productService: ProductService,

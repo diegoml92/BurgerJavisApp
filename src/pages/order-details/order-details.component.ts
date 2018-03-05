@@ -28,7 +28,7 @@ export class OrderDetailsComponent {
     private orderService: OrderService,
     private productService: ProductService) {
 
-  	this.order = navParams.get('order');
+  	this.order = this.navParams.get('order');
 
   }
 

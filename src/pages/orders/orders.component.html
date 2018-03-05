@@ -20,7 +20,7 @@
       <p *ngFor="let item of order.items">
         - {{item.product.name}} x{{item.amount}}
       </p>
-      <b item-right item-bottom>{{calculateOrderPrice(order) | currency:'EUR':true}}</b>
+      <b item-end item-bottom>{{calculateOrderPrice(order) | currency:'EUR':true}}</b>
     </button>
   </ion-list>
 

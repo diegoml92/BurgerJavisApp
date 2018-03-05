@@ -1,5 +1,9 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { AppComponent } from './app.component';
@@ -56,6 +60,7 @@ import { AuthenticationManager } from './authentication-manager';
   ],
   imports: [
     HttpModule,
+    BrowserModule,
     IonicModule.forRoot(AppComponent)
   ],
   bootstrap: [IonicApp],
@@ -82,6 +87,8 @@ import { AuthenticationManager } from './authentication-manager';
     UserComponent
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthenticationManager,
     OrderService,
