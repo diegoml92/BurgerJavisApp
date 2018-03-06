@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav, MenuController } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { LoginComponent } from '../pages/login/login.component';
 import { OrdersComponent } from '../pages/orders/orders.component';
@@ -26,7 +27,9 @@ export class AppComponent {
 
   constructor(
     public platform: Platform,
-    public menu: MenuController
+    public menu: MenuController,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen
   ) {
     this.initializeApp();
 
@@ -51,8 +54,8 @@ export class AppComponent {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
   }
 

@@ -25,7 +25,7 @@ export class ProductDetailsComponent {
     private ingredientService: IngredientService
   ) {
 
-  	this.product = navParams.get('product');
+  	this.product = this.navParams.get('product');
 
   }
 

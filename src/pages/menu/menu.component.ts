@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, ToastController,
+import { NavController, ViewController, ToastController,
   LoadingController, PopoverController } from 'ionic-angular';
 
 import { ProductDetailsComponent } from '../product-details/product-details.component';
@@ -25,9 +25,7 @@ import { AuthenticationManager } from '../../app/authentication-manager';
 })
 export class PopoverPage {
 
-  constructor(
-    private viewCtrl: ViewController,
-    private navParams: NavParams) {}
+  constructor(private viewCtrl: ViewController) {}
 
   goToCategories() {
     this.viewCtrl.dismiss(CategoriesComponent);
@@ -49,7 +47,6 @@ export class MenuComponent {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private productService: ProductService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,

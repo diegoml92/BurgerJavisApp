@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,
-  ToastController, LoadingController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { NewOrderComponent } from '../new-order/new-order.component';
@@ -19,7 +18,6 @@ export class OrdersComponent {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private orderService: OrderService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController) {}

@@ -14,7 +14,7 @@
   <ion-list *ngIf="product.ingredients && product.ingredients.length">
     <ion-item *ngFor="let ingredient of product.ingredients">
       <h1>{{ingredient.name}}</h1>
-      <button ion-button (click)="deleteIngredient(ingredient)" clear item-right default icon-only>
+      <button ion-button (click)="deleteIngredient(ingredient)" clear item-end default icon-only>
         <ion-icon name="remove-circle" color="danger"></ion-icon>
       </button>
     </ion-item>

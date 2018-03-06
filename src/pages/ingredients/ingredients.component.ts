@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams,
-  LoadingController, ToastController } from 'ionic-angular';
+import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../app/ingredient.service';
@@ -21,8 +20,7 @@ export class IngredientsComponent {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private ingredientService: IngredientService,
-    private navCtrl: NavController,
-    private navParams: NavParams) {}
+    private navCtrl: NavController) {}
 
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, 
-  LoadingController, ToastController } from 'ionic-angular';
+import { NavController, LoadingController, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Order } from '../../app/order';
@@ -18,7 +17,6 @@ export class NewOrderComponent {
 
   constructor(
   	private navCtrl: NavController,
-  	private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private orderService: OrderService,
