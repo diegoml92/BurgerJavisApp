@@ -18,19 +18,19 @@
   <ion-list>
     <ion-item *ngFor="let item of order.items">
       <h1>{{item.product.name}}</h1>
-      <button *ngIf="isInitial(order)" ion-button (click)="decreaseAmount(item)" clear item-end small icon-only>
+      <button class="decrease-button" *ngIf="isInitial(order)" ion-button (click)="decreaseAmount(item)" clear item-end small icon-only>
         <ion-icon name="remove-circle"></ion-icon>
       </button>
-      <button [disabled]="!isInitial(order)" style="width: 10%;" ion-button default item-end (click)="increaseAmount(item)" outline>
+      <button class="amount-button" [disabled]="!isInitial(order)" style="width: 10%;" ion-button default item-end (click)="increaseAmount(item)" outline>
         {{item.amount}}
       </button>
     </ion-item>
   </ion-list>
 
   <div padding style="text-align: center;">
-    <button ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>
-    <button ion-button type="submit" *ngIf="order.items && order.items.length && isInitial(order)" (click)="sendToKitchenConfirmation()" block>Enviar a cocina</button>
-    <button ion-button type="submit" color="danger" *ngIf="isServed(order)" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
+    <button class="save-button" ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>
+    <button class="send-kitchen-button" ion-button type="submit" *ngIf="order.items && order.items.length && isInitial(order)" (click)="sendToKitchenConfirmation()" block>Enviar a cocina</button>
+    <button class="finish-button" ion-button type="submit" color="danger" *ngIf="isServed(order)" (click)="finishOrderConfirmation()" block>Finalizar pedido</button>
     <em *ngIf="isKitchen(order)">El pedido está siendo preparado</em>
   </div>
 

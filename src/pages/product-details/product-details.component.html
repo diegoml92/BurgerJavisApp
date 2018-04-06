@@ -21,7 +21,7 @@
   </ion-list>
 
   <div padding>
-    <button ion-button type="submit" *ngIf="modified" (click)="updateProduct()" block>Guardar cambios</button>
+    <button ion-button class="save-button" type="submit" *ngIf="modified" (click)="updateProduct()" block>Guardar cambios</button>
   </div>
 
   <div padding style="text-align: center;" *ngIf="!product.ingredients || !product.ingredients.length">

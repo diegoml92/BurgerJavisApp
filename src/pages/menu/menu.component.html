@@ -20,7 +20,7 @@
       <p *ngFor="let ingredient of product.ingredients">
         - {{ingredient.name}}
       </p>
-      <b item-end item-bottom>{{product.price | currency:'EUR':true}}</b>
+      <b item-end item-bottom>{{product.price | currency:'EUR':symbol}}</b>
     </button>
   </ion-list>
 
