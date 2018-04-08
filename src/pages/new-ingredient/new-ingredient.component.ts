@@ -14,7 +14,6 @@ export class NewIngredientComponent {
 
   newIngredientForm: FormGroup;
   ingredientName: string;
-  ingredientPrice: number;
 
   constructor(
     private navCtrl: NavController,

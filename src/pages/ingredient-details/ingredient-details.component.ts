@@ -12,7 +12,6 @@ import { IngredientService } from '../../app/ingredient.service';
 export class IngredientDetailsComponent {
 
   ingredient: Ingredient;
-  modified: boolean = false;
 
   constructor(
     private navParams: NavParams,

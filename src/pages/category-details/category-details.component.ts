@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { NavController, NavParams, AlertController,
   LoadingController, ToastController } from 'ionic-angular';
@@ -13,9 +12,6 @@ import { CategoryService } from '../../app/category.service';
 export class CategoryDetailsComponent {
 
   category: Category;
-  categoryForm: FormGroup;
-
-  modified: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -23,13 +19,9 @@ export class CategoryDetailsComponent {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
-    private formBuilder: FormBuilder,
     private categoryService: CategoryService
   ) {
     this.category = this.navParams.get('category');
-    this.categoryForm = this.formBuilder.group({
-      icon: ['']
-    });
   }
 
   removeCategory() {

@@ -66,7 +66,7 @@ export class AuthenticationManager {
     var ascii = this.credentials.username + ":" + this.credentials.password;
     var headers = new Headers();
     headers.append(JSON_HEADER_NAME, JSON_HEADER_VALUE);
-    headers.append('Authorization', BASIC_PREFIX + new Buffer(ascii).toString('base64'))
+    headers.append('Authorization', BASIC_PREFIX + new Buffer(ascii).toString('base64'));
     return headers;
   }
 

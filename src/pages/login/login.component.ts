@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ToastController, LoadingController,
-  NavParams, NavController } from 'ionic-angular';
+import { ToastController, LoadingController, NavController } from 'ionic-angular';
 
 import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from '../../app/commons';
 import { Credentials } from '../../app/credentials';
@@ -24,7 +23,6 @@ export class LoginComponent {
 	constructor(public toastCtrl: ToastController,
 		public loadingCtrl: LoadingController,
     public navCtrl: NavController,
-		public navParams: NavParams,
     public formBuilder: FormBuilder,
     public loginService: LoginService,
     public auth: AuthenticationManager)
