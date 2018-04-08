@@ -81,7 +81,7 @@ describe('Component: Kitchen Component', () => {
     expect(de).not.toBeNull();
 
     // list of orders
-    expect(comp.orders.length).toEqual(4);
+    expect(comp.orders.length).toEqual(KitchenMock.mockOrderList.length);
 
     de = fixture.nativeElement.querySelectorAll('ion-col');
     comp.orders.forEach((order, i) => {

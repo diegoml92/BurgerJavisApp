@@ -9,6 +9,8 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class KitchenService {
 
+  orderList: Order[];
+
   constructor(private http: Http, private auth: AuthenticationManager) {}
 
   /** Return order list */
@@ -18,7 +20,8 @@ export class KitchenService {
         {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
-        return response.json() as Order[];
+        this.orderList = response.json() as Order[];
+        return this.orderList;
       });
   }
 
@@ -41,7 +44,12 @@ export class KitchenService {
         {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
-        return response.json() as Order;
+        let newOrder = response.json() as Order;
+        let index = this.orderList.indexOf(order);
+        if(index >= 0) {
+          this.orderList[index] = newOrder;
+        }
+        return newOrder;
       });
   }
 
@@ -53,6 +61,10 @@ export class KitchenService {
         {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
+        let index = this.orderList.indexOf(order);
+        if(index >= 0) {
+          this.orderList.splice(index, 1);
+        }
         return response.json();
       });
   }

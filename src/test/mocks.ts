@@ -1,7 +1,9 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Headers } from '@angular/http';
 import { Credentials } from '../app/credentials';
-import { ROLE_ADMIN, ROLE_WAITER, OrderState } from '../app/commons';
+import { ROLE_ADMIN, ROLE_WAITER, OrderState, BASIC_PREFIX,
+  JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
 import { Order } from '../app/order';
 import { OrderItem } from '../app/order-item';
 import { Category } from '../app/category';
@@ -41,6 +43,19 @@ export class AuthMock {
 
   public resetCredentials() {
     this.credentials = new Credentials();
+  }
+
+  public generateAuthHeader(): Headers {
+    var ascii = this.credentials.username + ":" + this.credentials.password;
+    return new Headers({'Authorization': BASIC_PREFIX + new Buffer(ascii).toString('base64')});
+  }
+
+  public generateJsonAuthHeader(): Headers {
+    var ascii = this.credentials.username + ":" + this.credentials.password;
+    var headers = new Headers();
+    headers.append(JSON_HEADER_NAME, JSON_HEADER_VALUE);
+    headers.append('Authorization', BASIC_PREFIX + new Buffer(ascii).toString('base64'));
+    return headers;
   }
 }
 
@@ -470,6 +485,12 @@ export class AlertControllerMock {
   public static setCallback(callback): void {
     this.acceptFunction = callback;
   }
+
+}
+
+export class MenuControllerMock {
+
+  public enable(enable: boolean, param: string): void {}
 
 }
 
