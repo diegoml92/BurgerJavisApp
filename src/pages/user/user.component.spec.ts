@@ -6,7 +6,7 @@ import { IonicModule, NavController } from 'ionic-angular';
 import { AppComponent } from '../../app/app.component';
 import { UserComponent } from './user.component';
 import { LoginComponent } from '../login/login.component';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 import { NavMock, AuthMock } from '../../test/mocks';
  
 let comp: UserComponent;

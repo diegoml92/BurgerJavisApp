@@ -8,7 +8,7 @@ import { KitchenComponent } from './kitchen.component';
 import { KitchenDetailsComponent } from '../kitchen-details/kitchen-details.component';
 import { NavMock, KitchenMock, LoadingControllerMock } from '../../test/mocks';
 
-import { KitchenService } from '../../app/kitchen.service';
+import { KitchenService } from '../../providers/kitchen.service';
  
 let comp: KitchenComponent;
 let fixture: ComponentFixture<KitchenComponent>;

@@ -6,7 +6,7 @@ import { IonicModule, NavController, LoadingController} from 'ionic-angular';
 import { AppComponent } from '../../app/app.component';
 import { NewProductComponent } from './new-product.component';
 import { Product } from '../../app/product';
-import { ProductService } from '../../app/product.service';
+import { ProductService } from '../../providers/product.service';
 import { NavMock, ProductMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: NewProductComponent;

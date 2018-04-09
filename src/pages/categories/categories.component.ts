@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
-import { CategoryService } from '../../app/category.service';
+import { CategoryService } from '../../providers/category.service';
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
 

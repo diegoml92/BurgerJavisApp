@@ -5,8 +5,8 @@ import { IonicModule, NavController, LoadingController} from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
 import { NewOrderComponent } from './new-order.component';
-import { OrderService } from '../../app/order.service';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { OrderService } from '../../providers/order.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 import { NavMock, OrderMock, LoadingControllerMock, AuthMock } from '../../test/mocks';
  
 let comp: NewOrderComponent;

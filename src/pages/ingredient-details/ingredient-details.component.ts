@@ -4,7 +4,7 @@ import { NavController, NavParams, LoadingController,
   AlertController, ToastController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
-import { IngredientService } from '../../app/ingredient.service';
+import { IngredientService } from '../../providers/ingredient.service';
 
 @Component({
   templateUrl: 'ingredient-details.component.html'

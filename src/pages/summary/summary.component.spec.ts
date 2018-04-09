@@ -5,7 +5,7 @@ import { IonicModule, LoadingController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
 import { SummaryComponent } from '../summary/summary.component';
-import { SummaryService } from '../../app/summary.service';
+import { SummaryService } from '../../providers/summary.service';
 import { SummaryMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: SummaryComponent;

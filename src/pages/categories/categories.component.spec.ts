@@ -7,7 +7,7 @@ import { AppComponent } from '../../app/app.component';
 import { CategoriesComponent } from './categories.component';
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
-import { CategoryService } from '../../app/category.service';
+import { CategoryService } from '../../providers/category.service';
 import { NavMock, CategoryMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: CategoriesComponent;

@@ -6,7 +6,7 @@ import { NewOrderComponent } from '../new-order/new-order.component';
 
 import { Order } from '../../app/order';
 import { OrderState } from '../../app/commons';
-import { OrderService } from '../../app/order.service';
+import { OrderService } from '../../providers/order.service';
 
 
 @Component({

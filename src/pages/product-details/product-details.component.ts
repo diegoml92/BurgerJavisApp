@@ -4,8 +4,8 @@ import { NavController, NavParams, ToastController,
 
 import { Product } from '../../app/product';
 import { Ingredient } from '../../app/ingredient';
-import { ProductService } from '../../app/product.service';
-import { IngredientService } from '../../app/ingredient.service';
+import { ProductService } from '../../providers/product.service';
+import { IngredientService } from '../../providers/ingredient.service';
 
 @Component({
   templateUrl: 'product-details.component.html'

@@ -5,7 +5,7 @@ import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-
 
 import { AppComponent } from '../../app/app.component';
 import { IngredientDetailsComponent } from './ingredient-details.component';
-import { IngredientService } from '../../app/ingredient.service';
+import { IngredientService } from '../../providers/ingredient.service';
 
 import { IngredientMock, NavMock,
   NavParamsMock, LoadingControllerMock } from '../../test/mocks';

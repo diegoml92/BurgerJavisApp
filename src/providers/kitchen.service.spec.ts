@@ -3,9 +3,9 @@ import { Http, HttpModule, BaseRequestOptions,
   Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { OrderState } from './commons';
-import { Order } from './order';
-import { OrderItem } from './order-item';
+import { OrderState } from '../app/commons';
+import { Order } from '../app/order';
+import { OrderItem } from '../app/order-item';
 import { AuthMock, KitchenMock } from '../test/mocks';
 
 import { KitchenService } from './kitchen.service';

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Util } from './util';
-import { Operations } from './commons';
-import { Credentials } from './credentials';
+import { Util } from '../app/util';
+import { Operations } from '../app/commons';
+import { Credentials } from '../app/credentials';
 import { compareSync } from 'bcryptjs';
 import 'rxjs/add/operator/toPromise';
 

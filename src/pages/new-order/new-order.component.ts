@@ -3,8 +3,8 @@ import { NavController, LoadingController, ToastController } from 'ionic-angular
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Order } from '../../app/order';
-import { OrderService } from '../../app/order.service';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { OrderService } from '../../providers/order.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 
 @Component({
   templateUrl: 'new-order.component.html'

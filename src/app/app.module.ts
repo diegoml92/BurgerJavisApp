@@ -26,14 +26,14 @@ import { KitchenComponent } from '../pages/kitchen/kitchen.component';
 import { KitchenDetailsComponent } from '../pages/kitchen-details/kitchen-details.component';
 import { UserComponent } from '../pages/user/user.component';
 
-import { OrderService } from './order.service';
-import { KitchenService } from './kitchen.service';
-import { ProductService } from './product.service';
-import { IngredientService } from './ingredient.service';
-import { CategoryService } from './category.service';
-import { SummaryService } from './summary.service';
-import { LoginService } from './login.service';
-import { AuthenticationManager } from './authentication-manager';
+import { OrderService } from '../providers/order.service';
+import { KitchenService } from '../providers//kitchen.service';
+import { ProductService } from '../providers//product.service';
+import { IngredientService } from '../providers//ingredient.service';
+import { CategoryService } from '../providers//category.service';
+import { SummaryService } from '../providers//summary.service';
+import { LoginService } from '../providers//login.service';
+import { AuthenticationManager } from '../providers//authentication-manager';
 
 @NgModule({
   declarations: [

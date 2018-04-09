@@ -5,7 +5,7 @@ import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-
 
 import { AppComponent } from '../../app/app.component';
 import { KitchenDetailsComponent } from '../kitchen-details/kitchen-details.component';
-import { KitchenService } from '../../app/kitchen.service';
+import { KitchenService } from '../../providers/kitchen.service';
 import { NavMock, NavParamsMock, KitchenMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: KitchenDetailsComponent;

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Util } from './util';
-import { Operations } from './commons';
+import { Util } from '../app/util';
+import { Operations } from '../app/commons';
 import { AuthenticationManager } from './authentication-manager';
-import { Summary } from './summary';
+import { Summary } from '../app/summary';
 
 @Injectable()
 export class SummaryService {
