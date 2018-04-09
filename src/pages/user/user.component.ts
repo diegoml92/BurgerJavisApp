@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from '../../app/commons';
 import { LoginComponent } from '../login/login.component';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 
 @Component({
   templateUrl: 'user.component.html',

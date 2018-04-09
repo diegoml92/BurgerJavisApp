@@ -5,7 +5,7 @@ import { NavController, AlertController,
 import { Order } from '../../app/order';
 import { N_COLS } from '../../app/commons';
 import { KitchenDetailsComponent } from '../../pages/kitchen-details/kitchen-details.component';
-import { KitchenService } from '../../app/kitchen.service';
+import { KitchenService } from '../../providers/kitchen.service';
 
 @Component({
   templateUrl: 'kitchen.component.html'

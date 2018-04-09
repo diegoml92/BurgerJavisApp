@@ -4,7 +4,7 @@ import { NavController, NavParams, AlertController,
   LoadingController, ToastController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
-import { CategoryService } from '../../app/category.service';
+import { CategoryService } from '../../providers/category.service';
 
 @Component({
   templateUrl: 'category-details.component.html'

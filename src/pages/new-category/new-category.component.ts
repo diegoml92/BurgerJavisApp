@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder,
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
-import { CategoryService } from '../../app/category.service';
+import { CategoryService } from '../../providers/category.service';
 
 
 @Component({

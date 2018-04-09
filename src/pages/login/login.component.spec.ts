@@ -6,9 +6,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicModule, NavController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 import { LoginComponent } from '../login/login.component';
-import { LoginService } from '../../app/login.service';
+import { LoginService } from '../../providers/login.service';
 import { SplashScreenMock, StatusBarMock, NavMock, 
   LoginMock, AuthMock } from '../../test/mocks';
  

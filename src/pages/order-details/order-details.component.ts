@@ -5,8 +5,8 @@ import { NavController, NavParams, LoadingController, ToastController,
 import { Order } from '../../app/order';
 import { OrderItem } from '../../app/order-item';
 import { OrderState } from '../../app/commons';
-import { OrderService } from '../../app/order.service';
-import { ProductService } from '../../app/product.service';
+import { OrderService } from '../../providers/order.service';
+import { ProductService } from '../../providers/product.service';
 import { PopoverListComponent } from './popover-list.component';
 
 

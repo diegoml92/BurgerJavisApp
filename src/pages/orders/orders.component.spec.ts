@@ -6,7 +6,7 @@ import { IonicModule, NavController, LoadingController } from 'ionic-angular';
 import { AppComponent } from '../../app/app.component';
 import { OrdersComponent } from './orders.component';
 import { NewOrderComponent } from '../new-order/new-order.component';
-import { OrderService } from '../../app/order.service';
+import { OrderService } from '../../providers/order.service';
 import { NavMock, LoadingControllerMock, OrderMock } from '../../test/mocks';
  
 let comp: OrdersComponent;

@@ -5,8 +5,8 @@ import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-
 
 import { AppComponent } from '../../app/app.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
-import { ProductService } from '../../app/product.service';
-import { IngredientService } from '../../app/ingredient.service';
+import { ProductService } from '../../providers/product.service';
+import { IngredientService } from '../../providers/ingredient.service';
 import { NavMock, NavParamsMock, IngredientMock,
   ProductMock, LoadingControllerMock } from '../../test/mocks';
  

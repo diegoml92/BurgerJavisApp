@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { MenuController } from 'ionic-angular';
 
-import { BASIC_PREFIX, JSON_HEADER_NAME, JSON_HEADER_VALUE } from './commons';
-import { Credentials } from './credentials';
-import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from './commons';
+import { BASIC_PREFIX, JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
+import { Credentials } from '../app/credentials';
+import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from '../app/commons';
 
 @Injectable()
 export class AuthenticationManager {

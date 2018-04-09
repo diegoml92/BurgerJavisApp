@@ -3,7 +3,7 @@ import { Http, HttpModule, BaseRequestOptions,
   Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { Product } from './product';
+import { Product } from '../app/product';
 import { AuthMock, ProductMock } from '../test/mocks';
 
 import { ProductService } from './product.service';

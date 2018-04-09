@@ -4,8 +4,8 @@ import { ToastController, LoadingController, NavController } from 'ionic-angular
 
 import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from '../../app/commons';
 import { Credentials } from '../../app/credentials';
-import { LoginService } from '../../app/login.service';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { LoginService } from '../../providers/login.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 
 import { OrdersComponent } from '../../pages/orders/orders.component';
 import { SummaryComponent } from '../../pages/summary/summary.component';

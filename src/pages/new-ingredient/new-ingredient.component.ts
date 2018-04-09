@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder,
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
-import { IngredientService } from '../../app/ingredient.service';
+import { IngredientService } from '../../providers/ingredient.service';
 
 @Component({
   templateUrl: 'new-ingredient.component.html'

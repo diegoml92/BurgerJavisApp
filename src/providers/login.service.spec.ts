@@ -3,8 +3,8 @@ import { Http, HttpModule, BaseRequestOptions,
   Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { Credentials } from './credentials';
-import { ROLE_ADMIN } from './commons';
+import { Credentials } from '../app/credentials';
+import { ROLE_ADMIN } from '../app/commons';
 import { LoginService } from './login.service';
 import { compareSync, hashSync } from 'bcryptjs';
   

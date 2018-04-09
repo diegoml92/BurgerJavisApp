@@ -7,7 +7,7 @@ import { AppComponent } from '../../app/app.component';
 import { IngredientsComponent } from './ingredients.component';
 import { IngredientDetailsComponent } from '../ingredient-details/ingredient-details.component';
 import { NewIngredientComponent } from '../new-ingredient/new-ingredient.component';
-import { IngredientService } from '../../app/ingredient.service';
+import { IngredientService } from '../../providers/ingredient.service';
 import { NavMock, LoadingControllerMock, IngredientMock } from '../../test/mocks';
  
 let comp: IngredientsComponent;

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
-import { IngredientService } from '../../app/ingredient.service';
+import { IngredientService } from '../../providers/ingredient.service';
 import { IngredientDetailsComponent } from 
   '../ingredient-details/ingredient-details.component';
 import { NewIngredientComponent } from 

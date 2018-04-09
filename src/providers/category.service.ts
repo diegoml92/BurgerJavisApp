@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Util } from './util';
-import { Operations } from './commons';
-import { Category } from './category';
+import { Util } from '../app/util';
+import { Operations } from '../app/commons';
+import { Category } from '../app/category';
 import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
 

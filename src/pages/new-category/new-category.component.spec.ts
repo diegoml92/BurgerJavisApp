@@ -6,7 +6,7 @@ import { IonicModule, NavController, LoadingController} from 'ionic-angular';
 import { AppComponent } from '../../app/app.component';
 import { NewCategoryComponent } from './new-category.component';
 import { Category } from '../../app/category';
-import { CategoryService } from '../../app/category.service';
+import { CategoryService } from '../../providers/category.service';
 import { NavMock, CategoryMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: NewCategoryComponent;

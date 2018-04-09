@@ -3,7 +3,7 @@ import { LoadingController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
 import { Summary } from '../../app/summary';
-import { SummaryService } from '../../app/summary.service';
+import { SummaryService } from '../../providers/summary.service';
 
 
 @Component({

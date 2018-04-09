@@ -2,9 +2,9 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { Headers } from '@angular/http';
 
 import { MenuController } from 'ionic-angular';
-import { Credentials } from './credentials';
+import { Credentials } from '../app/credentials';
 import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN, BASIC_PREFIX, 
-  JSON_HEADER_NAME, JSON_HEADER_VALUE } from './commons';
+  JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
 import { AuthenticationManager } from './authentication-manager';
 import { MenuControllerMock } from '../test/mocks';
   

@@ -8,8 +8,8 @@ import { IngredientsComponent } from '../ingredients/ingredients.component';
 import { CategoriesComponent } from '../categories/categories.component';
 
 import { Product } from '../../app/product';
-import { ProductService } from '../../app/product.service';
-import { AuthenticationManager } from '../../app/authentication-manager';
+import { ProductService } from '../../providers/product.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 
 @Component({
   template: `

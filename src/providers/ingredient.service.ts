@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Ingredient } from './ingredient';
-import { Util } from './util';
-import { Operations } from './commons';
+import { Ingredient } from '../app/ingredient';
+import { Util } from '../app/util';
+import { Operations } from '../app/commons';
 import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
 

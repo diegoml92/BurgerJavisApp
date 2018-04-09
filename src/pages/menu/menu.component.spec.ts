@@ -6,8 +6,8 @@ import { IonicModule, NavController, LoadingController } from 'ionic-angular';
 import { AppComponent } from '../../app/app.component';
 import { MenuComponent } from '../menu/menu.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
-import { AuthenticationManager } from '../../app/authentication-manager';
-import { ProductService } from '../../app/product.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
+import { ProductService } from '../../providers/product.service';
 import { NavMock, AuthMock, ProductMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: MenuComponent;
