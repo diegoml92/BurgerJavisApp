@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { Util } from '../app/util';
 import { Operations } from '../app/commons';
 import { Category } from '../app/category';
+import { Credentials } from '../app/credentials';
 import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
 
@@ -11,16 +12,16 @@ export class CategoryService {
 
   categoryList: Category[];
 
-  constructor(private http: Http, private auth: AuthenticationManager) {}
+  constructor(private http: HTTP, private auth: AuthenticationManager) {}
 
   /** Return category list */
   getCategoryList(): Promise<Category[]> {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
-    return this.http.get(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null, 
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        this.categoryList = response.json() as Category[];
+        this.categoryList = response.data as Category[];
         return this.categoryList;
       });
   }
@@ -28,11 +29,12 @@ export class CategoryService {
   /** Create new category */
   addCategory(category: Category) {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
-    return this.http.post(request, JSON.stringify(category), 
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    this.http.setDataSerializer('json');
+    return this.http.post(request, category,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newCategory = response.json() as Category;
+        let newCategory = response.data as Category;
         this.categoryList.push(newCategory);
         return newCategory;
       });
@@ -42,16 +44,17 @@ export class CategoryService {
   updateCategory(category: Category): Promise<Category> {
     var request: string =
         Util.getUrlForAction(Operations.CATEGORIES, category._id);
-    return this.http.put(request, JSON.stringify(category),
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    this.http.setDataSerializer('json');
+    return this.http.put(request, category,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newCategory = response.json() as Category;
+        let newCategory = response.data as Category;
         let index = this.categoryList.indexOf(category);
         if(index >= 0) {
           this.categoryList[index] = newCategory;
         }
-        return response.json();
+        return response.data;
       });
   }
 
@@ -59,15 +62,15 @@ export class CategoryService {
   removeCategory(category: Category) {
     var request : string = 
         Util.getUrlForAction(Operations.CATEGORIES, category._id);
-    return this.http.delete(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.delete(request, null, 
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
         let index = this.categoryList.indexOf(category);
         if(index >= 0) {
           this.categoryList.splice(index, 1);
         }
-        return response.json();
+        return response.data;
       });
   }
 

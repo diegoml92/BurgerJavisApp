@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { Product } from '../app/product';
 import { Util } from '../app/util';
+import { Credentials } from '../app/credentials';
 import { Operations } from '../app/commons';
 import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
@@ -11,16 +12,16 @@ export class ProductService {
 
   productList: Product[];
 
-  constructor(private http: Http, private auth: AuthenticationManager) {}
+  constructor(private http: HTTP, private auth: AuthenticationManager) {}
 
   /** Return product list */
   getProductList(): Promise<Product[]> {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);
-    return this.http.get(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        this.productList = response.json() as Product[];
+        this.productList = response.data as Product[];
         return this.productList;
       });
   }
@@ -28,11 +29,11 @@ export class ProductService {
   /** Create new product */
   addProduct(product: Product) {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);
-    return this.http.post(request, JSON.stringify(product), 
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.post(request, product, 
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newProduct = response.json() as Product;
+        let newProduct = response.data as Product;
         this.productList.push(newProduct);
         return newProduct;
       });
@@ -42,16 +43,16 @@ export class ProductService {
   updateProduct(product: Product): Promise<Product> {
     var request: string =
         Util.getUrlForAction(Operations.PRODUCTS, product._id);
-    return this.http.put(request, JSON.stringify(product),
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.put(request, product,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newProduct = response.json() as Product;
+        let newProduct = response.data as Product;
         let index = this.productList.indexOf(product);
         if(index >= 0) {
           this.productList[index] = newProduct;
         }
-        return response.json();
+        return response.data;
       });
   }
 
@@ -59,15 +60,15 @@ export class ProductService {
   removeProduct(product: Product) {
     var request : string = 
         Util.getUrlForAction(Operations.PRODUCTS, product._id);
-    return this.http.delete(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.delete(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
         let index = this.productList.indexOf(product);
         if(index >= 0) {
           this.productList.splice(index, 1);
         }
-        return response.json();
+        return response.data;
       });
   }
 

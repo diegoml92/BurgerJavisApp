@@ -1,6 +1,7 @@
 import { TestBed, async, fakeAsync, tick, inject } from '@angular/core/testing';
 import { Http, HttpModule, BaseRequestOptions,
   Response, ResponseOptions } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { MockBackend } from '@angular/http/testing';
 
 import { OrderState } from '../app/commons';
@@ -8,6 +9,7 @@ import { Order } from '../app/order';
 import { OrderItem } from '../app/order-item';
 import { Product } from '../app/product';
 import { AuthMock, OrderMock } from '../test/mocks';
+import { HttpBrowser } from '../browser/http-browser';
 
 import { OrderService } from './order.service';
 import { AuthenticationManager } from './authentication-manager';
@@ -37,6 +39,10 @@ describe('Provider: Order Service', () => {
               return new Http(mockBackend, options);
             },
             deps: [MockBackend, BaseRequestOptions]
+          },
+          {
+            provide: HTTP,
+            useClass: HttpBrowser
           }
       ],
 

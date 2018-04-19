@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { Util } from '../app/util';
+import { Credentials } from '../app/credentials';
 import { Operations } from '../app/commons';
 import { Order } from '../app/order';
 import { AuthenticationManager } from './authentication-manager';
@@ -11,16 +12,16 @@ export class OrderService {
 
   orderList: Order[];
 
-  constructor(private http: Http, private auth: AuthenticationManager) {}
+  constructor(private http: HTTP, private auth: AuthenticationManager) {}
 
   /** Return order list */
   getOrderList(): Promise<Order[]> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
-    return this.http.get(request, 
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        this.orderList = response.json() as Order[];
+        this.orderList = response.data as Order[];
         return this.orderList;
       });
   }
@@ -28,11 +29,11 @@ export class OrderService {
   /** Create new order */
   addOrder(order: Order): Promise<Order> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
-    return this.http.post(request, JSON.stringify(order), 
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.post(request, order, 
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newOrder = response.json() as Order;
+        let newOrder = response.data as Order;
         this.orderList.push(newOrder);
         return newOrder;
       });
@@ -42,16 +43,16 @@ export class OrderService {
   updateOrder(order: Order): Promise<Order> {
     var request: string =
         Util.getUrlForAction(Operations.ORDERS, order._id);
-    return this.http.put(request, JSON.stringify(order),
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.put(request, order,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newOrder = response.json() as Order;
+        let newOrder = response.data as Order;
         let index = this.orderList.indexOf(order);
         if(index >= 0) {
           this.orderList[index] = newOrder;
         }
-        return response.json();
+        return response.data;
       });
   }
 
@@ -59,15 +60,15 @@ export class OrderService {
   removeOrder(order: Order) {
     var request : string = 
         Util.getUrlForAction(Operations.ORDERS, order._id);
-    return this.http.delete(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.delete(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
         let index = this.orderList.indexOf(order);
         if(index >= 0) {
           this.orderList.splice(index, 1);
         }
-        return response.json();
+        return response.data;
       });
   }
 

@@ -1,10 +1,13 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { HTTP } from '@ionic-native/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+
+import { HttpBrowser } from '../browser/http-browser';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from '../pages/login/login.component';
@@ -59,8 +62,8 @@ import { AuthenticationManager } from '../providers//authentication-manager';
     UserComponent
   ],
   imports: [
-    HttpModule,
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(AppComponent)
   ],
   bootstrap: [IonicApp],
@@ -89,7 +92,8 @@ import { AuthenticationManager } from '../providers//authentication-manager';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: HTTP, useClass: HttpBrowser },
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthenticationManager,
     OrderService,
     KitchenService,

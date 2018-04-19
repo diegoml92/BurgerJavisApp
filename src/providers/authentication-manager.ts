@@ -11,7 +11,9 @@ export class AuthenticationManager {
 
   private credentials : Credentials;
 
-  constructor(private menuCtrl: MenuController) {}
+  constructor(private menuCtrl: MenuController) {
+    this.resetCredentials();
+  }
 
   private enableSideMenu() {
     if(this.credentials.roles.length == 1) {
@@ -36,33 +38,38 @@ export class AuthenticationManager {
     }
   }
 
-  setCredentials(credentials: Credentials) {
+  public setCredentials(credentials: Credentials) {
     this.credentials = credentials;
     this.enableSideMenu();
   }
 
-  resetCredentials() {
+  public resetCredentials() {
     this.credentials = new Credentials();
   }
 
-  getCredentials(): Credentials {
+  public getCredentials(): Credentials {
     return this.credentials;
   }
 
-  getRole(): string {
+  public getRole(): string {
     if(this.credentials.roles.length == 1) {
       return this.credentials.roles[0];
     } else {
       throw "Invalid user with multiple roles";      
     }
-  } 
-
-  generateAuthHeader(): Headers {
-    var ascii = this.credentials.username + ":" + this.credentials.password;
-  	return new Headers({'Authorization': BASIC_PREFIX + new Buffer(ascii).toString('base64')});
   }
 
-  generateJsonAuthHeader(): Headers {
+  public generateAuthHeader(): Headers {
+    var ascii = this.credentials.username + ":" + this.credentials.password;
+    if(ascii !== ":") {
+      return new Headers({'Authorization': BASIC_PREFIX + 
+                            new Buffer(ascii).toString('base64')});
+    } else {
+      return new Headers();
+    }
+  }
+
+  public generateJsonAuthHeader(): Headers {
     var ascii = this.credentials.username + ":" + this.credentials.password;
     var headers = new Headers();
     headers.append(JSON_HEADER_NAME, JSON_HEADER_VALUE);
@@ -70,7 +77,7 @@ export class AuthenticationManager {
     return headers;
   }
 
-  isAdmin(): boolean {
+  public isAdmin(): boolean {
     return this.credentials.roles.indexOf(ROLE_ADMIN) >= 0;
   }
 

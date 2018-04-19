@@ -1,10 +1,12 @@
 import { TestBed, async, fakeAsync, tick, inject } from '@angular/core/testing';
 import { Http, HttpModule, BaseRequestOptions,
   Response, ResponseOptions } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { MockBackend } from '@angular/http/testing';
 
 import { Ingredient } from '../app/ingredient';
 import { AuthMock, IngredientMock } from '../test/mocks';
+import { HttpBrowser } from '../browser/http-browser';
 
 import { IngredientService } from './ingredient.service';
 import { AuthenticationManager } from './authentication-manager';
@@ -34,6 +36,10 @@ describe('Provider: Ingredient Service', () => {
               return new Http(mockBackend, options);
             },
             deps: [MockBackend, BaseRequestOptions]
+          },
+          {
+            provide: HTTP,
+            useClass: HttpBrowser
           }
       ],
 

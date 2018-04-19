@@ -1,11 +1,15 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { Http, HttpModule, BaseRequestOptions,
   Response, ResponseOptions } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { MockBackend } from '@angular/http/testing';
 
 import { Credentials } from '../app/credentials';
 import { ROLE_ADMIN } from '../app/commons';
 import { LoginService } from './login.service';
+import { AuthenticationManager } from './authentication-manager';
+import { AuthMock } from '../test/mocks';
+import { HttpBrowser } from '../browser/http-browser';
 import { compareSync, hashSync } from 'bcryptjs';
   
 describe('Provider: Login Service', () => {
@@ -28,6 +32,14 @@ describe('Provider: Login Service', () => {
               return new Http(mockBackend, options);
             },
             deps: [MockBackend, BaseRequestOptions]
+          },
+          {
+            provide: HTTP,
+            useClass: HttpBrowser
+          },
+          {
+            provide: AuthenticationManager,
+            useClass: AuthMock
           }
       ],
 
