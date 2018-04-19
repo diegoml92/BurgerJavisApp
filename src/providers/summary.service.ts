@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { Util } from '../app/util';
+import { Credentials } from '../app/credentials';
 import { Operations } from '../app/commons';
 import { AuthenticationManager } from './authentication-manager';
 import { Summary } from '../app/summary';
@@ -10,16 +11,16 @@ export class SummaryService {
 
   summaryData: Summary;
 
-  constructor(private http: Http, private auth: AuthenticationManager) {
+  constructor(private http: HTTP, private auth: AuthenticationManager) {
   }
 
   getSummaryData(): Promise<Summary> {
     var request : string = Util.getUrlForAction(Operations.SUMMARY);
-    return this.http.get(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        this.summaryData = response.json() as Summary;
+        this.summaryData = response.data as Summary;
         return this.summaryData;
       });
   }

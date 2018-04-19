@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HTTP } from '@ionic-native/http';
 import { Ingredient } from '../app/ingredient';
 import { Util } from '../app/util';
+import { Credentials } from '../app/credentials';
 import { Operations } from '../app/commons';
 import { AuthenticationManager } from './authentication-manager';
 import 'rxjs/add/operator/toPromise';
@@ -11,18 +12,18 @@ export class IngredientService {
 
   ingredientList: Ingredient[];
 
-  constructor(private http: Http, private auth: AuthenticationManager) {
+  constructor(private http: HTTP, private auth: AuthenticationManager) {
     this.ingredientList = [];
   }
 
   /** Return ingredient list */
   getIngredientList(): Promise<Ingredient[]> {
     var request : string = Util.getUrlForAction(Operations.INGREDIENTS);
-    return this.http.get(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        this.ingredientList = response.json() as Ingredient[];
+        this.ingredientList = response.data as Ingredient[];
         return this.ingredientList;
       });
   }
@@ -30,11 +31,11 @@ export class IngredientService {
   /** Create new ingredient */
   addIngredient(ingredient: Ingredient): Promise<Ingredient> {
     var request : string = Util.getUrlForAction(Operations.INGREDIENTS);
-    return this.http.post(request, JSON.stringify(ingredient), 
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.post(request, ingredient, 
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newIngredient = response.json() as Ingredient;
+        let newIngredient = response.data as Ingredient;
         this.ingredientList.push(newIngredient);
         return newIngredient;
       });
@@ -44,16 +45,16 @@ export class IngredientService {
   updateIngredient(ingredient: Ingredient): Promise<Ingredient> {
     var request: string =
         Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
-    return this.http.put(request, JSON.stringify(ingredient),
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.put(request, ingredient,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
-        let newIngredient = response.json() as Ingredient;
+        let newIngredient = response.data as Ingredient;
         let index = this.ingredientList.indexOf(ingredient);
         if(index >= 0) {
           this.ingredientList[index] = newIngredient;
         }
-        return response.json();
+        return response.data;
       });
   }
 
@@ -61,15 +62,15 @@ export class IngredientService {
   removeIngredient(ingredient: Ingredient): Promise<any> {
     var request : string = 
         Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
-    return this.http.delete(request,
-        {headers: this.auth.generateAuthHeader()})
-      .toPromise()
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.delete(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
       .then(response => {
         let index = this.ingredientList.indexOf(ingredient);
         if(index >= 0) {
           this.ingredientList.splice(index, 1);
         }
-        return response.json();
+        return response.data;
       });
   }
 
