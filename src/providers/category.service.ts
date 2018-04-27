@@ -26,6 +26,17 @@ export class CategoryService {
       });
   }
 
+  /** Return requested category */
+  getCategory(category: Category): Promise<Category> {
+    var request : string = Util.getUrlForAction(Operations.CATEGORIES, category._id);
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
+      .then(response => {
+        return response.data as Category;
+      });
+  }
+
   /** Create new category */
   addCategory(category: Category) {
     var request : string = Util.getUrlForAction(Operations.CATEGORIES);
