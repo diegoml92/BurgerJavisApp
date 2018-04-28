@@ -24,6 +24,28 @@ export class CategoryDetailsComponent {
     this.category = this.navParams.get('category');
   }
 
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando categoría..."
+    });
+    loading.present();
+    this.categoryService.getCategory(this.category)
+      .then(category => {
+        this.category = category;
+        loading.dismiss();
+      })
+      .catch(err => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener la categoría',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+        this.navCtrl.popToRoot();
+      });
+  }
+
   removeCategory() {
     let loading = this.loadingCtrl.create({
       content: "Borrando categoría..."

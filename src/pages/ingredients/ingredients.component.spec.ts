@@ -147,17 +147,5 @@ describe('Component: Ingredients Component', () => {
     expect(navCtrl.push).toHaveBeenCalledWith(NewIngredientComponent);
 
   });
-
-  xit('should launch previous view when the back button is clicked', () => {
-
-    let navCtrl = fixture.debugElement.injector.get(NavController);
-    spyOn(navCtrl, 'pop');
-
-    de = fixture.debugElement.query(By.css('.back-button'));
-    de.triggerEventHandler('click', null);
-
-    expect(navCtrl.pop).toHaveBeenCalled();
-
-  });
  
 });

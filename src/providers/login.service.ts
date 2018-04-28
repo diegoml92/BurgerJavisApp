@@ -15,7 +15,6 @@ export class LoginService {
   login(credentials: Credentials): Promise<any> {
     var request : string = 
         Util.getUrlForAction(Operations.USERS, credentials.username);
-    console.log(request);
     return this.http.get(request, null, null)
               .then(response => {
                 var session = response.data as Credentials;

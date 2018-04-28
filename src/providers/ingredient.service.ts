@@ -28,6 +28,17 @@ export class IngredientService {
       });
   }
 
+  /** Return requested ingredient */
+  getIngredient(ingredient: Ingredient): Promise<Ingredient> {
+    var request : string = Util.getUrlForAction(Operations.INGREDIENTS, ingredient._id);
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
+      .then(response => {
+        return response.data as Ingredient;
+      });
+  }
+
   /** Create new ingredient */
   addIngredient(ingredient: Ingredient): Promise<Ingredient> {
     var request : string = Util.getUrlForAction(Operations.INGREDIENTS);

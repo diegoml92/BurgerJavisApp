@@ -26,6 +26,17 @@ export class OrderService {
       });
   }
 
+  /** Return requested order */
+  getOrder(order: Order): Promise<Order> {
+    var request : string = Util.getUrlForAction(Operations.ORDERS, order._id);
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
+      .then(response => {
+        return response.data as Order;
+      });
+  }
+
   /** Create new order */
   addOrder(order: Order): Promise<Order> {
     var request : string = Util.getUrlForAction(Operations.ORDERS);
