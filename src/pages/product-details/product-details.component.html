@@ -20,6 +20,11 @@
     </ion-item>
   </ion-list>
 
+  <ion-item fixed>
+    <ion-label>Precio</ion-label>
+    <ion-input type="number" [(ngModel)]="product.price" name="price" (input)="modified = true"></ion-input>€
+  </ion-item>
+
   <div padding>
     <button ion-button class="save-button" type="submit" *ngIf="modified" (click)="updateProduct()" block>Guardar cambios</button>
   </div>
