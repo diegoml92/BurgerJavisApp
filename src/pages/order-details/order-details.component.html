@@ -27,6 +27,13 @@
     </ion-item>
   </ion-list>
 
+  <ion-item *ngIf="isInitial(order) && isAdmin() && usernames">
+    <ion-label>Propietario</ion-label>
+    <ion-select [(ngModel)]="order.username">
+      <ion-option *ngFor="let username of usernames" [value]="username" [selected]="username === order.username" (ionSelect)="modified = true">{{username}}</ion-option>
+    </ion-select>
+  </ion-item>
+
   <div padding style="text-align: center;">
     <button class="save-button" ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>
     <button class="send-kitchen-button" ion-button type="submit" *ngIf="order.items && order.items.length && isInitial(order)" (click)="sendToKitchenConfirmation()" block>Enviar a cocina</button>

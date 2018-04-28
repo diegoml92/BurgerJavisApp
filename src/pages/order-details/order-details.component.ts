@@ -7,6 +7,8 @@ import { OrderItem } from '../../app/order-item';
 import { OrderState } from '../../app/commons';
 import { OrderService } from '../../providers/order.service';
 import { ProductService } from '../../providers/product.service';
+import { LoginService } from '../../providers/login.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
 import { PopoverListComponent } from './popover-list.component';
 
 
@@ -16,6 +18,7 @@ import { PopoverListComponent } from './popover-list.component';
 export class OrderDetailsComponent {
 
   order: Order;
+  usernames: string[];
   modified : boolean = false;
 
   constructor(
@@ -26,7 +29,9 @@ export class OrderDetailsComponent {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private orderService: OrderService,
-    private productService: ProductService) {
+    private productService: ProductService,
+    private userService: LoginService,
+    private auth: AuthenticationManager) {
 
   	this.order = this.navParams.get('order');
 
@@ -35,6 +40,9 @@ export class OrderDetailsComponent {
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
       content: "Cargando comanda..."
+    });
+    let loading2 = this.loadingCtrl.create({
+      content: "Cargando usuarios..."
     });
     loading.present();
     this.orderService.getOrder(this.order)
@@ -52,6 +60,25 @@ export class OrderDetailsComponent {
         toast.present();
         this.navCtrl.popToRoot();
       });
+    if(this.isAdmin()) {
+      loading2.present();
+      this.userService.getUsernames()
+        .then(usernames => {
+          this.usernames = usernames;
+          loading2.dismiss();
+        })
+        .catch(err => {
+          loading2.dismiss();
+          console.error(JSON.stringify(err));
+          let toast = this.toastCtrl.create({
+            message: 'Error al obtener lista de usuarios',
+            duration: 3000,
+            position: 'bottom'
+          });
+          toast.present();
+          this.navCtrl.popToRoot();
+        });
+    }
   }
 
   increaseAmount(item: OrderItem) {
@@ -288,6 +315,10 @@ export class OrderDetailsComponent {
   isKitchen(order: Order): boolean {
     let value = OrderState[order.state];
     return value == OrderState.KITCHEN.toString();
+  }
+
+  isAdmin(): boolean  {
+    return this.auth.isAdmin();
   }
 
 }
