@@ -25,6 +25,28 @@ export class IngredientDetailsComponent {
     this.ingredient = this.navParams.get('ingredient');
   }
 
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando ingrediente..."
+    });
+    loading.present();
+    this.ingredientService.getIngredient(this.ingredient)
+      .then(ingredient => {
+        this.ingredient = ingredient;
+        loading.dismiss();
+      })
+      .catch(err => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener el ingrediente',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+        this.navCtrl.popToRoot();
+      });
+  }
+
   /** Update ingredient */
   updateIngredient() {
     let loading = this.loadingCtrl.create({

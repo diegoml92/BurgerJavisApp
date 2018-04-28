@@ -26,6 +26,17 @@ export class ProductService {
       });
   }
 
+  /** Return requested product */
+  getProduct(product: Product): Promise<Product> {
+    var request : string = Util.getUrlForAction(Operations.PRODUCTS, product._id);
+    var credentials : Credentials = this.auth.getCredentials();
+    return this.http.get(request, null,
+        this.http.getBasicAuthHeader(credentials.username, credentials.password))
+      .then(response => {
+        return response.data as Product;
+      });
+  }
+
   /** Create new product */
   addProduct(product: Product) {
     var request : string = Util.getUrlForAction(Operations.PRODUCTS);

@@ -29,6 +29,28 @@ export class ProductDetailsComponent {
 
   }
 
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando producto..."
+    });
+    loading.present();
+    this.productService.getProduct(this.product)
+      .then(product => {
+        this.product = product;
+        loading.dismiss();
+      })
+      .catch(err => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener el producto',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+        this.navCtrl.popToRoot();
+      });
+  }
+
   deleteIngredient(ingredient: Ingredient) {
     let iIndex = this.product.ingredients.indexOf(ingredient);
     if(iIndex => 0) {

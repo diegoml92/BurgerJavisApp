@@ -26,7 +26,7 @@ export class KitchenService {
       });
   }
 
-  /** Return order list for the kitchen */
+  /** Return requested order */
   getOrder(order: Order): Promise<Order> {
     var request : string = Util.getUrlForAction(Operations.KITCHEN, order._id);
     var credentials : Credentials = this.auth.getCredentials();

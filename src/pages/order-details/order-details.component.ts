@@ -32,6 +32,28 @@ export class OrderDetailsComponent {
 
   }
 
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando comanda..."
+    });
+    loading.present();
+    this.orderService.getOrder(this.order)
+      .then(order => {
+        this.order = order;
+        loading.dismiss();
+      })
+      .catch(err => {
+        loading.dismiss();
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener la comanda',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+        this.navCtrl.popToRoot();
+      });
+  }
+
   increaseAmount(item: OrderItem) {
     this.modified = true;
     item.amount += 1;
