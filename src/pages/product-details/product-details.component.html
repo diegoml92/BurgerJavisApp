@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{product.name}}</ion-title>
+    <ion-title (click)="updateName()">{{product.name}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="deleteProduct()">
         <ion-icon name="close" color="danger"></ion-icon>

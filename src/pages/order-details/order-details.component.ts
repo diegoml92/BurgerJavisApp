@@ -185,6 +185,48 @@ export class OrderDetailsComponent {
       });
   }
 
+  updateName() {
+    if (this.isInitial(this.order)) {
+      let alert = this.alertCtrl.create({
+        title: 'Nuevo nombre',
+        inputs: [
+          {
+            name: 'name',
+            placeholder: this.order.name,
+            type: 'text'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: data => {}
+          },
+          {
+            text: 'Actualizar',
+            handler: data => {
+              this.orderService.checkOrderName(data.name)
+                .then (result => {
+                  if (result === null) {
+                    this.order.name = data.name;
+                    this.modified = true;
+                  } else {
+                    let toast = this.toastCtrl.create({
+                      message: 'Este nombre ya está siendo usado',
+                      duration: 3000,
+                      position: 'bottom'
+                    });
+                    toast.present();
+                  }
+                });
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+  }
+
   removeOrder() {
     let loading = this.loadingCtrl.create({
       content: "Borrando pedido..."

@@ -12,6 +12,7 @@ import { CategoryService } from '../../providers/category.service';
 export class CategoryDetailsComponent {
 
   category: Category;
+  modified: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -22,6 +23,68 @@ export class CategoryDetailsComponent {
     private categoryService: CategoryService
   ) {
     this.category = this.navParams.get('category');
+  }
+
+  /** Update category */
+  updateCategory() {
+    let loading = this.loadingCtrl.create({
+      content: "Actualizando categoría..."
+    });
+    loading.present();
+    this.categoryService.updateCategory(this.category)
+      .then(() => {
+        loading.dismiss();
+        this.modified = false;
+      })
+      .catch(err => {
+        let toast = this.toastCtrl.create({
+          message: 'Error al actualiar el producto',
+          duration: 3000,
+          position: 'bottom'
+        });
+        loading.dismiss();
+        toast.present();
+      });
+  }
+
+  updateName() {
+    let alert = this.alertCtrl.create({
+      title: 'Nuevo nombre',
+      inputs: [
+        {
+          name: 'name',
+          placeholder: this.category.name,
+          type: 'text'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {}
+        },
+        {
+          text: 'Actualizar',
+          handler: data => {
+            this.categoryService.checkCategoryName(data.name)
+              .then (result => {
+                if (result === null) {
+                  this.category.name = data.name;
+                  this.modified = true;
+                } else {
+                  let toast = this.toastCtrl.create({
+                    message: 'Este nombre ya está siendo usado',
+                    duration: 3000,
+                    position: 'bottom'
+                  });
+                  toast.present();
+                }
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   removeCategory() {

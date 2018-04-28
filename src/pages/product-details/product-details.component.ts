@@ -116,6 +116,46 @@ export class ProductDetailsComponent {
       });
   }
 
+  updateName() {
+    let alert = this.alertCtrl.create({
+      title: 'Nuevo nombre',
+      inputs: [
+        {
+          name: 'name',
+          placeholder: this.product.name,
+          type: 'text'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {}
+        },
+        {
+          text: 'Actualizar',
+          handler: data => {
+            this.productService.checkProductName(data.name)
+              .then (result => {
+                if (result === null) {
+                  this.product.name = data.name;
+                  this.modified = true;
+                } else {
+                  let toast = this.toastCtrl.create({
+                    message: 'Este nombre ya está siendo usado',
+                    duration: 3000,
+                    position: 'bottom'
+                  });
+                  toast.present();
+                }
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   deleteProduct() {
     let confirm = this.alertCtrl.create({
       title: '¿Borrar ' + this.product.name + '?',
