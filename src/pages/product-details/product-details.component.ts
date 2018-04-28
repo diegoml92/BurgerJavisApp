@@ -3,8 +3,10 @@ import { NavController, NavParams, ToastController,
   AlertController, LoadingController } from 'ionic-angular';
 
 import { Product } from '../../app/product';
+import { Category } from '../../app/category';
 import { Ingredient } from '../../app/ingredient';
 import { ProductService } from '../../providers/product.service';
+import { CategoryService } from '../../providers/category.service';
 import { IngredientService } from '../../providers/ingredient.service';
 
 @Component({
@@ -13,6 +15,7 @@ import { IngredientService } from '../../providers/ingredient.service';
 export class ProductDetailsComponent {
 
   product: Product;
+  categories: Category[];
   modified: boolean = false;
 
   constructor(
@@ -22,6 +25,7 @@ export class ProductDetailsComponent {
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private productService: ProductService,
+    private categoryService: CategoryService,
     private ingredientService: IngredientService
   ) {
 
@@ -32,6 +36,9 @@ export class ProductDetailsComponent {
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
       content: "Cargando producto..."
+    });
+    let loading2 = this.loadingCtrl.create({
+      content: "Cargando categorías..."
     });
     loading.present();
     this.productService.getProduct(this.product)
@@ -49,6 +56,23 @@ export class ProductDetailsComponent {
         toast.present();
         this.navCtrl.popToRoot();
       });
+    loading2.present();
+      this.categoryService.getCategoryList()
+        .then(categories => {
+          this.categories = categories;
+          loading2.dismiss();
+        })
+        .catch(err => {
+          loading2.dismiss();
+          console.error(JSON.stringify(err));
+          let toast = this.toastCtrl.create({
+            message: 'Error al obtener lista de categorías',
+            duration: 3000,
+            position: 'bottom'
+          });
+          toast.present();
+          this.navCtrl.popToRoot();
+        });
   }
 
   deleteIngredient(ingredient: Ingredient) {

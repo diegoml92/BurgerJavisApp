@@ -25,6 +25,14 @@
     <ion-input type="number" [(ngModel)]="product.price" name="price" (input)="modified = true"></ion-input>€
   </ion-item>
 
+  <ion-item *ngIf="product && categories">
+    <ion-label>Categoría</ion-label>
+    <ion-select>
+      <ion-option value="default" (ionSelect)="product.category = {}; modified = true">Por defecto</ion-option>
+      <ion-option *ngFor="let category of categories" [value]="category" [selected]="category.name === product.category.name" (ionSelect)="product.category = category; modified = true">{{category.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+
   <div padding>
     <button ion-button class="save-button" type="submit" *ngIf="modified" (click)="updateProduct()" block>Guardar cambios</button>
   </div>
