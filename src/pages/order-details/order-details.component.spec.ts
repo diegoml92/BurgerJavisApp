@@ -7,7 +7,9 @@ import { AppComponent } from '../../app/app.component';
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { OrderService } from '../../providers/order.service';
 import { ProductService } from '../../providers/product.service';
-import { NavMock, NavParamsMock, OrderMock, 
+import { LoginService } from '../../providers/login.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
+import { NavMock, NavParamsMock, OrderMock, LoginMock, AuthMock,
   ProductMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: OrderDetailsComponent;
@@ -38,6 +40,14 @@ describe('Component: OrderDetails Component', () => {
         {
           provide: ProductService,
           useClass: ProductMock
+        },
+        {
+          provide: LoginService,
+          useClass: LoginMock
+        },
+        {
+          provide: AuthenticationManager,
+          useClass: AuthMock
         },
         {
           provide: LoadingController,

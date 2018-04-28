@@ -6,8 +6,9 @@ import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-
 import { AppComponent } from '../../app/app.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { ProductService } from '../../providers/product.service';
+import { CategoryService } from '../../providers/category.service';
 import { IngredientService } from '../../providers/ingredient.service';
-import { NavMock, NavParamsMock, IngredientMock,
+import { NavMock, NavParamsMock, IngredientMock, CategoryMock,
   ProductMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: ProductDetailsComponent;
@@ -34,6 +35,10 @@ describe('Component: ProductDetails Component', () => {
         {
           provide: ProductService,
           useClass: ProductMock
+        },
+        {
+          provide: CategoryService,
+          useClass: CategoryMock
         },
         {
           provide: IngredientService,
