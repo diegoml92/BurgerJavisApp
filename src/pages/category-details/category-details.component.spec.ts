@@ -97,6 +97,65 @@ describe('Component: CategoryDetails Component', () => {
 
   });
 
+  it('should call "updateName" when category name is clicked', () => {
+
+    spyOn(comp, 'updateName');
+
+    de = fixture.debugElement.query(By.css('ion-title'));
+    
+    expect(de).not.toBeNull();
+    de.triggerEventHandler('click', null);
+
+    expect(comp.updateName).toHaveBeenCalled();
+
+  });
+
+  it('should show "save" button when changes are made to the category', () => {
+
+    fixture.detectChanges();
+
+    expect(comp.modified).toBeFalsy();
+
+    de = fixture.debugElement.query(By.css('.save-button'));
+
+    expect(de).toBeNull();
+
+    comp.modified = true;
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('.save-button'));
+
+    expect(de).not.toBeNull();
+    expect(de.nativeElement.textContent).toContain('Guardar cambios');
+
+  });
+
+  it('should call "updateCategory" when "save" button is clicked', fakeAsync(() => {
+
+    let categoryService = fixture.debugElement.injector.get(CategoryService);
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+
+    spyOn(comp, 'updateCategory').and.callThrough();
+    spyOn(categoryService, 'updateCategory').and.returnValue(Promise.resolve(comp.category));
+    spyOn(navCtrl, 'popToRoot');
+
+    comp.modified = true;
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('.save-button'));
+    de.triggerEventHandler('click', null);
+
+    expect(comp.updateCategory).toHaveBeenCalled();
+    expect(categoryService.updateCategory).toHaveBeenCalledWith(comp.category);
+
+    tick();
+
+    expect(navCtrl.popToRoot).not.toHaveBeenCalled();
+
+  }));
+
   it('should call "deleteCategory" when "delete" button is clicked', () => {
 
     spyOn(comp, 'deleteCategory');

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title (click)="updateName()">
       {{order.name}}
       <ion-icon *ngIf="isKitchen(order)" name="log-in" style="color: orange;"></ion-icon>
       <ion-icon *ngIf="isServed(order)" name="log-out" style="color: green;"></ion-icon>
@@ -26,6 +26,13 @@
       </button>
     </ion-item>
   </ion-list>
+
+  <ion-item *ngIf="isInitial(order) && isAdmin() && usernames">
+    <ion-label>Propietario</ion-label>
+    <ion-select [(ngModel)]="order.username">
+      <ion-option *ngFor="let username of usernames" [value]="username" [selected]="username === order.username" (ionSelect)="modified = true">{{username}}</ion-option>
+    </ion-select>
+  </ion-item>
 
   <div padding style="text-align: center;">
     <button class="save-button" ion-button type="submit" *ngIf="modified" (click)="updateOrder()" block>Guardar cambios</button>

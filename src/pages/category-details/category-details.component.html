@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{category.name}}</ion-title>
+    <ion-title (click)="updateName()">{{category.name}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="deleteCategory()">
         <ion-icon name="close" color="danger"></ion-icon>
@@ -10,7 +10,13 @@
 </ion-header>
 
 <ion-content>
+
   <div padding style="text-align: center;">
     <em>No hay más datos</em>
   </div>
+
+  <div padding>
+    <button ion-button class="save-button" type="submit" *ngIf="modified" (click)="updateCategory()" block>Guardar cambios</button>
+  </div>
+
 </ion-content>
