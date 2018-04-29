@@ -79,7 +79,11 @@ describe('Component: ProductDetails Component', () => {
  
   });
 
-  it('should display ProductDetails view correctly', () => {
+  it('should display ProductDetails view correctly', fakeAsync(() => {
+
+    comp.ionViewWillEnter();
+
+    tick();
 
     fixture.detectChanges();
 
@@ -111,6 +115,16 @@ describe('Component: ProductDetails Component', () => {
 
     });
 
+    // price
+    de = fixture.debugElement.query(By.css('ion-item ion-input'));
+    let price = de.nativeElement;
+
+    expect(price.innerHTML).toContain(comp.product.price);
+
+    // category
+    de = fixture.debugElement.query(By.css('ion-item ion-select'));
+    expect(de).not.toBeNull();
+
     de = fixture.debugElement.query(By.css('ion-fab'));
 
     expect(de).not.toBeNull();
@@ -119,7 +133,7 @@ describe('Component: ProductDetails Component', () => {
 
     expect(de).toBeNull();
 
-  });
+  }));
 
   it('should show "save" button when changes are made to the product', () => {
 
@@ -184,6 +198,30 @@ describe('Component: ProductDetails Component', () => {
     de.triggerEventHandler('click', null);
 
     expect(comp.product.ingredients.length).toEqual(currentItems - 1);
+
+  });
+
+  it('should activate "modified" flag when price is modified', () => {
+
+    expect(comp.modified).toBeFalsy();
+
+    de = fixture.debugElement.query(By.css('ion-item ion-input'));
+    de.triggerEventHandler('input', null);
+
+    expect(comp.modified).toBeTruthy();
+
+  });
+
+  it('should call "updateName" when product name is clicked', () => {
+
+    spyOn(comp, 'updateName');
+
+    de = fixture.debugElement.query(By.css('ion-title'));
+    
+    expect(de).not.toBeNull();
+    de.triggerEventHandler('click', null);
+
+    expect(comp.updateName).toHaveBeenCalled();
 
   });
 

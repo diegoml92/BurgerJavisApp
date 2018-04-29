@@ -14,7 +14,16 @@ import { Summary } from '../app/summary';
 // APPLICATION MOCKS
 
 export class LoginMock {
+
+  public static mockUserList: string[] = [ "admin", "user1" ];
+
   login() {}
+
+  public getUsernames(): Promise<string[]> {
+    return new Promise<string[]>(resolve => {
+      resolve(LoginMock.mockUserList);
+    });
+  }
 }
 
 export class AuthMock {
@@ -96,6 +105,12 @@ export class OrderMock {
     return new Promise<Order[]>((resolve, reject) => {
       resolve(this.orderList);
     });
+  }
+
+  public getOrder(): Promise<Order> {
+    return new Promise(resolve => {
+      resolve(OrderMock.mockOrderList[0]);
+    })
   }
 
   public removeOrder(order: Order): Promise<any> {
@@ -188,6 +203,12 @@ export class IngredientMock {
     });
   }
 
+  public updateIngredient(ingredient: Ingredient): Promise<Ingredient> {
+    return new Promise((resolve) => {
+      resolve(ingredient);
+    });
+  }
+
   public removeIngredient(ingredient: Ingredient): Promise<any> {
     let index = this.ingredientList.indexOf(ingredient);
     if(index >= 0) {
@@ -241,6 +262,12 @@ export class ProductMock {
     return new Promise<Product[]>((resolve) => {
       resolve(this.productList);
     });
+  }
+
+  public getProduct(): Promise<Product> {
+    return new Promise(resolve => {
+      resolve(ProductMock.mockProductList[0]);
+    })
   }
 
   public addProduct(product: Product): Promise<Product> {
