@@ -12,6 +12,7 @@ import { IngredientService } from '../../providers/ingredient.service';
 export class IngredientDetailsComponent {
 
   ingredient: Ingredient;
+  modified: boolean = false;
 
   constructor(
     private navParams: NavParams,
@@ -44,6 +45,68 @@ export class IngredientDetailsComponent {
         toast.present();
         this.navCtrl.popToRoot();
       });
+  }
+
+  /** Update ingredient */
+  updateIngredient() {
+    let loading = this.loadingCtrl.create({
+      content: "Actualizando ingrediente..."
+    });
+    loading.present();
+    this.ingredientService.updateIngredient(this.ingredient)
+      .then(() => {
+        loading.dismiss();
+        this.modified = false;
+      })
+      .catch(err => {
+        let toast = this.toastCtrl.create({
+          message: 'Error al actualiar el producto',
+          duration: 3000,
+          position: 'bottom'
+        });
+        loading.dismiss();
+        toast.present();
+      });
+  }
+
+  updateName() {
+    let alert = this.alertCtrl.create({
+      title: 'Nuevo nombre',
+      inputs: [
+        {
+          name: 'name',
+          placeholder: this.ingredient.name,
+          type: 'text'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {}
+        },
+        {
+          text: 'Actualizar',
+          handler: data => {
+            this.ingredientService.checkIngredientName(data.name)
+              .then (result => {
+                if (result === null) {
+                  this.ingredient.name = data.name;
+                  this.modified = true;
+                } else {
+                  let toast = this.toastCtrl.create({
+                    message: 'Este nombre ya está siendo usado',
+                    duration: 3000,
+                    position: 'bottom'
+                  });
+                  toast.present();
+                }
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   /** Remove ingredient */

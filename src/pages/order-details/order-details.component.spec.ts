@@ -7,7 +7,9 @@ import { AppComponent } from '../../app/app.component';
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { OrderService } from '../../providers/order.service';
 import { ProductService } from '../../providers/product.service';
-import { NavMock, NavParamsMock, OrderMock, 
+import { LoginService } from '../../providers/login.service';
+import { AuthenticationManager } from '../../providers/authentication-manager';
+import { NavMock, NavParamsMock, OrderMock, LoginMock, AuthMock,
   ProductMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: OrderDetailsComponent;
@@ -38,6 +40,14 @@ describe('Component: OrderDetails Component', () => {
         {
           provide: ProductService,
           useClass: ProductMock
+        },
+        {
+          provide: LoginService,
+          useClass: LoginMock
+        },
+        {
+          provide: AuthenticationManager,
+          useClass: AuthMock
         },
         {
           provide: LoadingController,
@@ -118,6 +128,11 @@ describe('Component: OrderDetails Component', () => {
 
     });
 
+    // username
+    de = fixture.debugElement.query(By.css('ion-item ion-select'));
+
+    expect(de).toBeNull();
+
     de = fixture.debugElement.query(By.css('.send-kitchen-button'));
 
     expect(de).not.toBeNull();
@@ -133,6 +148,25 @@ describe('Component: OrderDetails Component', () => {
     expect(de).toBeNull();
 
   });
+
+  it('should allow username selection when current user is admin', fakeAsync(() => {
+
+    // Workaround, enum type is not working in tests
+    spyOn(comp, 'isInitial').and.returnValue(true);
+
+    spyOn(comp, 'isAdmin').and.returnValue(true);
+
+    comp.ionViewWillEnter();
+
+    tick();
+
+    fixture.detectChanges();
+
+    // username
+    de = fixture.debugElement.query(By.css('ion-item ion-select'));
+    expect(de).not.toBeNull();
+
+  }));
 
   it('should disable edition when order state is not "initial"', () => {
 
@@ -349,6 +383,19 @@ describe('Component: OrderDetails Component', () => {
     }
 
     expect(comp.order.items.length).toEqual(currentItems - 1);
+
+  });
+
+  it('should call "updateName" when order name is clicked', () => {
+
+    spyOn(comp, 'updateName');
+
+    de = fixture.debugElement.query(By.css('ion-title'));
+    
+    expect(de).not.toBeNull();
+    de.triggerEventHandler('click', null);
+
+    expect(comp.updateName).toHaveBeenCalled();
 
   });
 

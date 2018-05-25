@@ -29,4 +29,14 @@ export class LoginService {
               });
   }
 
+  /* Return username list */
+  getUsernames(): Promise<string[]> {
+    var request : string =
+        Util.getUrlForAction(Operations.USERNAMES);
+    return this.http.get(request, null, null)
+              .then(response => {
+                return response.data as string[];
+              });
+  }
+
 }

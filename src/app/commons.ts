@@ -20,5 +20,6 @@ export class Operations {
   static CATEGORIES = "/categories";
   static SUMMARY = "/summary";
   static USERS = "/users";
+  static USERNAMES = "/users/username";
   static KITCHEN = "/kitchen";
 }
