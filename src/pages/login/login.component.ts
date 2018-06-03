@@ -45,6 +45,7 @@ export class LoginComponent {
 
   private processLoginResult(result) {
     console.debug(JSON.stringify(result));
+    if(result != null) {
       this.auth.setCredentials (result);
       switch (this.auth.getRole()) {
         case ROLE_ADMIN:
