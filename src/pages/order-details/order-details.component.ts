@@ -37,14 +37,7 @@ export class OrderDetailsComponent {
 
   }
 
-  ionViewWillEnter() {
-    let loading = this.loadingCtrl.create({
-      content: "Cargando comanda..."
-    });
-    let loading2 = this.loadingCtrl.create({
-      content: "Cargando usuarios..."
-    });
-    loading.present();
+  private getOrder(loading) {
     this.orderService.getOrder(this.order)
       .then(order => {
         this.order = order;
@@ -60,24 +53,39 @@ export class OrderDetailsComponent {
         toast.present();
         this.navCtrl.popToRoot();
       });
+  }
+
+  private getUsernames(loading) {
+    this.userService.getUsernames()
+      .then(usernames => {
+        this.usernames = usernames;
+        loading.dismiss();
+      })
+      .catch(err => {
+        loading.dismiss();
+        console.error(JSON.stringify(err));
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener lista de usuarios',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+        this.navCtrl.popToRoot();
+      });
+  }
+
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando comanda..."
+    });
+    let loading2 = this.loadingCtrl.create({
+      content: "Cargando usuarios..."
+    });
+    loading.present();
+    this.getOrder(loading);
     if(this.isAdmin()) {
       loading2.present();
-      this.userService.getUsernames()
-        .then(usernames => {
-          this.usernames = usernames;
-          loading2.dismiss();
-        })
-        .catch(err => {
-          loading2.dismiss();
-          console.error(JSON.stringify(err));
-          let toast = this.toastCtrl.create({
-            message: 'Error al obtener lista de usuarios',
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-          this.navCtrl.popToRoot();
-        });
+      this.getUsernames(loading2);
     }
   }
 
@@ -97,6 +105,20 @@ export class OrderDetailsComponent {
     }
   }
 
+  private fillProducts(products, localList) {
+    for (let i=0; i<products.length; i++) {
+      let found = false;
+      let j=0;
+      while(!found && j<this.order.items.length) {
+        found = products[i]===this.order.items[j].product;
+        j++;
+      }
+      if(!found) {
+        localList.push(products[i]);
+      }
+    }
+  }
+
   addProduct() {
     let localList = [];
 
@@ -109,17 +131,7 @@ export class OrderDetailsComponent {
       .then(products => {
         loading.dismiss();
         if(this.order.items.length) {
-          for (let i=0; i<products.length; i++) {
-            let found = false;
-            let j=0;
-            while(!found && j<this.order.items.length) {
-              found = products[i]===this.order.items[j].product;
-              j++;
-            }
-            if(!found) {
-              localList.push(products[i]);
-            }
-          }
+          this.fillProducts(products, localList);
         } else {
           localList = products;
         }
@@ -234,6 +246,23 @@ export class OrderDetailsComponent {
       });
   }
 
+  private processData(data) {
+    this.orderService.checkOrderName(data.name)
+      .then (result => {
+        if (result === null) {
+          this.order.name = data.name;
+          this.modified = true;
+        } else {
+          let toast = this.toastCtrl.create({
+            message: 'Este nombre ya está siendo usado',
+            duration: 3000,
+            position: 'bottom'
+          });
+          toast.present();
+        }
+      });
+  }
+
   updateName() {
     if (this.isInitial(this.order)) {
       let alert = this.alertCtrl.create({
@@ -253,22 +282,7 @@ export class OrderDetailsComponent {
           },
           {
             text: 'Actualizar',
-            handler: data => {
-              this.orderService.checkOrderName(data.name)
-                .then (result => {
-                  if (result === null) {
-                    this.order.name = data.name;
-                    this.modified = true;
-                  } else {
-                    let toast = this.toastCtrl.create({
-                      message: 'Este nombre ya está siendo usado',
-                      duration: 3000,
-                      position: 'bottom'
-                    });
-                    toast.present();
-                  }
-                });
-            }
+            handler: data => { this.processData(data) }
           }
         ]
       });

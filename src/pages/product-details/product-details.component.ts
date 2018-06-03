@@ -33,14 +33,7 @@ export class ProductDetailsComponent {
 
   }
 
-  ionViewWillEnter() {
-    let loading = this.loadingCtrl.create({
-      content: "Cargando producto..."
-    });
-    let loading2 = this.loadingCtrl.create({
-      content: "Cargando categorías..."
-    });
-    loading.present();
+  private getProduct(loading) {
     this.productService.getProduct(this.product)
       .then(product => {
         this.product = product;
@@ -56,23 +49,38 @@ export class ProductDetailsComponent {
         toast.present();
         this.navCtrl.popToRoot();
       });
-    loading2.present();
-      this.categoryService.getCategoryList()
-        .then(categories => {
-          this.categories = categories;
-          loading2.dismiss();
-        })
-        .catch(err => {
-          loading2.dismiss();
-          console.error(JSON.stringify(err));
-          let toast = this.toastCtrl.create({
-            message: 'Error al obtener lista de categorías',
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-          this.navCtrl.popToRoot();
+  }
+
+  private getCategoryList(loading) {
+    this.categoryService.getCategoryList()
+      .then(categories => {
+        this.categories = categories;
+        loading.dismiss();
+      })
+      .catch(err => {
+        loading.dismiss();
+        console.error(JSON.stringify(err));
+        let toast = this.toastCtrl.create({
+          message: 'Error al obtener lista de categorías',
+          duration: 3000,
+          position: 'bottom'
         });
+        toast.present();
+        this.navCtrl.popToRoot();
+      });
+  }
+
+  ionViewWillEnter() {
+    let loading = this.loadingCtrl.create({
+      content: "Cargando producto..."
+    });
+    let loading2 = this.loadingCtrl.create({
+      content: "Cargando categorías..."
+    });
+    loading.present();
+    this.getProduct(loading);
+    loading2.present();
+    this.getCategoryList(loading2);
   }
 
   deleteIngredient(ingredient: Ingredient) {
@@ -81,6 +89,38 @@ export class ProductDetailsComponent {
       this.product.ingredients.splice(iIndex,1);
       this.modified = true;
     }
+  }
+
+  private fillIngredients(alert, ingredientList) {
+    for(let i=0; i<ingredientList.length; i++) {
+      let index = -1;
+      if(this.product.ingredients) {
+        index = this.product.ingredients.indexOf(ingredientList[i]);
+      }
+      alert.addInput({
+        type: 'checkbox',
+        label: ingredientList[i].name,
+        value: i.toString(),
+        checked: index >= 0
+      });
+    }
+  }
+
+  private addButtons(alert, ingredientList) {
+    alert.addButton('Cancelar');
+    alert.addButton({
+      text: 'Aceptar',
+      handler: data => {
+        for(let i=0; i<data.length; i++) {
+          let ing = ingredientList[data[i]];
+          if(this.product.ingredients &&
+              this.product.ingredients.indexOf(ing) < 0) {
+            this.product.ingredients.push(ing);
+            this.modified = true;
+          }
+        }
+      }
+    });
   }
 
   addIngredient() {
@@ -99,33 +139,10 @@ export class ProductDetailsComponent {
 
         ingredientList = ingredients;
 
-        for(let i=0; i<ingredientList.length; i++) {
-          let index = -1;
-          if(this.product.ingredients) {
-            index = this.product.ingredients.indexOf(ingredientList[i]);
-          }
-          alert.addInput({
-            type: 'checkbox',
-            label: ingredientList[i].name,
-            value: i.toString(),
-            checked: index >= 0
-          });
-        }
+        this.fillIngredients(alert, ingredientList);
 
-        alert.addButton('Cancelar');
-        alert.addButton({
-          text: 'Aceptar',
-          handler: data => {
-            for(let i=0; i<data.length; i++) {
-              let ing = ingredientList[data[i]];
-              if(this.product.ingredients &&
-                  this.product.ingredients.indexOf(ing) < 0) {
-                this.product.ingredients.push(ing);
-                this.modified = true;
-              }
-            }
-          }
-        });
+        this.addButtons(alert, ingredientList);
+
         alert.present();
 
       })

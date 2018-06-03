@@ -43,6 +43,36 @@ export class LoginComponent {
     });
   }
 
+  private processLoginResult(result) {
+    console.debug(JSON.stringify(result));
+    if(result != null) {
+      this.auth.setCredentials (result);
+      switch (this.auth.getRole()) {
+        case ROLE_ADMIN:
+          console.debug('SummaryComponent');
+          this.navCtrl.setRoot(SummaryComponent);
+          break;
+        case ROLE_WAITER:
+          console.debug('OrdersComponent');
+          this.navCtrl.setRoot(OrdersComponent);
+          break;
+        case ROLE_KITCHEN:
+          console.debug('KitchenComponent');
+          this.navCtrl.setRoot(KitchenComponent);
+          break;
+      }         
+    } else {
+      // User credentials are not correct
+      let toast = this.toastCtrl.create({
+        message: 'Los datos introducidos no son válidos',
+        duration: 3000,
+        position: 'bottom'
+      });
+      toast.present();
+      this.auth.resetCredentials ();
+    }
+  }
+
   login () {
     let loading = this.loadingCtrl.create({
       content: "Iniciando sesión..."
@@ -52,29 +82,7 @@ export class LoginComponent {
     this.loginService.login(credentials)
       .then(result => {
         loading.dismiss();
-        if(result != null) {
-          this.auth.setCredentials (result);
-          switch (this.auth.getRole()) {
-            case ROLE_ADMIN:
-              this.navCtrl.setRoot(SummaryComponent);
-              break;
-            case ROLE_WAITER:
-              this.navCtrl.setRoot(OrdersComponent);
-              break;
-            case ROLE_KITCHEN:
-              this.navCtrl.setRoot(KitchenComponent);
-              break;
-          }         
-        } else {
-          // User credentials are not correct
-          let toast = this.toastCtrl.create({
-            message: 'Los datos introducidos no son válidos',
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-          this.auth.resetCredentials ();
-        }
+        this.processLoginResult(result);
       })
       .catch(error => {
         loading.dismiss();

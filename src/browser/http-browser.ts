@@ -5,11 +5,13 @@ import { Http, Response } from '@angular/http';
 import { AuthenticationManager } from '../providers/authentication-manager';
 
 class CustomResponse implements HTTPResponse {
+
   public status: number;
   public headers: any;
   public url: string;
   public data?: any;
   public error?: any;
+
   constructor (response: Response) {
     this.status = response.status;
     this.data = response.json();
@@ -17,6 +19,7 @@ class CustomResponse implements HTTPResponse {
     this.headers = response.headers;
     this.url = response.url;
   }
+
 }
 
 @Injectable()
@@ -26,19 +29,27 @@ export class HttpBrowser extends HTTP {
     super();
   }
 
+  private getResponse(response: any): Promise<HTTPResponse> {
+    let httpResponse: HTTPResponse = new CustomResponse (response);
+    return new Promise<HTTPResponse>((resolve) => {
+      resolve(httpResponse);
+    });
+  }
+
+  private getErrorResponse(): Promise<HTTPResponse> {
+    return new Promise<HTTPResponse>((reject) => {
+      reject();
+    });
+  }
+
   get(url: string, parameters: any, headers: any): Promise<HTTPResponse> {
     return this.http.get(url, {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
-        let httpResponse: HTTPResponse = new CustomResponse (response);
-        return new Promise<HTTPResponse>((resolve) => {
-          resolve(httpResponse);
-        });
+        return this.getResponse(response);
       })
       .catch(() => {
-        return new Promise<HTTPResponse>((reject) => {
-          reject();
-        });
+        return this.getErrorResponse();
       });
   }
 
@@ -47,15 +58,10 @@ export class HttpBrowser extends HTTP {
         {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
-        let httpResponse: HTTPResponse = new CustomResponse (response);
-        return new Promise<HTTPResponse>((resolve) => {
-          resolve(httpResponse);
-        });
+        return this.getResponse(response);
       })
       .catch(() => {
-        return new Promise<HTTPResponse>((reject) => {
-          reject();
-        });
+        return this.getErrorResponse();
       });
   }
 
@@ -64,15 +70,10 @@ export class HttpBrowser extends HTTP {
         {headers: this.auth.generateJsonAuthHeader()})
       .toPromise()
       .then(response => {
-        let httpResponse: HTTPResponse = new CustomResponse (response);
-        return new Promise<HTTPResponse>((resolve) => {
-          resolve(httpResponse);
-        });
+        return this.getResponse(response);
       })
       .catch(() => {
-        return new Promise<HTTPResponse>((reject) => {
-          reject();
-        });
+        return this.getErrorResponse();
       });
   }
 
@@ -80,15 +81,10 @@ export class HttpBrowser extends HTTP {
     return this.http.delete(url, {headers: this.auth.generateAuthHeader()})
       .toPromise()
       .then(response => {
-        let httpResponse: HTTPResponse = new CustomResponse (response);
-        return new Promise<HTTPResponse>((resolve) => {
-          resolve(httpResponse);
-        });
+        return this.getResponse(response);
       })
       .catch(() => {
-        return new Promise<HTTPResponse>((reject) => {
-          reject();
-        });
+        return this.getErrorResponse();
       });
   }
 
