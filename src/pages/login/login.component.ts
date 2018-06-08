@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastController, LoadingController, NavController } from 'ionic-angular';
 
 import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN } from '../../app/commons';
+import { Util } from '../../app/util';
 import { Credentials } from '../../app/credentials';
 import { LoginService } from '../../providers/login.service';
 import { AuthenticationManager } from '../../providers/authentication-manager';
@@ -63,11 +64,8 @@ export class LoginComponent {
       }         
     } else {
       // User credentials are not correct
-      let toast = this.toastCtrl.create({
-        message: 'Los datos introducidos no son válidos',
-        duration: 3000,
-        position: 'bottom'
-      });
+      let toast = this.toastCtrl.create
+          (Util.getToastParams('Los datos introducidos no son válidos'));
       toast.present();
       this.auth.resetCredentials ();
     }
@@ -86,11 +84,7 @@ export class LoginComponent {
       })
       .catch(error => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'No se pudo iniciar sesión',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create(Util.getToastParams('No se pudo iniciar sesión'));
         this.auth.resetCredentials ();
         toast.present();
       });

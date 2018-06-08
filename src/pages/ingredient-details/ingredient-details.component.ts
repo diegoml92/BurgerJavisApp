@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController,
   AlertController, ToastController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../providers/ingredient.service';
 
@@ -37,11 +39,8 @@ export class IngredientDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener el ingrediente',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener el ingrediente'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -59,12 +58,9 @@ export class IngredientDetailsComponent {
         this.modified = false;
       })
       .catch(err => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualiar el producto',
-          duration: 3000,
-          position: 'bottom'
-        });
         loading.dismiss();
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al actualiar el producto'));
         toast.present();
       });
   }
@@ -94,11 +90,8 @@ export class IngredientDetailsComponent {
                   this.ingredient.name = data.name;
                   this.modified = true;
                 } else {
-                  let toast = this.toastCtrl.create({
-                    message: 'Este nombre ya está siendo usado',
-                    duration: 3000,
-                    position: 'bottom'
-                  });
+                  let toast = this.toastCtrl.create
+                      (Util.getToastParams('Este nombre ya está siendo usado'));
                   toast.present();
                 }
               });
@@ -121,11 +114,8 @@ export class IngredientDetailsComponent {
         this.navCtrl.pop();
       })
       .catch(() => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al borrar el ingrediente',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al borrar el ingrediente'));
         toast.present();
         loading.dismiss()
       });

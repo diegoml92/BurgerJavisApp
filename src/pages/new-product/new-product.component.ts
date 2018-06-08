@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Product } from '../../app/product';
 import { ProductService } from '../../providers/product.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -59,11 +61,8 @@ export class NewProductComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al crear el producto',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al crear el producto'));
         toast.present();
       });
   }

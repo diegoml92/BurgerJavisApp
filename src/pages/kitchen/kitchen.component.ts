@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, AlertController,
   ToastController, LoadingController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Order } from '../../app/order';
 import { N_COLS } from '../../app/commons';
 import { KitchenDetailsComponent } from '../../pages/kitchen-details/kitchen-details.component';
@@ -47,11 +49,8 @@ export class KitchenComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al solicitar los pedidos',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al solicitar los pedidos'));
         toast.present();
       });
   }
@@ -74,11 +73,8 @@ export class KitchenComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualizar el pedido',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al actualizar el pedido'));
         toast.present();
       });
   }

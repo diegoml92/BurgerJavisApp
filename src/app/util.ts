@@ -12,4 +12,12 @@ export class Util {
     return this.getServerUrl() + API_PREFIX + action + "/" + param;
   }
 
+  static getToastParams(error: string): any {
+    return { 
+              message: error,
+              duration: 3000,
+              position: 'bottom'
+           };
+  }
+
 }

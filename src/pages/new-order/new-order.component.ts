@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
+
+import { Util } from '../../app/util';
+
 import { Order } from '../../app/order';
 import { OrderService } from '../../providers/order.service';
 import { AuthenticationManager } from '../../providers/authentication-manager';
@@ -53,11 +56,8 @@ export class NewOrderComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al crear el pedido',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al crear el pedido'));
         toast.present();
       });
   }

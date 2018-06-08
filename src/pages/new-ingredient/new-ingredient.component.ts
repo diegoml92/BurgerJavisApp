@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, 
   Validators, FormControl } from '@angular/forms';
 
+import { Util } from '../../app/util';
+
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { Ingredient } from '../../app/ingredient';
@@ -52,11 +54,8 @@ export class NewIngredientComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al crear el ingrediente',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al crear el ingrediente'));
         toast.present();
       });
   }

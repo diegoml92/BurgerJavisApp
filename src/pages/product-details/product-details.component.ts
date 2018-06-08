@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController,
   AlertController, LoadingController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Product } from '../../app/product';
 import { Category } from '../../app/category';
 import { Ingredient } from '../../app/ingredient';
@@ -41,11 +43,8 @@ export class ProductDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener el producto',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener el producto'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -60,11 +59,8 @@ export class ProductDetailsComponent {
       .catch(err => {
         loading.dismiss();
         console.error(JSON.stringify(err));
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener lista de categorías',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener lista de categorías'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -148,11 +144,8 @@ export class ProductDetailsComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener la lista de ingredientes',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener la lista de ingredientes'));
         toast.present();
       });
   }
@@ -169,11 +162,8 @@ export class ProductDetailsComponent {
         this.modified = false;
       })
       .catch(err => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualiar el producto',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al actualiar el producto'));
         loading.dismiss();
         toast.present();
       });
@@ -204,11 +194,8 @@ export class ProductDetailsComponent {
                   this.product.name = data.name;
                   this.modified = true;
                 } else {
-                  let toast = this.toastCtrl.create({
-                    message: 'Este nombre ya está siendo usado',
-                    duration: 3000,
-                    position: 'bottom'
-                  });
+                  let toast = this.toastCtrl.create
+                      (Util.getToastParams('Este nombre ya está siendo usado'));
                   toast.present();
                 }
               });
@@ -254,11 +241,8 @@ export class ProductDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al borrar el producto',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al borrar el producto'));
         toast.present();
       });
   }
