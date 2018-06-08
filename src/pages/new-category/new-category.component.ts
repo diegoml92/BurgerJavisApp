@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, 
   Validators, FormControl } from '@angular/forms';
 
+import { Util } from '../../app/util';
+
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { Category } from '../../app/category';
@@ -53,11 +55,8 @@ export class NewCategoryComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al crear la categoría',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al crear la categoría'));
         toast.present();
       });
   }

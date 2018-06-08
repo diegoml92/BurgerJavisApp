@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { NewOrderComponent } from '../new-order/new-order.component';
 
@@ -34,11 +36,8 @@ export class OrdersComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al solicitar los pedidos',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al solicitar los pedidos'));
         toast.present();
       });
   }

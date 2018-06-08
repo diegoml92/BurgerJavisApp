@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../providers/ingredient.service';
 import { IngredientDetailsComponent } from 
@@ -33,11 +35,8 @@ export class IngredientsComponent {
         loading.dismiss();
       })
       .catch(() => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al solicitar los ingredientes',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al solicitar los ingredientes'));
         toast.present();
         loading.dismiss();
       });

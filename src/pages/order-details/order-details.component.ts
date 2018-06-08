@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController,
   AlertController, PopoverController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Order } from '../../app/order';
 import { OrderItem } from '../../app/order-item';
 import { OrderState } from '../../app/commons';
@@ -45,11 +47,8 @@ export class OrderDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener la comanda',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener la comanda'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -64,11 +63,8 @@ export class OrderDetailsComponent {
       .catch(err => {
         loading.dismiss();
         console.error(JSON.stringify(err));
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener lista de usuarios',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener lista de usuarios'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -142,11 +138,8 @@ export class OrderDetailsComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener la lista de productos',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener la lista de productos'));
         toast.present();
       });
   }
@@ -236,11 +229,8 @@ export class OrderDetailsComponent {
         }
       })
       .catch(err => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualiar el pedido',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.
+            create(Util.getToastParams('Error al actualiar el pedido'));
         loading.dismiss();
         toast.present();
       });
@@ -253,11 +243,8 @@ export class OrderDetailsComponent {
           this.order.name = data.name;
           this.modified = true;
         } else {
-          let toast = this.toastCtrl.create({
-            message: 'Este nombre ya está siendo usado',
-            duration: 3000,
-            position: 'bottom'
-          });
+          let toast = this.toastCtrl.create
+              (Util.getToastParams('Este nombre ya está siendo usado'));
           toast.present();
         }
       });
@@ -302,11 +289,8 @@ export class OrderDetailsComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al borrar el pedido',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al borrar el pedido'));
         toast.present();
       });
   }

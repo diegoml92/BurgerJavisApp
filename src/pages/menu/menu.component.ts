@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, ViewController, ToastController,
   LoadingController, PopoverController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { NewProductComponent } from '../new-product/new-product.component';
 import { IngredientsComponent } from '../ingredients/ingredients.component';
@@ -65,11 +67,8 @@ export class MenuComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al solicitar los productos de la carta',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al solicitar los productos de la carta'));
         toast.present();
       });;
   }

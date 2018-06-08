@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ToastController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Category } from '../../app/category';
 import { CategoryService } from '../../providers/category.service';
 import { NewCategoryComponent } from '../new-category/new-category.component';
@@ -31,11 +33,8 @@ export class CategoriesComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al solicitar las categorías',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+          (Util.getToastParams('Error al solicitar las categorías'));
         toast.present();
       });
   }
@@ -70,11 +69,8 @@ export class CategoriesComponent {
       .catch(error => {
         loading.dismiss();
         category.favorite = !value;
-        let toast = this.toastCtrl.create({
-          message: 'Se ha alcanzado el número máximo de favoritos',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+          (Util.getToastParams('Se ha alcanzado el número máximo de favoritos'));
         toast.present();
       });
   }

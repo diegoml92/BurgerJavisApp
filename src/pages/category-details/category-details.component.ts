@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController,
   LoadingController, ToastController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
+
 import { Category } from '../../app/category';
 import { CategoryService } from '../../providers/category.service';
 
@@ -37,11 +39,8 @@ export class CategoryDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al obtener la categoría',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al obtener la categoría'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -59,11 +58,8 @@ export class CategoryDetailsComponent {
         this.modified = false;
       })
       .catch(err => {
-        let toast = this.toastCtrl.create({
-          message: 'Error al actualiar el producto',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al actualiar el producto'));
         loading.dismiss();
         toast.present();
       });
@@ -94,11 +90,8 @@ export class CategoryDetailsComponent {
                   this.category.name = data.name;
                   this.modified = true;
                 } else {
-                  let toast = this.toastCtrl.create({
-                    message: 'Este nombre ya está siendo usado',
-                    duration: 3000,
-                    position: 'bottom'
-                  });
+                  let toast = this.toastCtrl.create
+                      (Util.getToastParams('Este nombre ya está siendo usado'));
                   toast.present();
                 }
               });
@@ -121,11 +114,8 @@ export class CategoryDetailsComponent {
       })
       .catch(() => {
         loading.dismiss();
-        let toast = this.toastCtrl.create({
-          message: 'Error al borrar la categoría',
-          duration: 3000,
-          position: 'bottom'
-        });
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('Error al borrar la categoría'));
         toast.present();
       });
   }
