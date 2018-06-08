@@ -5,7 +5,7 @@ import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-
 
 import { AppComponent } from '../../app/app.component';
 import { KitchenDetailsComponent } from '../kitchen-details/kitchen-details.component';
-import { KitchenService } from '../../providers/kitchen.service';
+import { OrderService } from '../../providers/order.service';
 import { NavMock, NavParamsMock, KitchenMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: KitchenDetailsComponent;
@@ -30,7 +30,7 @@ describe('Component: KitchenDetails Component', () => {
           useClass: NavParamsMock
         },
         {
-          provide: KitchenService,
+          provide: OrderService,
           useClass: KitchenMock
         },
         {
@@ -121,7 +121,7 @@ describe('Component: KitchenDetails Component', () => {
   it('should call "updateOrder" and "popToRoot" when order is served', fakeAsync(() => {
 
     let navCtrl = fixture.debugElement.injector.get(NavController);
-    let kitchenService = fixture.debugElement.injector.get(KitchenService);
+    let kitchenService = fixture.debugElement.injector.get(OrderService);
 
     spyOn(navCtrl, 'popToRoot');
     spyOn(kitchenService, 'updateOrder').and.returnValue(Promise.resolve(comp.order));
