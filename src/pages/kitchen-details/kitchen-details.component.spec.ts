@@ -132,7 +132,7 @@ describe('Component: KitchenDetails Component', () => {
 
     tick();
 
-    expect(kitchenService.updateOrder).toHaveBeenCalledWith(comp.order);
+    expect(kitchenService.updateOrder).toHaveBeenCalledWith(comp.order, true);
     expect(navCtrl.popToRoot).toHaveBeenCalled();
 
   }));

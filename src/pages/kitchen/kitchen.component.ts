@@ -29,7 +29,7 @@ export class KitchenComponent {
       content: "Cargando pedidos..."
     });
     loading.present();
-    this.kitchenService.getOrderList()
+    this.kitchenService.getOrderList(true)
       .then(orders => {
         this.orders = orders;
         this.rows = new Array(Math.ceil(orders.length/N_COLS));
@@ -66,7 +66,7 @@ export class KitchenComponent {
       content: "Sirviendo pedido..."
     });
     loading.present();
-    this.kitchenService.updateOrder(order)
+    this.kitchenService.updateOrder(order, true)
       .then(() => {
         loading.dismiss();
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
