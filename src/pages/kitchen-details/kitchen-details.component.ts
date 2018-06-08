@@ -6,7 +6,7 @@ import { NavController, NavParams, LoadingController, ToastController,
 import { Util } from '../../app/util';
 
 import { Order } from '../../app/order';
-import { KitchenService } from '../../providers/kitchen.service';
+import { OrderService } from '../../providers/order.service';
 
 @Component({
   templateUrl: 'kitchen-details.component.html'
@@ -21,7 +21,7 @@ export class KitchenDetailsComponent {
       private alertCtrl: AlertController,
       private loadingCtrl: LoadingController,
       private toastCtrl: ToastController,
-      private kitchenService: KitchenService) {
+      private kitchenService: OrderService) {
     this.order = this.navParams.get('order');
   }
 

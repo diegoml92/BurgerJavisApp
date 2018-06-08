@@ -8,7 +8,7 @@ import { KitchenComponent } from './kitchen.component';
 import { KitchenDetailsComponent } from '../kitchen-details/kitchen-details.component';
 import { NavMock, KitchenMock, LoadingControllerMock } from '../../test/mocks';
 
-import { KitchenService } from '../../providers/kitchen.service';
+import { OrderService } from '../../providers/order.service';
  
 let comp: KitchenComponent;
 let fixture: ComponentFixture<KitchenComponent>;
@@ -28,7 +28,7 @@ describe('Component: Kitchen Component', () => {
           useClass: NavMock
         },
         {
-          provide: KitchenService,
+          provide: OrderService,
           useClass: KitchenMock
         },
         {

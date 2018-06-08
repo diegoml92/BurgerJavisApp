@@ -1,2 +1,2 @@
 test-config/*
-service-worker.js
+src/service-worker.js

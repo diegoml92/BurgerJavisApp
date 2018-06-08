@@ -15,8 +15,9 @@ export class OrderService {
   constructor(private http: HTTP, private auth: AuthenticationManager) {}
 
   /** Return order list */
-  getOrderList(): Promise<Order[]> {
-    var request : string = Util.getUrlForAction(Operations.ORDERS);
+  getOrderList(kitchen: boolean = false): Promise<Order[]> {
+    var operation : string  = kitchen ? Operations.KITCHEN : Operations.ORDERS;
+    var request : string = Util.getUrlForAction(operation);
     var credentials : Credentials = this.auth.getCredentials();
     return this.http.get(request, null,
         this.http.getBasicAuthHeader(credentials.username, credentials.password))
@@ -27,8 +28,9 @@ export class OrderService {
   }
 
   /** Return requested order */
-  getOrder(order: Order): Promise<Order> {
-    var request : string = Util.getUrlForAction(Operations.ORDERS, order._id);
+  getOrder(order: Order, kitchen: boolean = false): Promise<Order> {
+    var operation : string  = kitchen ? Operations.KITCHEN : Operations.ORDERS;
+    var request : string = Util.getUrlForAction(operation, order._id);
     var credentials : Credentials = this.auth.getCredentials();
     return this.http.get(request, null,
         this.http.getBasicAuthHeader(credentials.username, credentials.password))
@@ -51,9 +53,10 @@ export class OrderService {
   }
 
   /** Modify order */
-  updateOrder(order: Order): Promise<Order> {
+  updateOrder(order: Order, kitchen: boolean = false): Promise<Order> {
+    var operation : string  = kitchen ? Operations.KITCHEN : Operations.ORDERS;
     var request: string =
-        Util.getUrlForAction(Operations.ORDERS, order._id);
+        Util.getUrlForAction(operation, order._id);
     var credentials : Credentials = this.auth.getCredentials();
     return this.http.put(request, order,
         this.http.getBasicAuthHeader(credentials.username, credentials.password))
@@ -68,9 +71,10 @@ export class OrderService {
   }
 
   /** Delete order */
-  removeOrder(order: Order) {
+  removeOrder(order: Order, kitchen: boolean = false) {
+    var operation : string  = kitchen ? Operations.KITCHEN : Operations.ORDERS;
     var request : string = 
-        Util.getUrlForAction(Operations.ORDERS, order._id);
+        Util.getUrlForAction(operation, order._id);
     var credentials : Credentials = this.auth.getCredentials();
     return this.http.delete(request, null,
         this.http.getBasicAuthHeader(credentials.username, credentials.password))

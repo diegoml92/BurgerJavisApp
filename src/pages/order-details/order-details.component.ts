@@ -295,11 +295,6 @@ export class OrderDetailsComponent {
       });
   }
 
-  isFinished(order: Order): boolean {
-    let value = OrderState[order.state];
-    return value == OrderState.FINISHED.toString();
-  }
-
   isInitial(order: Order): boolean {
     let value = OrderState[order.state];
     return value == OrderState.INITIAL.toString();

@@ -7,7 +7,7 @@ import { Util } from '../../app/util';
 import { Order } from '../../app/order';
 import { N_COLS } from '../../app/commons';
 import { KitchenDetailsComponent } from '../../pages/kitchen-details/kitchen-details.component';
-import { KitchenService } from '../../providers/kitchen.service';
+import { OrderService } from '../../providers/order.service';
 
 @Component({
   templateUrl: 'kitchen.component.html'
@@ -19,7 +19,7 @@ export class KitchenComponent {
 
   constructor(
       private navCtrl: NavController,
-      private kitchenService: KitchenService,
+      private kitchenService: OrderService,
       private toastCtrl: ToastController,
       private alertCtrl: AlertController,
       private loadingCtrl: LoadingController) {}

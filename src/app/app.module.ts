@@ -30,7 +30,6 @@ import { KitchenDetailsComponent } from '../pages/kitchen-details/kitchen-detail
 import { UserComponent } from '../pages/user/user.component';
 
 import { OrderService } from '../providers/order.service';
-import { KitchenService } from '../providers//kitchen.service';
 import { ProductService } from '../providers//product.service';
 import { IngredientService } from '../providers//ingredient.service';
 import { CategoryService } from '../providers//category.service';
@@ -96,7 +95,6 @@ import { AuthenticationManager } from '../providers//authentication-manager';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthenticationManager,
     OrderService,
-    KitchenService,
     ProductService,
     IngredientService,
     CategoryService,
