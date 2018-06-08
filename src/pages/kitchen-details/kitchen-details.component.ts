@@ -30,7 +30,7 @@ export class KitchenDetailsComponent {
       content: "Cargando comanda..."
     });
     loading.present();
-    this.kitchenService.getOrder(this.order)
+    this.kitchenService.getOrder(this.order, true)
       .then(order => {
         this.order = order;
         loading.dismiss();
@@ -49,7 +49,7 @@ export class KitchenDetailsComponent {
       content: "Sirviendo pedido..."
     });
     loading.present();
-    this.kitchenService.updateOrder(order)
+    this.kitchenService.updateOrder(order, true)
       .then(() => {
         loading.dismiss();
         this.navCtrl.popToRoot();
