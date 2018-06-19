@@ -29,8 +29,8 @@ export class HttpBrowser extends HTTP {
     super();
   }
 
-  private processResponse(httpResponse: any): Promise<HttpResponse> {
-    httpResponse.toPromise()
+  private processResponse(httpResponse: any): Promise<HTTPResponse> {
+    return httpResponse.toPromise()
       .then(response => {
         let httpResponse: HTTPResponse = new CustomResponse (response);
         return new Promise<HTTPResponse>((resolve) => {
