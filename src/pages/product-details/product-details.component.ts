@@ -21,14 +21,10 @@ export class ProductDetailsComponent {
   modified: boolean = false;
 
   constructor(
-  	private navCtrl: NavController,
-  	private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController,
-    private productService: ProductService,
-    private categoryService: CategoryService,
-    private ingredientService: IngredientService
+  	private navCtrl: NavController, private navParams: NavParams,
+    private alertCtrl: AlertController, private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController, private productService: ProductService,
+    private categoryService: CategoryService, private ingredientService: IngredientService
   ) {
 
   	this.product = this.navParams.get('product');
@@ -43,8 +39,7 @@ export class ProductDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create
-            (Util.getToastParams('Error al obtener el producto'));
+        let toast = this.toastCtrl.create (Util.getToastParams('Error al obtener el producto'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -59,8 +54,7 @@ export class ProductDetailsComponent {
       .catch(err => {
         loading.dismiss();
         console.error(JSON.stringify(err));
-        let toast = this.toastCtrl.create
-            (Util.getToastParams('Error al obtener lista de categorías'));
+        let toast = this.toastCtrl.create (Util.getToastParams('Error al obtener lista de categorías'));
         toast.present();
         this.navCtrl.popToRoot();
       });
@@ -162,8 +156,7 @@ export class ProductDetailsComponent {
         this.modified = false;
       })
       .catch(err => {
-        let toast = this.toastCtrl.create
-            (Util.getToastParams('Error al actualiar el producto'));
+        let toast = this.toastCtrl.create (Util.getToastParams('Error al actualiar el producto'));
         loading.dismiss();
         toast.present();
       });
@@ -241,8 +234,7 @@ export class ProductDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        let toast = this.toastCtrl.create
-            (Util.getToastParams('Error al borrar el producto'));
+        let toast = this.toastCtrl.create (Util.getToastParams('Error al borrar el producto'));
         toast.present();
       });
   }
