@@ -70,6 +70,24 @@ export class OrderDetailsComponent {
       });
   }
 
+  private changeStateButton(orderState: OrderState): any {
+    return  [
+              {
+                text: 'Cancelar',
+                handler: () => {
+                  // No further action
+                }
+              },
+              {
+                text: 'Aceptar',
+                handler: () => {
+                  this.order.state = orderState;
+                  this.updateOrder(true);
+                }
+              }
+            ];
+  }
+
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
       content: "Cargando comanda..."
@@ -172,21 +190,7 @@ export class OrderDetailsComponent {
       title: '¿Finalizar este pedido?',
       message: '¿Estás seguro de que quieres finalizar este pedido? ' +
         'Una vez hecho, no se podrán hacer modificaciones sobre el mismo',
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => {
-            // No further action
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: () => {
-            this.order.state = OrderState.FINISHED;
-            this.updateOrder(true);
-          }
-        }
-      ]
+      buttons: this.changeStateButton(OrderState.FINISHED)
     });
     confirm.present();
   }
@@ -195,21 +199,7 @@ export class OrderDetailsComponent {
     let confirm = this.alertCtrl.create({
       title: '¿Enviar a cocina?',
       message: 'Una vez hecho, no se podrán hacer modificaciones sobre el mismo',
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => {
-            // No further action
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: () => {
-            this.order.state = OrderState.KITCHEN;
-            this.updateOrder(true);
-          }
-        }
-      ]
+      buttons: this.changeStateButton(OrderState.KITCHEN)
     });
     confirm.present();
   }
