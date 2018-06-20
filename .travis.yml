@@ -1,8 +1,9 @@
 language: node_js
 node_js:
   - "node"
-script:
+install:
   - npm install -g codecov
+script:
   - karma start ./test-config/karma.conf.js --single-run
   - codecov
 before_script:
