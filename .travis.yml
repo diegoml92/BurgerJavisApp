@@ -5,7 +5,6 @@ install:
   - npm install
   - npm install -g codecov
 script:
-  - npm run test-ci
   - npm run test-coverage
   - codecov
 before_script:

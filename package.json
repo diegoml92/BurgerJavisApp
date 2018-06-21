@@ -6,7 +6,7 @@
   "scripts": {
     "test": "karma start ./test-config/karma.conf.js",
     "test-ci": "karma start ./test-config/karma.conf.js --single-run",
-    "test-coverage": "karma start ./test-config/karma.conf.js --coverage",
+    "test-coverage": "karma start ./test-config/karma.conf.js --single-run --coverage",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
