@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, LoadingController, ToastController,
-  AlertController } from 'ionic-angular';
+import { NavController, NavParams, 
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { Util } from '../../app/util';
 
@@ -18,7 +18,6 @@ export class KitchenDetailsComponent {
   constructor (
       private navCtrl: NavController,
       private navParams: NavParams,
-      private alertCtrl: AlertController,
       private loadingCtrl: LoadingController,
       private toastCtrl: ToastController,
       private kitchenService: OrderService) {
@@ -63,25 +62,7 @@ export class KitchenDetailsComponent {
   }
 
   serveOrder(order) {
-    let confirm = this.alertCtrl.create({
-      title: '¿Servir \'' + order.name + '\'?',
-      message: 'Se marcará el pedido como preparado...',
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => {
-            // No further action
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: () => {
-            this.orderServed(order);
-          }
-        }
-      ]
-    });
-    confirm.present();
+    this.orderServed(order);
   }
   
 }

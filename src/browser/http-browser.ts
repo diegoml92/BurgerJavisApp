@@ -29,63 +29,41 @@ export class HttpBrowser extends HTTP {
     super();
   }
 
-  private getResponse(response: any): Promise<HTTPResponse> {
-    let httpResponse: HTTPResponse = new CustomResponse (response);
-    return new Promise<HTTPResponse>((resolve) => {
-      resolve(httpResponse);
-    });
-  }
-
-  private getErrorResponse(): Promise<HTTPResponse> {
-    return new Promise<HTTPResponse>((reject) => {
-      reject();
-    });
+  private processResponse(httpResponse: any): Promise<HTTPResponse> {
+    return httpResponse.toPromise()
+      .then(response => {
+        let httpResponse: HTTPResponse = new CustomResponse (response);
+        return new Promise<HTTPResponse>((resolve) => {
+          resolve(httpResponse);
+        });
+      })
+      .catch(() => {
+        return new Promise<HTTPResponse>((reject) => {
+          reject();
+        });
+      });
   }
 
   get(url: string, parameters: any, headers: any): Promise<HTTPResponse> {
-    return this.http.get(url, {headers: this.auth.generateAuthHeader()})
-      .toPromise()
-      .then(response => {
-        return this.getResponse(response);
-      })
-      .catch(() => {
-        return this.getErrorResponse();
-      });
+    return this.processResponse 
+        (this.http.get(url, {headers: this.auth.generateAuthHeader()}));
   }
 
   put(url: string, body: any, headers: any): Promise<HTTPResponse> {
-    return this.http.put(url, JSON.stringify(body),
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
-      .then(response => {
-        return this.getResponse(response);
-      })
-      .catch(() => {
-        return this.getErrorResponse();
-      });
+    return this.processResponse 
+        (this.http.put(url, JSON.stringify(body),
+          {headers: this.auth.generateJsonAuthHeader()}));
   }
 
   post(url: string, body: any, headers: any): Promise<HTTPResponse> {
-    return this.http.post(url, JSON.stringify(body),
-        {headers: this.auth.generateJsonAuthHeader()})
-      .toPromise()
-      .then(response => {
-        return this.getResponse(response);
-      })
-      .catch(() => {
-        return this.getErrorResponse();
-      });
+    return this.processResponse 
+        (this.http.post(url, JSON.stringify(body),
+          {headers: this.auth.generateJsonAuthHeader()}));
   }
 
   delete(url: string, parameters: any, headers: any): Promise<HTTPResponse> {
-    return this.http.delete(url, {headers: this.auth.generateAuthHeader()})
-      .toPromise()
-      .then(response => {
-        return this.getResponse(response);
-      })
-      .catch(() => {
-        return this.getErrorResponse();
-      });
+    return this.processResponse
+        (this.http.delete(url, {headers: this.auth.generateAuthHeader()}));
   }
 
   getBasicAuthHeader(username: string, password: string): any {
