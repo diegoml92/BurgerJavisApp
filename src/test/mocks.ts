@@ -42,6 +42,10 @@ export class AuthMock {
     this.credentials = credentials;
   }
 
+  public getRole(): string {
+    return this.credentials.roles[0];
+  }
+
   public isAdmin(): boolean {
     return this.credentials.roles.indexOf(ROLE_ADMIN) >= 0;
   }
@@ -470,7 +474,7 @@ class ToastMock {
   }
 
   public present(): void {
-    console.debug('ToastMock : present');
+    console.debug('ToastMock : present -> ' + this.message);
   }
 }
 

@@ -45,20 +45,16 @@ export class LoginComponent {
   }
 
   private processLoginResult(result) {
-    console.debug(JSON.stringify(result));
     if(result != null) {
       this.auth.setCredentials (result);
       switch (this.auth.getRole()) {
         case ROLE_ADMIN:
-          console.debug('SummaryComponent');
           this.navCtrl.setRoot(SummaryComponent);
           break;
         case ROLE_WAITER:
-          console.debug('OrdersComponent');
           this.navCtrl.setRoot(OrdersComponent);
           break;
         case ROLE_KITCHEN:
-          console.debug('KitchenComponent');
           this.navCtrl.setRoot(KitchenComponent);
           break;
       }         
@@ -67,7 +63,7 @@ export class LoginComponent {
       let toast = this.toastCtrl.create
           (Util.getToastParams('Los datos introducidos no son válidos'));
       toast.present();
-      this.auth.resetCredentials ();
+      this.auth.resetCredentials();
     }
   }
 
@@ -76,7 +72,7 @@ export class LoginComponent {
       content: "Iniciando sesión..."
     });
     loading.present();
-    var credentials = new Credentials(this.username, this.password)
+    var credentials = new Credentials(this.username, this.password);
     this.loginService.login(credentials)
       .then(result => {
         loading.dismiss();
@@ -85,7 +81,7 @@ export class LoginComponent {
       .catch(error => {
         loading.dismiss();
         let toast = this.toastCtrl.create(Util.getToastParams('No se pudo iniciar sesión'));
-        this.auth.resetCredentials ();
+        this.auth.resetCredentials();
         toast.present();
       });
   }
