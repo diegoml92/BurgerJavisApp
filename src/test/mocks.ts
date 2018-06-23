@@ -206,6 +206,12 @@ export class IngredientMock {
     });
   }
 
+  public getIngredient(): Promise<Ingredient> {
+    return new Promise(resolve => {
+      resolve(IngredientMock.mockIngredientList[0]);
+    })
+  }
+
   public addIngredient(ingredient: Ingredient): Promise<Ingredient> {
     this.ingredientList.push(ingredient);
     return new Promise<Ingredient>((resolve) => {
