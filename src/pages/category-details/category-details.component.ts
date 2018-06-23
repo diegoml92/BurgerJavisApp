@@ -59,7 +59,7 @@ export class CategoryDetailsComponent {
       })
       .catch(err => {
         let toast = this.toastCtrl.create
-            (Util.getToastParams('Error al actualiar el producto'));
+            (Util.getToastParams('Error al actualizar la categoría'));
         loading.dismiss();
         toast.present();
       });

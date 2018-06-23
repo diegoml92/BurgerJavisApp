@@ -152,6 +152,12 @@ export class CategoryMock {
     });
   }
 
+  public getCategory(): Promise<Category> {
+    return new Promise(resolve => {
+      resolve(CategoryMock.mockCategoryList[0]);
+    })
+  }
+
   public addCategory(category: Category): Promise<Category> {
     this.categoryList.push(category);
     return new Promise<Category>((resolve) => {
