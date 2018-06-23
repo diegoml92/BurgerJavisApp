@@ -42,6 +42,10 @@ export class AuthMock {
     this.credentials = credentials;
   }
 
+  public getRole(): string {
+    return this.credentials.roles[0];
+  }
+
   public isAdmin(): boolean {
     return this.credentials.roles.indexOf(ROLE_ADMIN) >= 0;
   }
@@ -148,6 +152,12 @@ export class CategoryMock {
     });
   }
 
+  public getCategory(): Promise<Category> {
+    return new Promise(resolve => {
+      resolve(CategoryMock.mockCategoryList[0]);
+    })
+  }
+
   public addCategory(category: Category): Promise<Category> {
     this.categoryList.push(category);
     return new Promise<Category>((resolve) => {
@@ -194,6 +204,12 @@ export class IngredientMock {
     return new Promise<Ingredient[]>((resolve, reject) => {
       resolve(this.ingredientList);
     });
+  }
+
+  public getIngredient(): Promise<Ingredient> {
+    return new Promise(resolve => {
+      resolve(IngredientMock.mockIngredientList[0]);
+    })
   }
 
   public addIngredient(ingredient: Ingredient): Promise<Ingredient> {
@@ -470,7 +486,7 @@ class ToastMock {
   }
 
   public present(): void {
-    console.debug('ToastMock : present');
+    console.debug('ToastMock : present -> ' + this.message);
   }
 }
 
@@ -486,17 +502,30 @@ class AlertMock {
 
   private title: string;
   private message: string;
-  private buttons: any;
+  private buttons: any[];
 
   constructor(alertMock: AlertMock) {
-    this.title = alertMock.title;
-    this.message = alertMock.message;
-    this.buttons = alertMock.buttons;
+    console.debug('AlertMock.constructor');
+    if(alertMock) {
+      this.title = alertMock.title;
+      this.message = alertMock.message;
+      this.buttons = alertMock.buttons;
+    }
+    console.debug('AlertMock.constructor finish');
   }
 
   public present(): void {
-    console.debug('AlertMock : present');
-    AlertControllerMock.acceptFunction();
+    console.debug('AlertMock : present -> ' + this.title + '-' + this.message);
+  }
+
+  public setTitle(title: string): void {
+    this.title = title;
+  }
+
+  public addInput(input): void {}
+
+  public addButton(button: any) {
+    this.buttons.push(button);
   }
 
 }
@@ -506,11 +535,8 @@ export class AlertControllerMock {
   static acceptFunction = null;
 
   public create(alertMock: AlertMock): AlertMock {
+    console.debug('AlertControllerMock.create');
     return new AlertMock(alertMock);
-  }
-
-  public static setCallback(callback): void {
-    this.acceptFunction = callback;
   }
 
 }
