@@ -490,17 +490,30 @@ class AlertMock {
 
   private title: string;
   private message: string;
-  private buttons: any;
+  private buttons: any[];
 
   constructor(alertMock: AlertMock) {
-    this.title = alertMock.title;
-    this.message = alertMock.message;
-    this.buttons = alertMock.buttons;
+    console.debug('AlertMock.constructor');
+    if(alertMock) {
+      this.title = alertMock.title;
+      this.message = alertMock.message;
+      this.buttons = alertMock.buttons;
+    }
+    console.debug('AlertMock.constructor finish');
   }
 
   public present(): void {
-    console.debug('AlertMock : present');
-    AlertControllerMock.acceptFunction();
+    console.debug('AlertMock : present -> ' + this.title + '-' + this.message);
+  }
+
+  public setTitle(title: string): void {
+    this.title = title;
+  }
+
+  public addInput(input): void {}
+
+  public addButton(button: any) {
+    this.buttons.push(button);
   }
 
 }
@@ -510,11 +523,8 @@ export class AlertControllerMock {
   static acceptFunction = null;
 
   public create(alertMock: AlertMock): AlertMock {
+    console.debug('AlertControllerMock.create');
     return new AlertMock(alertMock);
-  }
-
-  public static setCallback(callback): void {
-    this.acceptFunction = callback;
   }
 
 }

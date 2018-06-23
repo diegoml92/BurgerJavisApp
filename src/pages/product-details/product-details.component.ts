@@ -21,7 +21,7 @@ export class ProductDetailsComponent {
   modified: boolean = false;
 
   constructor(
-  	private navCtrl: NavController, private navParams: NavParams,
+    private navCtrl: NavController, private navParams: NavParams,
     private alertCtrl: AlertController, private toastCtrl: ToastController,
     private loadingCtrl: LoadingController, private productService: ProductService,
     private categoryService: CategoryService, private ingredientService: IngredientService
@@ -53,7 +53,6 @@ export class ProductDetailsComponent {
       })
       .catch(err => {
         loading.dismiss();
-        console.error(JSON.stringify(err));
         let toast = this.toastCtrl.create (Util.getToastParams('Error al obtener lista de categorías'));
         toast.present();
         this.navCtrl.popToRoot();
@@ -74,9 +73,9 @@ export class ProductDetailsComponent {
   }
 
   deleteIngredient(ingredient: Ingredient) {
-    let iIndex = this.product.ingredients.indexOf(ingredient);
-    if(iIndex => 0) {
-      this.product.ingredients.splice(iIndex,1);
+    let index = this.product.ingredients.indexOf(ingredient);
+    if(index => 0) {
+      this.product.ingredients.splice(index,1);
       this.modified = true;
     }
   }
@@ -136,7 +135,7 @@ export class ProductDetailsComponent {
         alert.present();
 
       })
-      .catch(() => {
+      .catch(err => {
         loading.dismiss();
         let toast = this.toastCtrl.create
             (Util.getToastParams('Error al obtener la lista de ingredientes'));
