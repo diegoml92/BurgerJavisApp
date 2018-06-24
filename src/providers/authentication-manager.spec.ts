@@ -66,6 +66,7 @@ describe('Provider: AuthenticationManager service', () => {
     inject([AuthenticationManager], (authManager: AuthenticationManager) => {
 
     let credentials: Credentials = new Credentials('user', 'pass', [ ROLE_ADMIN ]);
+    let credentials2: Credentials = new Credentials('user', 'pass', [ ROLE_ADMIN, ROLE_WAITER ]);
 
     authManager.setCredentials(credentials);
 
@@ -95,9 +96,13 @@ describe('Provider: AuthenticationManager service', () => {
 
     spyOn(menuCtrl, 'enable');
 
+    const NO_ROLE = "NO ROLE";
+
     let credentials: Credentials = new Credentials('user', 'pass', [ ROLE_ADMIN ]);
     let credentials2: Credentials = new Credentials('user2', 'pass2', [ ROLE_WAITER ]);
     let credentials3: Credentials = new Credentials('user3', 'pass3', [ ROLE_KITCHEN ]);
+    let credentials4: Credentials = new Credentials('user4', 'pass4', [ ROLE_ADMIN, ROLE_KITCHEN ]);
+    let credentials5: Credentials = new Credentials('user5', 'pass5', [ NO_ROLE ]);
 
     authManager.setCredentials(credentials);
     expect(menuCtrl.enable).toHaveBeenCalledWith(true, 'adminMenu');
@@ -107,6 +112,16 @@ describe('Provider: AuthenticationManager service', () => {
 
     authManager.setCredentials(credentials3);
     expect(menuCtrl.enable).toHaveBeenCalledWith(true, 'kitchenMenu');
+
+    let fail1 = function() {
+      authManager.setCredentials(credentials4);
+    };
+    let fail2 = function() {
+      authManager.setCredentials(credentials5);
+    }
+
+    expect(fail1).toThrow("Invalid user with multiple roles");
+    expect(fail2).toThrow("Invalid user role: " + NO_ROLE);
 
   }));
 
@@ -121,6 +136,12 @@ describe('Provider: AuthenticationManager service', () => {
       ({'Authorization': BASIC_PREFIX + new Buffer('user:pass').toString('base64')});
 
     expect(authManager.generateAuthHeader()).toEqual(header);
+
+    let credentials2: Credentials = new Credentials('', '', [ ROLE_ADMIN ]);
+
+    authManager.setCredentials(credentials2);
+
+    expect(authManager.generateAuthHeader()).toEqual(new Headers());
 
   }));
 
