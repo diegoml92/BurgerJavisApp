@@ -1,13 +1,16 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, 
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { OrdersComponent } from './orders.component';
 import { NewOrderComponent } from '../new-order/new-order.component';
 import { OrderService } from '../../providers/order.service';
-import { NavMock, LoadingControllerMock, OrderMock } from '../../test/mocks';
+import { NavMock, LoadingControllerMock, 
+  OrderMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: OrdersComponent;
 let fixture: ComponentFixture<OrdersComponent>;
@@ -33,6 +36,10 @@ describe('Component: Orders Component', () => {
         {
           provide : LoadingController,
           useClass : LoadingControllerMock
+        },
+        {
+          provide : ToastController,
+          useClass : ToastControllerMock
         }
       ],
  
@@ -144,6 +151,25 @@ describe('Component: Orders Component', () => {
       expect(listItem.innerHTML).toContain('€' + comp.calculateOrderPrice(order));
 
     });
+
+  }));
+
+  it('should show a message when error is received while loading the page', fakeAsync(() => {
+
+    let orderService = fixture.debugElement.injector.get(OrderService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(orderService, 'getOrderList').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.ionViewWillEnter();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(orderService.getOrderList).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al solicitar los pedidos'));
 
   }));
 

@@ -59,6 +59,8 @@ describe('Component: User Component', () => {
 
   it('should display User view correctyl', () => {
 
+    let auth = fixture.debugElement.injector.get(AuthenticationManager);
+
     fixture.detectChanges();
 
     // title
@@ -89,6 +91,32 @@ describe('Component: User Component', () => {
     // user and role
     let userData = fixture.debugElement.queryAll(By.css('h2'));
     let el = userData[0].nativeElement;
+
+    expect(el.textContent).toContain('Usuario: ' + comp.getUsername());
+
+    el = userData[1].nativeElement;
+
+    expect(el.textContent).toContain('Rol: ' + comp.getRole());
+
+    auth.setCredentials(AuthMock.adminUser);
+    fixture.detectChanges();
+
+    // user and role
+    userData = fixture.debugElement.queryAll(By.css('h2'));
+    el = userData[0].nativeElement;
+
+    expect(el.textContent).toContain('Usuario: ' + comp.getUsername());
+
+    el = userData[1].nativeElement;
+
+    expect(el.textContent).toContain('Rol: ' + comp.getRole());
+
+    auth.setCredentials(AuthMock.kitchenUser);
+    fixture.detectChanges();
+
+    // user and role
+    userData = fixture.debugElement.queryAll(By.css('h2'));
+    el = userData[0].nativeElement;
 
     expect(el.textContent).toContain('Usuario: ' + comp.getUsername());
 

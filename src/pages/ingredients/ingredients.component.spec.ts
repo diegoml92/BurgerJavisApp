@@ -1,14 +1,17 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, 
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { IngredientsComponent } from './ingredients.component';
 import { IngredientDetailsComponent } from '../ingredient-details/ingredient-details.component';
 import { NewIngredientComponent } from '../new-ingredient/new-ingredient.component';
 import { IngredientService } from '../../providers/ingredient.service';
-import { NavMock, LoadingControllerMock, IngredientMock } from '../../test/mocks';
+import { NavMock, LoadingControllerMock, 
+  IngredientMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: IngredientsComponent;
 let fixture: ComponentFixture<IngredientsComponent>;
@@ -34,6 +37,10 @@ describe('Component: Ingredients Component', () => {
         {
           provide : LoadingController,
           useClass : LoadingControllerMock
+        },
+        {
+          provide : ToastController,
+          useClass : ToastControllerMock
         }
       ],
  
@@ -102,6 +109,28 @@ describe('Component: Ingredients Component', () => {
       expect(listItem.textContent).toContain(ingredient.name);
 
     });
+
+  }));
+
+  it('should call "popToRoot" when error is received while loading the page', fakeAsync(() => {
+
+    let ingredientService = fixture.debugElement.injector.get(IngredientService);
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(ingredientService, 'getIngredientList').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(navCtrl, 'popToRoot').and.callThrough();
+
+    comp.ionViewWillEnter();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(ingredientService.getIngredientList).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al solicitar los ingredientes'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
 
   }));
 

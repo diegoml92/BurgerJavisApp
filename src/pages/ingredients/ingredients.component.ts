@@ -22,7 +22,7 @@ export class IngredientsComponent {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private ingredientService: IngredientService,
-    private navCtrl: NavController) {}
+    private navCtrl: NavController) {}
 
   ionViewWillEnter() {
     let loading = this.loadingCtrl.create({
@@ -39,6 +39,7 @@ export class IngredientsComponent {
             (Util.getToastParams('Error al solicitar los ingredientes'));
         toast.present();
         loading.dismiss();
+        this.navCtrl.popToRoot();
       });
   }
 

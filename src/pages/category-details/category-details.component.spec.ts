@@ -166,7 +166,6 @@ describe('Component: CategoryDetails Component', () => {
 
     let categoryService = fixture.debugElement.injector.get(CategoryService);
     let toastCtrl = fixture.debugElement.injector.get(ToastController);
-    let navCtrl = fixture.debugElement.injector.get(NavController);
 
     spyOn(comp, 'updateCategory').and.callThrough();
     spyOn(toastCtrl, 'create').and.callThrough();
