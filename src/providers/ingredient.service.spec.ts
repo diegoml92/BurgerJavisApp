@@ -77,6 +77,29 @@ describe('Provider: Ingredient Service', () => {
 
   })));
 
+  it('should retreive the given ingredient from the server',
+    async(inject([IngredientService, MockBackend], (ingredientService: IngredientService, mockBackend: MockBackend) => {
+
+    let ingredient: Ingredient = IngredientMock.mockIngredientList[0];
+
+    const mockResponse = JSON.stringify(ingredient);
+
+    mockBackend.connections.subscribe((connection) => {
+
+      connection.mockRespond(new Response(new ResponseOptions({
+        body: mockResponse
+      })));
+
+    });
+
+    ingredientService.getIngredient(ingredient).then(i => {
+
+      expect(i.name).toEqual(ingredient.name);
+
+    });
+
+  })));
+
   it('should create the given Ingredient', fakeAsync(
     inject([IngredientService, MockBackend], (ingredientService: IngredientService, mockBackend: MockBackend) => {
 

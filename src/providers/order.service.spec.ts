@@ -95,6 +95,63 @@ describe('Provider: Order Service', () => {
       expect(order.state).toEqual(orderList[i].state);
     });
 
+    orderService.getOrderList(true);
+
+    tick();
+
+    expect(orderService.orderList.length).toEqual(orderList.length);
+    orderService.orderList.forEach((order: Order, i) => {
+      // Not working. Fieldwise comparison required
+      //expect(OrderService.orderList).toEqual(orderList);
+
+      expect(order._id).toEqual(orderList[i]._id);
+      expect(order.name).toEqual(orderList[i].name);
+      expect(order.username).toEqual(orderList[i].username);
+      expect(order.items.length).toEqual(orderList[i].items.length);
+      order.items.forEach((orderItem: OrderItem, j) => {
+        expect(orderItem.amount).toEqual(orderList[i].items[j].amount);
+        expect(orderItem.product._id).toEqual(orderList[i].items[j].product._id);
+        expect(orderItem.product.name).toEqual(orderList[i].items[j].product.name);
+        expect(orderItem.product.price).toEqual(orderList[i].items[j].product.price);
+        expect(orderItem.product.category).toEqual(orderList[i].items[j].product.category);
+        expect(orderItem.product.ingredients).toEqual(orderList[i].items[j].product.ingredients);
+      });
+      expect(order.state).toEqual(orderList[i].state);
+    });
+
+  })));
+
+  it('should retreive the given order from the server',
+    async(inject([OrderService, MockBackend], (orderService: OrderService, mockBackend: MockBackend) => {
+
+    let order: Order = OrderMock.mockOrderList[0];
+
+    const mockResponse = JSON.stringify(order);
+
+    mockBackend.connections.subscribe((connection) => {
+
+      connection.mockRespond(new Response(new ResponseOptions({
+        body: mockResponse
+      })));
+
+    });
+
+    orderService.getOrder(order).then(o => {
+
+      expect(o.name).toEqual(order.name);
+      expect(o.state).toEqual(order.state);
+      expect(o.username).toEqual(order.username);
+
+    });
+
+    orderService.getOrder(order, true).then(o => {
+
+      expect(o.name).toEqual(order.name);
+      expect(o.state).toEqual(order.state);
+      expect(o.username).toEqual(order.username);
+
+    });
+
   })));
 
   it('should create the given order', fakeAsync(
@@ -152,6 +209,12 @@ describe('Provider: Order Service', () => {
     });
 
     orderService.updateOrder(order);
+
+    tick();
+
+    expect(orderService.orderList[0].state).toEqual(order.state);
+
+    orderService.updateOrder(order, true);
 
     tick();
 

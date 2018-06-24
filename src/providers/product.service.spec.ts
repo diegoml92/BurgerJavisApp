@@ -77,6 +77,31 @@ describe('Provider: Product Service', () => {
 
   })));
 
+  it('should retreive the given product from the server',
+    async(inject([ProductService, MockBackend], (productService: ProductService, mockBackend: MockBackend) => {
+
+    let product: Product = ProductMock.mockProductList[0];
+
+    const mockResponse = JSON.stringify(product);
+
+    mockBackend.connections.subscribe((connection) => {
+
+      connection.mockRespond(new Response(new ResponseOptions({
+        body: mockResponse
+      })));
+
+    });
+
+    productService.getProduct(product).then(p => {
+
+      expect(p.name).toEqual(product.name);
+      expect(p.price).toEqual(product.price);
+      expect(p.category).toEqual(product.category);
+
+    });
+
+  })));
+
   it('should create the given product', fakeAsync(
     inject([ProductService, MockBackend], (productService: ProductService, mockBackend: MockBackend) => {
 

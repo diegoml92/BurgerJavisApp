@@ -84,6 +84,40 @@ describe('Provider: Login Service', () => {
 
     });
 
+    let invalidLoginData: Credentials = new Credentials("", PASSWORD);
+
+    loginService.login(invalidLoginData).then(credentials => {
+
+      expect(credentials).toBeNull();
+
+    });
+
+  })));
+
+  it('should return the list of existing users', 
+    async(inject([LoginService, MockBackend], (loginService: LoginService, mockBackend: MockBackend) => {
+
+    const ADMIN = 'admin';
+    const USER1 = 'user1';
+
+    const mockResponse = '[ "' + ADMIN + '" , "' + USER1 + '" ]';
+
+    mockBackend.connections.subscribe((connection) => {
+
+      connection.mockRespond(new Response(new ResponseOptions({
+        body: mockResponse
+      })));
+
+    });
+
+    loginService.getUsernames().then(usernames => {
+
+      expect(usernames.length).toEqual(2);
+      expect(usernames[0]).toEqual(ADMIN);
+      expect(usernames[1]).toEqual(USER1);
+
+    });
+
   })));
  
 });
