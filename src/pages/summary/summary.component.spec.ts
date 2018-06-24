@@ -1,12 +1,13 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, LoadingController } from 'ionic-angular';
+import { IonicModule, LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { SummaryComponent } from '../summary/summary.component';
 import { SummaryService } from '../../providers/summary.service';
-import { SummaryMock, LoadingControllerMock } from '../../test/mocks';
+import { SummaryMock, LoadingControllerMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: SummaryComponent;
 let fixture: ComponentFixture<SummaryComponent>;
@@ -28,6 +29,10 @@ describe('Component: Summary Component', () => {
         {
           provide: LoadingController,
           useClass: LoadingControllerMock
+        },
+        {
+          provide: ToastController,
+          useClass: ToastControllerMock
         }
       ],
  
@@ -118,6 +123,25 @@ describe('Component: Summary Component', () => {
 
 
     });
+
+  }));
+
+  it('should show a message when error is received while loading the page', fakeAsync(() => {
+
+    let summaryService = fixture.debugElement.injector.get(SummaryService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(summaryService, 'getSummaryData').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.ionViewWillEnter();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(summaryService.getSummaryData).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('No se pudieron obtener los datos'));
 
   }));
 

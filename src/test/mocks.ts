@@ -2,8 +2,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Headers } from '@angular/http';
 import { Credentials } from '../app/credentials';
-import { ROLE_ADMIN, ROLE_WAITER, OrderState, BASIC_PREFIX,
-  JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
+import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN, OrderState, 
+  BASIC_PREFIX, JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
 import { Order } from '../app/order';
 import { OrderItem } from '../app/order-item';
 import { Category } from '../app/category';
@@ -28,15 +28,19 @@ export class LoginMock {
 
 export class AuthMock {
 
-  public static regularUser: Credentials = {
+  public static waiterUser: Credentials = {
     username: "user1", password: "user1", roles: [ROLE_WAITER]
+  };
+
+  public static kitchenUser: Credentials = {
+    username: "user2", password: "user2", roles: [ROLE_KITCHEN]
   };
 
   public static adminUser: Credentials = {
     username: "admin", password: "admin", roles: [ROLE_ADMIN]
   }
 
-  public credentials: Credentials = AuthMock.regularUser;
+  public credentials: Credentials = AuthMock.waiterUser;
 
   public setCredentials(credentials: Credentials) {
     this.credentials = credentials;
@@ -556,6 +560,8 @@ class PopoverMock {
   constructor(popoverMock: PopoverMock) {}
 
   public present(): void {}
+
+  public onDismiss(): void {}
 
 }
 

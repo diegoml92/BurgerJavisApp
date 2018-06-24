@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, ToastController } from 'ionic-angular';
 
+import { Util } from '../../app/util';
 import { Category } from '../../app/category';
 import { Summary } from '../../app/summary';
 import { SummaryService } from '../../providers/summary.service';
@@ -15,6 +16,7 @@ export class SummaryComponent {
 
   constructor(
     private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     private summaryService: SummaryService) {}
 
   ionViewWillEnter() {
@@ -29,6 +31,9 @@ export class SummaryComponent {
       })
       .catch(error => {
         loading.dismiss();
+        let toast = this.toastCtrl.create
+            (Util.getToastParams('No se pudieron obtener los datos'));
+        toast.present();
       });
   }
 

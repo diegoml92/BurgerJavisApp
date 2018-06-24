@@ -1,14 +1,18 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, PopoverController,
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { MenuComponent } from '../menu/menu.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
+import { NewProductComponent } from '../new-product/new-product.component';
 import { AuthenticationManager } from '../../providers/authentication-manager';
 import { ProductService } from '../../providers/product.service';
-import { NavMock, AuthMock, ProductMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, AuthMock, ProductMock, PopoverControllerMock,
+  LoadingControllerMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: MenuComponent;
 let fixture: ComponentFixture<MenuComponent>;
@@ -38,6 +42,14 @@ describe('Component: Menu Component', () => {
         {
           provide: LoadingController,
           useClass: LoadingControllerMock
+        },
+        {
+          provide: ToastController,
+          useClass: ToastControllerMock
+        },
+        {
+          provide: PopoverController,
+          useClass: PopoverControllerMock
         }
       ],
  
@@ -116,6 +128,26 @@ describe('Component: Menu Component', () => {
 
   }));
 
+  it('should show a message when error is received while loading the page', fakeAsync(() => {
+
+    let productService = fixture.debugElement.injector.get(ProductService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(comp, 'isAdmin').and.returnValue(true);
+    spyOn(productService, 'getProductList').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.ionViewWillEnter();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(productService.getProductList).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al solicitar los productos de la carta'));
+
+  }));
+
   it('should display Menu view for admin users', fakeAsync(() => {
 
     let authManager = fixture.debugElement.injector.get(AuthenticationManager);
@@ -189,12 +221,30 @@ describe('Component: Menu Component', () => {
 
   }));
 
+  it('should launch "NewProduct" view when the add button is clicked', () => {
+
+    let authManager = fixture.debugElement.injector.get(AuthenticationManager);
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+
+    authManager.setCredentials(AuthMock.adminUser);
+    
+    spyOn(navCtrl, 'push');
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('ion-fab button'));
+    de.triggerEventHandler('click', null);
+
+    expect(navCtrl.push).toHaveBeenCalledWith(NewProductComponent);
+
+  });
+
   it('should launch "PopoverPage" when option button is clicked', () => {
 
     let authManager = fixture.debugElement.injector.get(AuthenticationManager);
     authManager.setCredentials(AuthMock.adminUser);
 
-    spyOn(comp, 'presentPopover');
+    spyOn(comp, 'presentPopover').and.callThrough();
 
     fixture.detectChanges();
 
