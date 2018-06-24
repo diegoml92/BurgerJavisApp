@@ -70,7 +70,7 @@ export class OrderDetailsComponent {
       });
   }
 
-  private changeStateButton(orderState: OrderState): any {
+  private changeStateButton(orderState: OrderState): any {
     return  [
               {
                 text: 'Cancelar',
@@ -154,7 +154,7 @@ export class OrderDetailsComponent {
         popover.present();
         this.modified = true;
       })
-      .catch(() => {
+      .catch(err => {
         loading.dismiss();
         let toast = this.toastCtrl.create
             (Util.getToastParams('Error al obtener la lista de productos'));

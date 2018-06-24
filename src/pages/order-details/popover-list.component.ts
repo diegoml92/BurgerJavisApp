@@ -5,14 +5,14 @@ import { Order } from '../../app/order';
 import { Product } from '../../app/product';
 
 @Component ({
-	templateUrl: 'popover-list.component.html'
+  templateUrl: 'popover-list.component.html'
 })
 export class PopoverListComponent {
 
   order: Order;
   localList: Product[];
 
-	constructor(
+  constructor(
     private viewCtrl: ViewController, 
     private navParams: NavParams
   ) {
@@ -25,7 +25,7 @@ export class PopoverListComponent {
     this.close();
   }
 
-	close() {
-		this.viewCtrl.dismiss();
-	}
+  close() {
+    this.viewCtrl.dismiss();
+  }
 }
