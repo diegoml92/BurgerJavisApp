@@ -1,13 +1,16 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController} from 'ionic-angular';
+import { IonicModule, NavController, 
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { NewProductComponent } from './new-product.component';
 import { Product } from '../../app/product';
 import { ProductService } from '../../providers/product.service';
-import { NavMock, ProductMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, ProductMock, ToastControllerMock,
+  LoadingControllerMock } from '../../test/mocks';
  
 let comp: NewProductComponent;
 let fixture: ComponentFixture<NewProductComponent>;
@@ -33,6 +36,10 @@ describe('Component: NewProduct Component', () => {
         {
           provide : LoadingController,
           useClass : LoadingControllerMock
+        },
+        {
+          provide : ToastController,
+          useClass : ToastControllerMock
         }
       ],
  
@@ -151,6 +158,29 @@ describe('Component: NewProduct Component', () => {
     expect(productService.addProduct)
       .toHaveBeenCalledWith(new Product(comp.productName, comp.productPrice));
     expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
+  it('should show an error when "addProduct" fails', fakeAsync(() => {
+
+    let productService = fixture.debugElement.injector.get(ProductService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(productService, 'addProduct').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(comp, 'onSubmit').and.callThrough();
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('form'));
+    de.triggerEventHandler('ngSubmit', null);
+
+    tick();
+
+    expect(comp.onSubmit).toHaveBeenCalled();
+    expect(productService.addProduct).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al crear el producto'));
 
   }));
  
