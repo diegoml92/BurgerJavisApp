@@ -31,11 +31,12 @@ export class CategoriesComponent {
         this.categories = categories;
         loading.dismiss();
       })
-      .catch(() => {
+      .catch(err => {
         loading.dismiss();
         let toast = this.toastCtrl.create
           (Util.getToastParams('Error al solicitar las categorías'));
         toast.present();
+        this.navCtrl.popToRoot();
       });
   }
 

@@ -1,12 +1,15 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, NavParams,
+  ToastController, LoadingController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { KitchenDetailsComponent } from '../kitchen-details/kitchen-details.component';
 import { OrderService } from '../../providers/order.service';
-import { NavMock, NavParamsMock, KitchenMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, NavParamsMock, KitchenMock,
+  ToastControllerMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: KitchenDetailsComponent;
 let fixture: ComponentFixture<KitchenDetailsComponent>;
@@ -36,6 +39,10 @@ describe('Component: KitchenDetails Component', () => {
         {
           provide: LoadingController,
           useClass: LoadingControllerMock
+        },
+        {
+          provide: ToastController,
+          useClass: ToastControllerMock
         }
       ],
  
@@ -68,7 +75,11 @@ describe('Component: KitchenDetails Component', () => {
  
   });
 
-  it('should display KitchenDetails view correctly', () => {
+  it('should display KitchenDetails view correctly', fakeAsync(() => {
+
+    comp.ionViewWillEnter();
+
+    tick();
 
     fixture.detectChanges();
 
@@ -102,11 +113,31 @@ describe('Component: KitchenDetails Component', () => {
 
     expect(serveButton.textContent).toContain('Servir');
 
-  });
+  }));
+
+  it('should call popToRoot when error is received while loading the page', fakeAsync(() => {
+
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+    let kitchenService = fixture.debugElement.injector.get(OrderService);
+
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(navCtrl, 'popToRoot').and.callThrough();
+    spyOn(kitchenService, 'getOrder').and.returnValue(Promise.reject(null));
+
+    comp.ionViewWillEnter();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener la comanda'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
 
   it('should call "serveOrder" when serve button is clicked', () => {
 
-    spyOn(comp, 'serveOrder');
+    spyOn(comp, 'serveOrder').and.callThrough();
 
     fixture.detectChanges();
 
@@ -134,6 +165,23 @@ describe('Component: KitchenDetails Component', () => {
 
     expect(kitchenService.updateOrder).toHaveBeenCalledWith(comp.order, true);
     expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
+  it('should show an error when updateOrder fails', fakeAsync(() => {
+
+    let kitchenService = fixture.debugElement.injector.get(OrderService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(kitchenService, 'updateOrder').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.orderServed(null);
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al actualizar el pedido'));
 
   }));
 

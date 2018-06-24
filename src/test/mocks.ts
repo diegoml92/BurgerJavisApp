@@ -341,6 +341,12 @@ export class KitchenMock {
     });
   }
 
+  public getOrder(): Promise<Order> {
+    return new Promise(resolve => {
+      resolve(KitchenMock.mockOrderList[2]);
+    })
+  }
+
   public updateOrder(order: Order): Promise<Order> {
     return new Promise((resolve) => {
       resolve(order);
@@ -456,7 +462,7 @@ class LoadingMock {
   }
 
   public present(): void {
-    console.debug('LoadingMock : present');
+    console.debug('LoadingMock : present -> ' + this.content);
   }
 
   public dismiss(): void {
@@ -505,13 +511,11 @@ class AlertMock {
   private buttons: any[];
 
   constructor(alertMock: AlertMock) {
-    console.debug('AlertMock.constructor');
     if(alertMock) {
       this.title = alertMock.title;
       this.message = alertMock.message;
       this.buttons = alertMock.buttons;
     }
-    console.debug('AlertMock.constructor finish');
   }
 
   public present(): void {
@@ -547,4 +551,24 @@ export class MenuControllerMock {
 
 }
 
-export class ViewMock {}
+class PopoverMock {
+
+  constructor(popoverMock: PopoverMock) {}
+
+  public present(): void {}
+
+}
+
+export class PopoverControllerMock {
+
+  public create(popoverMock: PopoverMock): PopoverMock {
+    console.debug('PopoverControllerMock.create');
+    return new PopoverMock(popoverMock);
+  }
+}
+
+export class ViewMock {
+
+  public dismiss(): void {}
+
+}

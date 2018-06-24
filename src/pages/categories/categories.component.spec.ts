@@ -1,14 +1,17 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController} from 'ionic-angular';
+import { IonicModule, NavController, 
+  LoadingController, ToastController} from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { CategoriesComponent } from './categories.component';
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import { CategoryService } from '../../providers/category.service';
-import { NavMock, CategoryMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, CategoryMock, 
+  LoadingControllerMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: CategoriesComponent;
 let fixture: ComponentFixture<CategoriesComponent>;
@@ -34,6 +37,10 @@ describe('Component: Categories Component', () => {
         {
           provide : LoadingController,
           useClass : LoadingControllerMock
+        },
+        {
+          provide : ToastController,
+          useClass : ToastControllerMock
         }
       ],
  
@@ -120,8 +127,29 @@ describe('Component: Categories Component', () => {
 
   });
 
-  // event.stopPropagation inside setFavorite() breaks this test
-  xit('should call "setFavorite()" when "favorite" button is clicked', fakeAsync(() => {
+  it('should call popToRoot when error is received while loading the page', fakeAsync(() => {
+
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+    let categoryService = fixture.debugElement.injector.get(CategoryService);
+
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(navCtrl, 'popToRoot').and.callThrough();
+    spyOn(categoryService, 'getCategoryList').and.returnValue(Promise.reject(null));
+
+    comp.ionViewWillLoad();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al solicitar las categorías'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
+  it('should call "setFavorite()" when "favorite" button is clicked', fakeAsync(() => {
+
+    spyOn(comp, 'setFavorite');
 
     // Categories are loaded in ionViewWillLoad method
     comp.ionViewWillLoad();
@@ -135,8 +163,72 @@ describe('Component: Categories Component', () => {
     tick();
     fixture.detectChanges();
 
+    expect(comp.setFavorite).toHaveBeenCalled();
+
+  }));
+
+  it('should call updateCategory when favorite button is clicked', fakeAsync(() => {
+
+    let ev = new Event('click');
+
+    // Categories are loaded in ionViewWillLoad method
+    comp.ionViewWillLoad();
+
+    tick();
+    fixture.detectChanges();
+
     de = fixture.debugElement.queryAll(By.css('[ion-item]'))[1];
     let item = de.nativeElement;
+
+    expect(item.innerHTML).toContain('star');
+
+    comp.setFavorite(ev, comp.categories[1], !comp.categories[1].favorite);
+
+    tick();
+    fixture.detectChanges();
+
+    de = fixture.debugElement.queryAll(By.css('[ion-item]'))[1];
+    item = de.nativeElement;
+
+    expect(item.innerHTML).toContain('star-outline');
+
+  }));
+
+  it('should show an error when unable to update Category', fakeAsync(() => {
+
+    let categoryService = fixture.debugElement.injector.get(CategoryService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(categoryService, 'updateCategory').and.callFake(() => {
+      return Promise.reject(null);
+    })
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    let ev = new Event('click');
+
+    // Categories are loaded in ionViewWillLoad method
+    comp.ionViewWillLoad();
+
+    tick();
+    fixture.detectChanges();
+
+    de = fixture.debugElement.queryAll(By.css('[ion-item]'))[0];
+    let item = de.nativeElement;
+
+    expect(item.innerHTML).toContain('star-outline');
+
+    comp.setFavorite(ev, comp.categories[0], !comp.categories[0].favorite);
+
+    tick();
+    fixture.detectChanges();
+
+    expect(categoryService.updateCategory).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Se ha alcanzado el número máximo de favoritos'));
+
+    // Category is not modified
+    de = fixture.debugElement.queryAll(By.css('[ion-item]'))[0];
+    item = de.nativeElement;
 
     expect(item.innerHTML).toContain('star-outline');
 
