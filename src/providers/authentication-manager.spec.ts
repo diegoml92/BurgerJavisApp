@@ -66,7 +66,6 @@ describe('Provider: AuthenticationManager service', () => {
     inject([AuthenticationManager], (authManager: AuthenticationManager) => {
 
     let credentials: Credentials = new Credentials('user', 'pass', [ ROLE_ADMIN ]);
-    let credentials2: Credentials = new Credentials('user', 'pass', [ ROLE_ADMIN, ROLE_WAITER ]);
 
     authManager.setCredentials(credentials);
 

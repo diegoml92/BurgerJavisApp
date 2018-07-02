@@ -27,14 +27,14 @@ export class CategoriesComponent {
     });
     loading.present();
     this.categoryService.getCategoryList()
-      .then(categories => {
-        this.categories = categories;
+      .then(categoryList => {
         loading.dismiss();
+        this.categories = categoryList;
       })
-      .catch(err => {
-        loading.dismiss();
+      .catch(error => {
         let toast = this.toastCtrl.create
           (Util.getToastParams('Error al solicitar las categorías'));
+        loading.dismiss();
         toast.present();
         this.navCtrl.popToRoot();
       });
