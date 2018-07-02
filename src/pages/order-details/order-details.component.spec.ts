@@ -1,16 +1,19 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, NavParams, PopoverController, AlertController,
+  ToastController, LoadingController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { OrderDetailsComponent } from '../order-details/order-details.component';
 import { OrderService } from '../../providers/order.service';
 import { ProductService } from '../../providers/product.service';
 import { LoginService } from '../../providers/login.service';
 import { AuthenticationManager } from '../../providers/authentication-manager';
 import { NavMock, NavParamsMock, OrderMock, LoginMock, AuthMock,
-  ProductMock, LoadingControllerMock } from '../../test/mocks';
+  ToastControllerMock, ProductMock, LoadingControllerMock, 
+  PopoverControllerMock, AlertControllerMock } from '../../test/mocks';
  
 let comp: OrderDetailsComponent;
 let fixture: ComponentFixture<OrderDetailsComponent>;
@@ -52,6 +55,18 @@ describe('Component: OrderDetails Component', () => {
         {
           provide: LoadingController,
           useClass: LoadingControllerMock
+        },
+        {
+          provide: ToastController,
+          useClass: ToastControllerMock
+        },
+        {
+          provide: AlertController,
+          useClass: AlertControllerMock
+        },
+        {
+          provide: PopoverController,
+          useClass: PopoverControllerMock
         }
       ],
  
@@ -148,6 +163,36 @@ describe('Component: OrderDetails Component', () => {
     expect(de).toBeNull();
 
   });
+
+  it('should call "popToRoot" when error is received while loading the page', fakeAsync(() => {
+
+    let userService = fixture.debugElement.injector.get(LoginService);
+    let orderService = fixture.debugElement.injector.get(OrderService);
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(comp, 'isAdmin').and.returnValue(true);
+    spyOn(userService, 'getUsernames').and.returnValue(Promise.reject(null));
+    spyOn(orderService, 'getOrder').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(navCtrl, 'popToRoot').and.callThrough();
+
+    comp.ionViewWillEnter();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(orderService.getOrder).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener la comanda'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+    expect(userService.getUsernames).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener lista de usuarios'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
 
   it('should allow username selection when current user is admin', fakeAsync(() => {
 
@@ -296,7 +341,7 @@ describe('Component: OrderDetails Component', () => {
 
   it('should call "deleteOrder" when "delete" button is clicked', () => {
 
-    spyOn(comp, 'deleteOrder');
+    spyOn(comp, 'deleteOrder').and.callThrough();
 
     // 'delete' button
     de = fixture.debugElement.query(By.css('ion-navbar ion-buttons button'));
@@ -319,6 +364,23 @@ describe('Component: OrderDetails Component', () => {
     tick();
 
     expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
+  it('should show an error when "removeOrder" fails', fakeAsync(() => {
+
+    let orderService = fixture.debugElement.injector.get(OrderService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(orderService, 'removeOrder').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.removeOrder();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al borrar el pedido'));
 
   }));
 
@@ -388,7 +450,10 @@ describe('Component: OrderDetails Component', () => {
 
   it('should call "updateName" when order name is clicked', () => {
 
-    spyOn(comp, 'updateName');
+    // Workaround, enum type is not working in tests
+    spyOn(comp, 'isInitial').and.returnValue(true);
+
+    spyOn(comp, 'updateName').and.callThrough();
 
     de = fixture.debugElement.query(By.css('ion-title'));
     
@@ -407,7 +472,7 @@ describe('Component: OrderDetails Component', () => {
     // Workaround, enum type is not working in tests
     spyOn(comp, 'isInitial').and.returnValue(true);
 
-    spyOn(comp, 'sendToKitchenConfirmation');
+    spyOn(comp, 'sendToKitchenConfirmation').and.callThrough();
     spyOn(orderService, 'updateOrder').and.returnValue(Promise.resolve(comp.order));
     spyOn(navCtrl, 'popToRoot');
 
@@ -466,7 +531,7 @@ describe('Component: OrderDetails Component', () => {
     // Workaround, enum type is not working in tests
     spyOn(comp, 'isServed').and.returnValue(true);
 
-    spyOn(comp, 'finishOrderConfirmation');
+    spyOn(comp, 'finishOrderConfirmation').and.callThrough();
     spyOn(orderService, 'updateOrder').and.returnValue(Promise.resolve(comp.order));
     spyOn(navCtrl, 'popToRoot');
 
@@ -486,7 +551,24 @@ describe('Component: OrderDetails Component', () => {
 
   }));
 
-  it('should launch "PopoverList" when add button is clicked', () => {
+  it('should show an error when "updateOrder" fails', fakeAsync(() => {
+
+    let orderService = fixture.debugElement.injector.get(OrderService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(orderService, 'updateOrder').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.updateOrder();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al actualiar el pedido'));
+
+  }));
+
+  it('should launch "PopoverList" when add button is clicked', fakeAsync(() => {
 
     let productService = fixture.debugElement.injector.get(ProductService);
 
@@ -494,17 +576,47 @@ describe('Component: OrderDetails Component', () => {
     spyOn(comp, 'isInitial').and.returnValue(true);
 
     spyOn(comp, 'addProduct').and.callThrough();
-    spyOn(productService, 'getProductList');
+    spyOn(productService, 'getProductList').and.callThrough();
 
     fixture.detectChanges();
 
     de = fixture.debugElement.query(By.css('ion-fab button'));
     de.triggerEventHandler('click', null);
 
+    tick();
+
     expect(comp.addProduct).toHaveBeenCalled();
     expect(productService.getProductList).toHaveBeenCalled();
 
-  });
+  }));
+
+  it('should show an error when "getProductList" fails', fakeAsync(() => {
+
+    let productService = fixture.debugElement.injector.get(ProductService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    // Workaround, enum type is not working in tests
+    spyOn(comp, 'isInitial').and.returnValue(true);
+
+    spyOn(comp, 'addProduct').and.callThrough();
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(productService, 'getProductList').and.callFake(() => {
+      return Promise.reject(null);
+    });
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('ion-fab button'));
+    de.triggerEventHandler('click', null);
+
+    tick();
+
+    expect(comp.addProduct).toHaveBeenCalled();
+    expect(productService.getProductList).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener la lista de productos'));
+
+  }));
 
   it('should display a message when the order is empty', () => {
 

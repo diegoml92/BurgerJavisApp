@@ -1,13 +1,16 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController} from 'ionic-angular';
+import { IonicModule, NavController, 
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { NewIngredientComponent } from './new-ingredient.component';
 import { Ingredient } from '../../app/ingredient';
 import { IngredientService } from '../../providers/ingredient.service';
-import { NavMock, IngredientMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, IngredientMock, 
+  LoadingControllerMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: NewIngredientComponent;
 let fixture: ComponentFixture<NewIngredientComponent>;
@@ -33,6 +36,10 @@ describe('Component: NewIngredient Component', () => {
         {
           provide : LoadingController,
           useClass : LoadingControllerMock
+        },
+        {
+          provide : ToastController,
+          useClass : ToastControllerMock
         }
       ],
  
@@ -135,6 +142,29 @@ describe('Component: NewIngredient Component', () => {
     expect(ingredientService.addIngredient)
       .toHaveBeenCalledWith(new Ingredient(comp.ingredientName));
     expect(navCtrl.pop).toHaveBeenCalled();
+
+  }));
+
+  it('should show an error when "addIngredient" fails', fakeAsync(() => {
+
+    let ingredientService = fixture.debugElement.injector.get(IngredientService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(ingredientService, 'addIngredient').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(comp, 'onSubmit').and.callThrough();
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('form'));
+    de.triggerEventHandler('ngSubmit', null);
+
+    tick();
+
+    expect(comp.onSubmit).toHaveBeenCalled();
+    expect(ingredientService.addIngredient).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al crear el ingrediente'));
 
   }));
  

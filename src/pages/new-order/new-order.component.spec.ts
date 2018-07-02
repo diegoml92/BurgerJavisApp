@@ -1,13 +1,16 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, LoadingController} from 'ionic-angular';
+import { IonicModule, NavController, 
+  LoadingController, ToastController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { NewOrderComponent } from './new-order.component';
 import { OrderService } from '../../providers/order.service';
 import { AuthenticationManager } from '../../providers/authentication-manager';
-import { NavMock, OrderMock, LoadingControllerMock, AuthMock } from '../../test/mocks';
+import { NavMock, OrderMock, LoadingControllerMock, 
+  AuthMock, ToastControllerMock } from '../../test/mocks';
  
 let comp: NewOrderComponent;
 let fixture: ComponentFixture<NewOrderComponent>;
@@ -37,6 +40,10 @@ describe('Component: NewOrder Component', () => {
         {
           provide: AuthenticationManager,
           useClass: AuthMock
+        },
+        {
+          provide : ToastController,
+          useClass : ToastControllerMock
         }
       ],
  
@@ -145,6 +152,29 @@ describe('Component: NewOrder Component', () => {
       );*/
     
     expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
+  it('should show an error when "addOrder" fails', fakeAsync(() => {
+
+    let orderService = fixture.debugElement.injector.get(OrderService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(orderService, 'addOrder').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(comp, 'onSubmit').and.callThrough();
+
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('form'));
+    de.triggerEventHandler('ngSubmit', null);
+
+    tick();
+
+    expect(comp.onSubmit).toHaveBeenCalled();
+    expect(orderService.addOrder).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al crear el pedido'));
 
   }));
  

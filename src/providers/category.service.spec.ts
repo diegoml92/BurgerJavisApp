@@ -77,6 +77,30 @@ describe('Provider: Category Service', () => {
 
   })));
 
+  it('should retreive the given category from the server',
+    async(inject([CategoryService, MockBackend], (categoryService: CategoryService, mockBackend: MockBackend) => {
+
+    let category: Category = CategoryMock.mockCategoryList[0];
+
+    const mockResponse = JSON.stringify(category);
+
+    mockBackend.connections.subscribe((connection) => {
+
+      connection.mockRespond(new Response(new ResponseOptions({
+        body: mockResponse
+      })));
+
+    });
+
+    categoryService.getCategory(category).then(c => {
+
+      expect(c.favorite).toEqual(category.favorite);
+      expect(c.name).toEqual(category.name);
+
+    });
+
+  })));
+
   it('should create the given category', fakeAsync(
     inject([CategoryService, MockBackend], (categoryService: CategoryService, mockBackend: MockBackend) => {
 

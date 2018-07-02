@@ -67,7 +67,7 @@ describe('Component: Menu Component', () => {
 
   it('should call "goToCategories" when categories button is clicked', () => {
 
-    spyOn(comp, 'goToCategories');
+    spyOn(comp, 'goToCategories').and.callThrough();
 
     de = fixture.debugElement.queryAll(By.css('[ion-item]'))[0];
     de.triggerEventHandler('click', null);
@@ -78,7 +78,7 @@ describe('Component: Menu Component', () => {
 
   it('should call "goToIngredients" when ingredients button is clicked', () => {
 
-    spyOn(comp, 'goToIngredients');
+    spyOn(comp, 'goToIngredients').and.callThrough();
 
     de = fixture.debugElement.queryAll(By.css('[ion-item]'))[1];
     de.triggerEventHandler('click', null);

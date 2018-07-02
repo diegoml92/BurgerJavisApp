@@ -1,12 +1,15 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, NavParams,
+  ToastController, LoadingController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import { CategoryService } from '../../providers/category.service';
-import { NavMock, NavParamsMock, CategoryMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, NavParamsMock, CategoryMock,
+  ToastControllerMock, LoadingControllerMock } from '../../test/mocks';
  
 let comp: CategoryDetailsComponent;
 let fixture: ComponentFixture<CategoryDetailsComponent>;
@@ -36,6 +39,10 @@ describe('Component: CategoryDetails Component', () => {
         {
           provide: LoadingController,
           useClass: LoadingControllerMock
+        },
+        {
+          provide: ToastController,
+          useClass: ToastControllerMock
         }
       ],
  
@@ -68,7 +75,11 @@ describe('Component: CategoryDetails Component', () => {
  
   });
 
-  it('should display CategoryDetails view correctly', () => {
+  it('should display CategoryDetails view correctly', fakeAsync(() => {
+
+    comp.ionViewWillEnter();
+
+    tick();
 
     fixture.detectChanges();
 
@@ -95,11 +106,31 @@ describe('Component: CategoryDetails Component', () => {
 
     expect(el.textContent).toContain('No hay más datos');
 
-  });
+  }));
+
+  it('should call popToRoot when error is received while loading the page', fakeAsync(() => {
+
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+    let categoryService = fixture.debugElement.injector.get(CategoryService);
+
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(navCtrl, 'popToRoot').and.callThrough();
+    spyOn(categoryService, 'getCategory').and.returnValue(Promise.reject(null));
+
+    comp.ionViewWillEnter();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener la categoría'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
 
   it('should call "updateName" when category name is clicked', () => {
 
-    spyOn(comp, 'updateName');
+    spyOn(comp, 'updateName').and.callThrough();
 
     de = fixture.debugElement.query(By.css('ion-title'));
     
@@ -134,11 +165,15 @@ describe('Component: CategoryDetails Component', () => {
   it('should call "updateCategory" when "save" button is clicked', fakeAsync(() => {
 
     let categoryService = fixture.debugElement.injector.get(CategoryService);
-    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
 
     spyOn(comp, 'updateCategory').and.callThrough();
-    spyOn(categoryService, 'updateCategory').and.returnValue(Promise.resolve(comp.category));
-    spyOn(navCtrl, 'popToRoot');
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(categoryService, 'updateCategory').and.returnValues
+      (
+        Promise.reject(null),
+        Promise.resolve(comp.category)
+      );
 
     comp.modified = true;
 
@@ -151,14 +186,26 @@ describe('Component: CategoryDetails Component', () => {
     expect(categoryService.updateCategory).toHaveBeenCalledWith(comp.category);
 
     tick();
+    comp.modified = true;
 
-    expect(navCtrl.popToRoot).not.toHaveBeenCalled();
+    fixture.detectChanges();
+
+    de = fixture.debugElement.query(By.css('.save-button'));
+    de.triggerEventHandler('click', null);
+
+    expect(comp.updateCategory).toHaveBeenCalled();
+    expect(categoryService.updateCategory).toHaveBeenCalledWith(comp.category);
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al actualizar la categoría'));
 
   }));
 
   it('should call "deleteCategory" when "delete" button is clicked', () => {
 
-    spyOn(comp, 'deleteCategory');
+    spyOn(comp, 'deleteCategory').and.callThrough();
 
     // 'delete' button
     de = fixture.debugElement.query(By.css('ion-navbar ion-buttons button'));
@@ -181,6 +228,23 @@ describe('Component: CategoryDetails Component', () => {
     tick();
 
     expect(navCtrl.pop).toHaveBeenCalled();
+
+  }));
+
+  it('should display an error when removing a Category fails', fakeAsync(() => {
+
+    let categoryService = fixture.debugElement.injector.get(CategoryService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(categoryService, 'removeCategory').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.removeCategory();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al borrar la categoría'));
 
   }));
 

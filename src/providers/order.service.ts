@@ -71,10 +71,9 @@ export class OrderService {
   }
 
   /** Delete order */
-  removeOrder(order: Order, kitchen: boolean = false) {
-    var operation : string  = kitchen ? Operations.KITCHEN : Operations.ORDERS;
+  removeOrder(order: Order) {
     var request : string = 
-        Util.getUrlForAction(operation, order._id);
+        Util.getUrlForAction(Operations.ORDERS, order._id);
     var credentials : Credentials = this.auth.getCredentials();
     return this.http.delete(request, null,
         this.http.getBasicAuthHeader(credentials.username, credentials.password))

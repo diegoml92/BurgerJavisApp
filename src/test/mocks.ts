@@ -2,8 +2,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Headers } from '@angular/http';
 import { Credentials } from '../app/credentials';
-import { ROLE_ADMIN, ROLE_WAITER, OrderState, BASIC_PREFIX,
-  JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
+import { ROLE_ADMIN, ROLE_WAITER, ROLE_KITCHEN, OrderState, 
+  BASIC_PREFIX, JSON_HEADER_NAME, JSON_HEADER_VALUE } from '../app/commons';
 import { Order } from '../app/order';
 import { OrderItem } from '../app/order-item';
 import { Category } from '../app/category';
@@ -28,18 +28,26 @@ export class LoginMock {
 
 export class AuthMock {
 
-  public static regularUser: Credentials = {
+  public static waiterUser: Credentials = {
     username: "user1", password: "user1", roles: [ROLE_WAITER]
+  };
+
+  public static kitchenUser: Credentials = {
+    username: "user2", password: "user2", roles: [ROLE_KITCHEN]
   };
 
   public static adminUser: Credentials = {
     username: "admin", password: "admin", roles: [ROLE_ADMIN]
   }
 
-  public credentials: Credentials = AuthMock.regularUser;
+  public credentials: Credentials = AuthMock.waiterUser;
 
   public setCredentials(credentials: Credentials) {
     this.credentials = credentials;
+  }
+
+  public getRole(): string {
+    return this.credentials.roles[0];
   }
 
   public isAdmin(): boolean {
@@ -148,6 +156,12 @@ export class CategoryMock {
     });
   }
 
+  public getCategory(): Promise<Category> {
+    return new Promise(resolve => {
+      resolve(CategoryMock.mockCategoryList[0]);
+    })
+  }
+
   public addCategory(category: Category): Promise<Category> {
     this.categoryList.push(category);
     return new Promise<Category>((resolve) => {
@@ -194,6 +208,12 @@ export class IngredientMock {
     return new Promise<Ingredient[]>((resolve, reject) => {
       resolve(this.ingredientList);
     });
+  }
+
+  public getIngredient(): Promise<Ingredient> {
+    return new Promise(resolve => {
+      resolve(IngredientMock.mockIngredientList[0]);
+    })
   }
 
   public addIngredient(ingredient: Ingredient): Promise<Ingredient> {
@@ -325,6 +345,12 @@ export class KitchenMock {
     });
   }
 
+  public getOrder(): Promise<Order> {
+    return new Promise(resolve => {
+      resolve(KitchenMock.mockOrderList[2]);
+    })
+  }
+
   public updateOrder(order: Order): Promise<Order> {
     return new Promise((resolve) => {
       resolve(order);
@@ -440,7 +466,7 @@ class LoadingMock {
   }
 
   public present(): void {
-    console.debug('LoadingMock : present');
+    console.debug('LoadingMock : present -> ' + this.content);
   }
 
   public dismiss(): void {
@@ -470,7 +496,7 @@ class ToastMock {
   }
 
   public present(): void {
-    console.debug('ToastMock : present');
+    console.debug('ToastMock : present -> ' + this.message);
   }
 }
 
@@ -486,17 +512,28 @@ class AlertMock {
 
   private title: string;
   private message: string;
-  private buttons: any;
+  private buttons: any[];
 
   constructor(alertMock: AlertMock) {
-    this.title = alertMock.title;
-    this.message = alertMock.message;
-    this.buttons = alertMock.buttons;
+    if(alertMock) {
+      this.title = alertMock.title;
+      this.message = alertMock.message;
+      this.buttons = alertMock.buttons;
+    }
   }
 
   public present(): void {
-    console.debug('AlertMock : present');
-    AlertControllerMock.acceptFunction();
+    console.debug('AlertMock : present -> ' + this.title + '-' + this.message);
+  }
+
+  public setTitle(title: string): void {
+    this.title = title;
+  }
+
+  public addInput(input): void {}
+
+  public addButton(button: any) {
+    this.buttons.push(button);
   }
 
 }
@@ -506,11 +543,8 @@ export class AlertControllerMock {
   static acceptFunction = null;
 
   public create(alertMock: AlertMock): AlertMock {
+    console.debug('AlertControllerMock.create');
     return new AlertMock(alertMock);
-  }
-
-  public static setCallback(callback): void {
-    this.acceptFunction = callback;
   }
 
 }
@@ -521,4 +555,26 @@ export class MenuControllerMock {
 
 }
 
-export class ViewMock {}
+class PopoverMock {
+
+  constructor(popoverMock: PopoverMock) {}
+
+  public present(): void {}
+
+  public onDismiss(): void {}
+
+}
+
+export class PopoverControllerMock {
+
+  public create(popoverMock: PopoverMock): PopoverMock {
+    console.debug('PopoverControllerMock.create');
+    return new PopoverMock(popoverMock);
+  }
+}
+
+export class ViewMock {
+
+  public dismiss(): void {}
+
+}

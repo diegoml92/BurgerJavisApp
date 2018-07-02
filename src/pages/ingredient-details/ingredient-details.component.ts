@@ -60,7 +60,7 @@ export class IngredientDetailsComponent {
       .catch(err => {
         loading.dismiss();
         let toast = this.toastCtrl.create
-            (Util.getToastParams('Error al actualiar el producto'));
+            (Util.getToastParams('Error al actualizar el ingrediente'));
         toast.present();
       });
   }

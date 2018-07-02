@@ -1,15 +1,17 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicModule, NavController, NavParams, AlertController,
+  ToastController, LoadingController } from 'ionic-angular';
 
 import { AppComponent } from '../../app/app.component';
+import { Util } from '../../app/util';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { ProductService } from '../../providers/product.service';
 import { CategoryService } from '../../providers/category.service';
 import { IngredientService } from '../../providers/ingredient.service';
-import { NavMock, NavParamsMock, IngredientMock, CategoryMock,
-  ProductMock, LoadingControllerMock } from '../../test/mocks';
+import { NavMock, NavParamsMock, IngredientMock, CategoryMock, ToastControllerMock,
+  ProductMock, LoadingControllerMock, AlertControllerMock } from '../../test/mocks';
  
 let comp: ProductDetailsComponent;
 let fixture: ComponentFixture<ProductDetailsComponent>;
@@ -47,6 +49,14 @@ describe('Component: ProductDetails Component', () => {
         {
           provide: LoadingController,
           useClass: LoadingControllerMock
+        },
+        {
+          provide: ToastController,
+          useClass: ToastControllerMock
+        },
+        {
+          provide: AlertController,
+          useClass: AlertControllerMock
         }
       ],
  
@@ -135,6 +145,35 @@ describe('Component: ProductDetails Component', () => {
 
   }));
 
+  it('should call popToRoot when error is received while loading the page', fakeAsync(() => {
+
+    let productService = fixture.debugElement.injector.get(ProductService);
+    let categoryService = fixture.debugElement.injector.get(CategoryService);
+    let navCtrl = fixture.debugElement.injector.get(NavController);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(productService, 'getProduct').and.returnValue(Promise.reject(null));
+    spyOn(categoryService, 'getCategoryList').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+    spyOn(navCtrl, 'popToRoot').and.callThrough();
+
+    comp.ionViewWillEnter();
+
+    tick();
+    fixture.detectChanges();
+
+    expect(productService.getProduct).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener el producto'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+    expect(categoryService.getCategoryList).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener lista de categorías'));
+    expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
   it('should show "save" button when changes are made to the product', () => {
 
     fixture.detectChanges();
@@ -162,7 +201,7 @@ describe('Component: ProductDetails Component', () => {
 
   it('should call "deleteProduct" when "delete" button is clicked', () => {
 
-    spyOn(comp, 'deleteProduct');
+    spyOn(comp, 'deleteProduct').and.callThrough();
 
     // 'delete' button
     de = fixture.debugElement.query(By.css('ion-navbar ion-buttons button'));
@@ -185,6 +224,23 @@ describe('Component: ProductDetails Component', () => {
     tick();
 
     expect(navCtrl.popToRoot).toHaveBeenCalled();
+
+  }));
+
+  it('should display an error when removing a Product fails', fakeAsync(() => {
+
+    let productService = fixture.debugElement.injector.get(ProductService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(productService, 'removeProduct').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.removeProduct();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al borrar el producto'));
 
   }));
 
@@ -214,7 +270,7 @@ describe('Component: ProductDetails Component', () => {
 
   it('should call "updateName" when product name is clicked', () => {
 
-    spyOn(comp, 'updateName');
+    spyOn(comp, 'updateName').and.callThrough;
 
     de = fixture.debugElement.query(By.css('ion-title'));
     
@@ -253,16 +309,62 @@ describe('Component: ProductDetails Component', () => {
 
   }));
 
-  it('should call "addIngredient" when add button is clicked', () => {
+  it('should display an error when updateProduct request fails', fakeAsync(() => {
 
-    spyOn(comp, 'addIngredient');
+    let productService = fixture.debugElement.injector.get(ProductService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(productService, 'updateProduct').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    comp.updateProduct();
+
+    tick();
+
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al actualiar el producto'));
+
+  }));
+
+  it('should call "addIngredient" when add button is clicked', fakeAsync(() => {
+
+    let ingredientService = fixture.debugElement.injector.get(IngredientService);
+
+    spyOn(comp, 'addIngredient').and.callThrough();
+    spyOn(ingredientService, 'getIngredientList').and.callThrough()
 
     de = fixture.debugElement.query(By.css('ion-fab button'));
     de.triggerEventHandler('click', null);
 
     expect(comp.addIngredient).toHaveBeenCalled();
 
-  });
+    tick();
+
+    expect(ingredientService.getIngredientList).toHaveBeenCalled();
+
+  }));
+
+  it('should show an error when ingredient list cannot be obtained', fakeAsync(() => {
+
+    let ingredientService = fixture.debugElement.injector.get(IngredientService);
+    let toastCtrl = fixture.debugElement.injector.get(ToastController);
+
+    spyOn(comp, 'addIngredient').and.callThrough();
+    spyOn(ingredientService, 'getIngredientList').and.returnValue(Promise.reject(null));
+    spyOn(toastCtrl, 'create').and.callThrough();
+
+    de = fixture.debugElement.query(By.css('ion-fab button'));
+    de.triggerEventHandler('click', null);
+
+    expect(comp.addIngredient).toHaveBeenCalled();
+
+    tick();
+
+    expect(ingredientService.getIngredientList).toHaveBeenCalled();
+    expect(toastCtrl.create).toHaveBeenCalledWith
+      (Util.getToastParams('Error al obtener la lista de ingredientes'));
+
+  }));
 
   it('should display a message when the ingredient list is empty', () => {
 
