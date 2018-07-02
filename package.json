@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "Burger Javi's App",
+  "author": "Diego Moreno Lennon",
+  "homepage": "https://github.com/dml92/BurgerJavisApp",
   "private": true,
   "scripts": {
     "test": "karma start ./test-config/karma.conf.js",
@@ -80,7 +80,7 @@
       "locator": "ios"
     }
   ],
-  "description": "trabajo_fin_master: An Ionic project",
+  "description": "BurgerJavisApp: Trabajo Fin de Máster",
   "cordova": {
     "platforms": [
       "ios",
