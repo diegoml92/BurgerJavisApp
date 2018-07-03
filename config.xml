@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.burgerjavis.tfm.urjc" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.burgerjavis.tfm.urjc" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Burger Javi's</name>
     <description>App desarrollada para la asignatura de Trabajo Fin de Máster.</description>
-    <author email="d.morenole@alumnos.urjc.es" href="http://ionicframework.com/">Diego Moreno Lennon</author>
+    <author email="d.morenole@gmail.com" href="https://github.com/dml92/BurgerJavisApp">Diego Moreno Lennon</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
